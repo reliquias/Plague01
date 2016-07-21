@@ -1,0 +1,75 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form id="formInsti">
+                <p:growl id="msg"/>
+                <p:panel header="Cadastro de Instituicaos">
+                <p:commandLink action="#{instituicaoMB.listar}" value="Voltar" ajax="false" immediate="true"/>
+                <p:tabView>
+               	 <p:tab title="Dados Gerais">
+                    <h:panelGrid columns="2">
+	                    <h:inputHidden value="#{instituicaoMB.instituicao.id}" id="id"/>
+	                    <p:spacer/>
+                        <h:outputLabel value="Razao Social" for="razaoSocial"/>
+                        <h:inputText id="razaoSocial" value="#{instituicaoMB.instituicao.razaoSocial}" required="true" requiredMessage="Campo [Razao Social] obrigatorio"/>
+                        <h:outputLabel value="Nome Fantasia" for="nomeFantasia"/>
+                        <h:inputText id="nomeFantasia" value="#{instituicaoMB.instituicao.nomeFantasia}" required="true" requiredMessage="Campo [Nome Fantasia] obrigatorio"/>
+                        <h:outputLabel value="CNPJ" for="cnpj"/>
+                        <h:inputText id="cnpj" value="#{instituicaoMB.instituicao.cnpj}"/>
+                        <h:outputLabel value="Insc. Estadual" for="inscricaoEstadual"/>
+                        <h:inputText id="inscricaoEstadual" value="#{instituicaoMB.instituicao.inscricaoEstadual}"/>
+                        <h:outputLabel value="ID SAP" for="idSap"/>
+                        <h:inputText id="idSap" value="#{instituicaoMB.instituicao.idSap}"/>
+                        <h:outputLabel value="Site" for="site"/>
+                        <h:inputText id="site" value="#{instituicaoMB.instituicao.site}"/>
+                        <h:outputLabel value="Insc. Municipal" for="inscricaoMunicipal"/>
+                        <h:inputText id="inscricaoMunicipal" value="#{instituicaoMB.instituicao.inscricaoMunicipal}"/>
+                    </h:panelGrid>
+                 </p:tab>
+                 <p:tab title="Contatos">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Endereco" for="endereco"/>
+                        <h:inputText id="endereco" value="#{instituicaoMB.instituicao.endereco}"/>
+                        <h:outputLabel value="Cidade" for="cidade"/>
+                        <h:inputText id="cidade" value="#{instituicaoMB.instituicao.cidade}"/>
+                        <h:outputLabel value="Regiao" for="regiao"/>
+                        <h:selectOneMenu id="regiao" value="#{instituicaoMB.instituicao.regiao}">
+                            <f:selectItems value="#{instituicaoMB.regiao}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Outros" for="outros"/>
+                        <h:inputText id="outros" value="#{instituicaoMB.instituicao.outros}"/>
+                        <h:outputLabel value="CEP" for="cep"/>
+                        <h:inputText id="cep" value="#{instituicaoMB.instituicao.cep}"/>
+                        <h:outputLabel value="Telefone" for="telefone"/>
+                        <h:inputText id="telefone" value="#{instituicaoMB.instituicao.telefone}"/>
+                        <h:outputLabel value="Ramal" for="ramal"/>
+                        <h:inputText id="ramal" value="#{instituicaoMB.instituicao.ramal}"/>
+                        <h:outputLabel value="Contato" for="contato"/>
+                        <h:inputText id="contato" value="#{instituicaoMB.instituicao.contato}"/>
+                        <h:outputLabel value="E-mail" for="email"/>
+                        <h:inputText id="email" value="#{instituicaoMB.instituicao.email}"/>
+                        <p:outputLabel value="Possui Carro" for="possuiCarro" />
+        				<p:selectBooleanCheckbox value="#{instituicaoMB.instituicao.possuiCarro}" id="possuiCarro"/>
+                        <h:outputLabel value="Perfil" for="perfil"/>
+                        <h:selectOneMenu id="perfil" value="#{instituicaoMB.instituicao.perfil}">
+                            <f:selectItems value="#{instituicaoMB.perfil}"/>
+                        </h:selectOneMenu>
+                   </h:panelGrid>
+                </p:tab>
+                </p:tabView>
+				<f:facet name="footer">
+                    <p:commandButton value="Salvar" ajax="true" actionListener="#{instituicaoMB.adicionaOuAtualiza}" update="formInsti"/>
+                	<p:messages id="msgs"/>
+                 </f:facet>
+            </p:panel>
+            </h:form>
+        </p:layoutUnit>
+    </ui:define>
+</ui:composition>
+

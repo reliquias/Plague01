@@ -1,0 +1,36 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form prependId="false">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="#{msg.usu_label}">
+                    <p:dataTable id="usuario" lazy="true" sortBy="#{usuarios.nome}" value="#{usuarioMB.usuariosModel}" var="usuarios" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{usuarioMB.usuario}" rowsPerPageTemplate="5,10,15">
+                		<p:column>
+                            <h:commandLink action="#{usuarioMB.ativar}">
+                            <h:graphicImage library="img" name="usuario_ativo_#{usuarios.ativo}.png" style="border:0"></h:graphicImage>
+                            <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuarios}"/>
+                            </h:commandLink>
+                        </p:column>
+                		<p:column sortBy="#{usuarios.nome}" filterMatchMode="contains" filterBy="#{usuarios.nome}">
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{usuarios.nome}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{usuarioMB.novo}" value="Novo" update="infoUsu"  ajax="false"/>
+                        <p:commandButton action="#{usuarioMB.editar}"    value="Alterar" ajax="false"/>
+                        <p:commandButton actionListener="#{usuarioMB.excluir}" value="Excluir" update="usuario" />
+                    </f:facet>
+                </p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>
