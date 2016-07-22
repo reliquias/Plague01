@@ -92,6 +92,8 @@ public class DoacaoMB{
         doacaoDAO.excluir(doacao);
         doacoesModel = null;
     }
+    
+    //fdp
 
     public String excluir() {
     	try {
