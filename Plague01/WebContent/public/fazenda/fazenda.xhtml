@@ -1,0 +1,88 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="centro">
+		<p:layoutUnit position="center">
+			<h:form id="cadastro" acceptcharset="ISO-8859-1">
+				<p:growl id="msg" />
+				<p:panel header="#{msg.fazenda_labelCad}" id="panel">
+					<h:panelGrid id="infoFazenda" columns="2" style="margin-bottom: 10px">
+					<p:commandLink action="#{fazendaMB.listar}" value="Voltar" ajax="false" immediate="true"/>
+					<p:spacer/><p:spacer/>
+						<h:inputHidden value="#{fazendaMB.fazenda.id}" />
+						<h:outputLabel value="#{msg.fazenda_nome}" for="nome" />
+						<h:inputText id="nome" label="Nome"
+							value="#{fazendaMB.fazenda.nome}" size="50" maxlength="50"
+							required="true" requiredMessage="Sem nome!!">
+							<f:validateLength minimum="2" maximum="50" />
+						</h:inputText>
+						<h:outputLabel value="#{msg.fazenda_area}" for="area" />
+						<h:inputText id="area" label="Area"
+							value="#{fazendaMB.fazenda.area}" size="40" maxlength="40" readonly="true">
+						</h:inputText>
+						<p:spacer/>
+						<p:fileUpload auto="true" widgetVar="uploader" label="Procurar..."  fileUploadListener="#{fazendaMB.handleFileUpload}" mode="advanced"
+						description="Images" multiple="false" customUI="true" id="fileUpload" ajax="true" height="115px" width="150px"/>
+						<h:outputLabel value="#{msg.fazenda_pais}" for="pais"/>
+						<h:selectOneMenu id="pais" value="#{fazendaMB.fazenda.pais}" title="Paises" converter="simpleEntityConverter">
+                            <f:selectItems value="#{paisMB.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{msg.fazenda_estado}" for="estado"/>
+						<h:selectOneMenu id="estado" value="#{fazendaMB.fazenda.estado}" title="Estados" converter="simpleEntityConverter">
+                            <f:selectItems value="#{estadoMB.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{msg.fazenda_cidade}" for="cidade"/>
+						<h:selectOneMenu id="cidade" value="#{fazendaMB.fazenda.cidade}" title="Cidades" converter="simpleEntityConverter">
+                            <f:selectItems value="#{cidadeMB.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        <p:commandButton action="#{fazendaMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
+						<p:commandButton value="Zonas" ajax="false" action="#{fazendaMB.zonasForm}" />
+					</h:panelGrid>
+					<p:growl id="growl" life="3000" />
+ 					  <p:gmap id="w_gmap" widgetVar="w_gmap" center="-23.563556, -46.633307" zoom="14" type="ROADMAP" style="width:600px;height:400px" model="#{fazendaMB.polygonModel}">
+ 					   	<p:ajax event="overlaySelect" listener="#{fazendaMB.onPolygonSelect}" update="growl" />
+ 					  </p:gmap>
+				</p:panel>
+				<script type="text/javascript">
+					if (navigator.geolocation) {
+						checkGeolocationByHTML5();
+					} else {
+						checkGeolocationByLoaderAPI(); // HTML5 not supported! Fall back to Loader API.
+					}
+
+					function checkGeolocationByHTML5() {
+						navigator.geolocation.getCurrentPosition(
+								function(position) {
+							setMapCenter(position.coords.latitude,position.coords.longitude);
+						}, function() {
+							checkGeolocationByLoaderAPI(); // Error! Fall back to Loader API.
+						});
+					}
+
+					function checkGeolocationByLoaderAPI() {
+						if (google.loader.ClientLocation) {
+							setMapCenter(google.loader.ClientLocation.latitude,
+									google.loader.ClientLocation.longitude);
+						} else {
+							// Unsupported! Show error/warning?
+						}
+					}
+					function setMapCenter(latitude, longitude) {
+						var str = document.getElementById("cadastro:area").value;
+						console.log(str);
+						if (str > '') {
+							var la = str.split(" ")[0];
+							var lo = str.split(" ")[1];
+							PF('w_gmap').getMap().setCenter(new google.maps.LatLng(la, lo));
+						}
+					}
+				</script>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

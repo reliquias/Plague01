@@ -1,0 +1,36 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form prependId="false" id="form" acceptcharset="ISO-8859-1">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel>
+                    <p:dataTable id="pais" lazy="true" sortBy="#{paiss.sigla}" value="#{paisMB.paissModel}" var="paiss" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{paisMB.pais}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{paiss.sigla}" filterMatchMode="contains" filterBy="#{paiss.sigla}">
+                            <f:facet name="header">
+                                <h:outputText value="Sigla"/>
+                            </f:facet>
+                            <h:outputText value="#{paiss.sigla}"/>
+                        </p:column>
+                        <p:column sortBy="#{paiss.descricao}" filterMatchMode="contains" filterBy="#{paiss.descricao}">
+                            <f:facet name="header">
+                                <h:outputText value="Descricao"/>
+                            </f:facet>
+                            <h:outputText value="#{paiss.descricao}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{paisMB.novo}" value="Novo" update="infoPais"  ajax="false"/>
+                        <p:commandButton action="#{paisMB.editar}"    value="Alterar" ajax="false"/>
+                        <p:commandButton actionListener="#{paisMB.excluirAjax}" value="Excluir" ajax="true" update="form" />
+                    </f:facet>
+                </p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

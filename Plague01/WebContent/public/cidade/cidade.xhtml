@@ -1,0 +1,38 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="centro">
+		<p:layoutUnit position="center">
+			<h:form id="cadastro" acceptcharset="ISO-8859-1">
+				<p:growl id="msg" />
+				<p:panel header="#{msg.cid_labelCad}">
+					<h:panelGrid id="infoCidade" columns="2" style="margin-bottom: 10px">
+					<p:commandLink action="#{cidadeMB.listar}" value="Voltar" ajax="false" immediate="true"/>
+					<p:spacer/><p:spacer/>
+						<h:inputHidden value="#{cidadeMB.cidade.id}" />
+						<h:outputLabel value="#{msg.cid_nome}" for="nome" />
+						<h:inputText id="nome" label="Nome"
+							value="#{cidadeMB.cidade.nome}" size="40" maxlength="40"
+							required="true" requiredMessage="Campo nome obrigatorio!!">
+							<f:validateLength minimum="2" maximum="40" />
+						</h:inputText>
+						<h:outputLabel value="#{msg.cid_pais}" for="pais"/>
+						<h:selectOneMenu id="pais" value="#{cidadeMB.cidade.pais}" title="Paises" converter="simpleEntityConverter">
+                            <f:selectItems value="#{paisMB.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{msg.cid_estado}" for="estado"/>
+						<h:selectOneMenu id="estado" value="#{cidadeMB.cidade.estado}" title="Estados" converter="simpleEntityConverter">
+                            <f:selectItems value="#{estadoMB.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+						<p:commandButton action="#{cidadeMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
+					</h:panelGrid>
+					<p:messages id="msgs"/>
+				</p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

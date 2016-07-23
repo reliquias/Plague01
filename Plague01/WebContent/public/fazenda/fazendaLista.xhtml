@@ -1,0 +1,36 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form prependId="false" acceptcharset="ISO-8859-1">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="#{msg.fazenda_label}" id="panel">
+                    <p:dataTable id="fazenda" lazy="true" sortBy="#{fazendas.nome}" value="#{fazendaMB.fazendasModel}" var="fazendas" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{fazendaMB.fazenda}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{fazendas.nome}" filterMatchMode="contains" filterBy="#{fazendas.nome}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.fazenda_nome}"/>
+                            </f:facet>
+                            <h:outputText value="#{fazendas.nome}"/>
+                        </p:column>
+                        <p:column sortBy="#{fazendas.cidade}" filterMatchMode="contains" filterBy="#{fazendas.cidade}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.fazenda_cidade}"/>
+                            </f:facet>
+                            <h:outputText value="#{fazendas.cidade}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{fazendaMB.novo}" value="Novo" update="infoFazenda"  ajax="false"/>
+                        <p:commandButton action="#{fazendaMB.editar}"    value="Alterar" ajax="false"/>
+                        <p:commandButton actionListener="#{fazendaMB.excluirAjax}" value="Excluir" ajax="true" update="panel" />
+                    </f:facet>
+                </p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

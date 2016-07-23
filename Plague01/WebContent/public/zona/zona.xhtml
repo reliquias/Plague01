@@ -1,0 +1,79 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+	<ui:define name="centro">
+		<p:layoutUnit position="center">
+			<h:form id="cadastro" acceptcharset="ISO-8859-1">
+				<p:growl id="msg" />
+				<p:panel header="#{msg.zona_labelCad}">
+					<h:panelGrid id="infoZona" columns="2" style="margin-bottom: 10px">
+					<p:commandLink action="#{zonaMB.listar}" value="Voltar" ajax="false" immediate="true"/>
+					<p:spacer/><p:spacer/>
+						<h:inputHidden value="#{zonaMB.zona.id}" id="zonaId"/>
+						<h:outputLabel value="#{msg.zona_nome}" for="nome" />
+						<h:inputText id="nome" label="Nome"
+							value="#{zonaMB.zona.nome}" size="50" maxlength="50"
+							required="true" requiredMessage="Sem nome!!">
+							<f:validateLength minimum="2" maximum="30" />
+						</h:inputText>
+						<h:outputLabel value="#{msg.zona_zona}" for="zona" />
+						<h:inputText id="zona" label="Zona"
+							value="#{zonaMB.zona.zona}" size="50" maxlength="50">
+						</h:inputText>
+						<p:commandButton action="#{zonaMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
+						<p:commandButton value="Talhoes" ajax="false" action="#{zonaMB.talhaoForm}" />
+					</h:panelGrid>
+					<p:growl id="growl" life="3000" />
+ 					    <p:gmap id="w_gmap" widgetVar="w_gmap" center="41.381542, 2.122893" zoom="16" type="ROADMAP" style="width:600px;height:400px" model="#{zonaMB.polygonModel}">
+ 					    	<p:ajax event="overlaySelect" listener="#{zonaMB.onPolygonSelect}" update="growl" />
+ 					    </p:gmap>
+					<p:messages id="msgs"/>
+				</p:panel>
+						    <script type="text/javascript">
+			    if (navigator.geolocation) {
+			        checkGeolocationByHTML5();
+			    } else {
+			        checkGeolocationByLoaderAPI(); // HTML5 not supported! Fall back to Loader API.
+			    }
+			
+			    function checkGeolocationByHTML5() {
+			        navigator.geolocation.getCurrentPosition(function(position) {
+			            setMapCenter(position.coords.latitude, position.coords.longitude);
+			        }, function() {
+			            checkGeolocationByLoaderAPI(); // Error! Fall back to Loader API.
+			        });
+			    }
+			
+			    function checkGeolocationByLoaderAPI() {
+			    	if (google.loader.ClientLocation) {
+			            setMapCenter(google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude);
+			        } else {
+			            // Unsupported! Show error/warning?
+			        }
+			    }
+			
+			    function setMapCenter(latitude, longitude) {
+			    	var str = document.getElementById("cadastro:zona").value;
+			    	if(!str > '' || document.getElementById("cadastro:zonaId").value == 0){
+			    		PF('w_gmap').getMap().setCenter(new google.maps.LatLng(latitude, longitude));
+			    		document.getElementById("cadastro:zona").value = latitude + " " + longitude;
+			    	}else{
+			    		if(str > ''){
+			    			var la = str.split(" ")[0];
+				    		var lo = str.split(" ")[1];
+				    		PF('w_gmap').getMap().setCenter(new google.maps.LatLng(la, lo));
+			    		}
+			    	}
+			    }
+			</script> 
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

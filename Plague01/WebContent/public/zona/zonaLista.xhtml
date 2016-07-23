@@ -1,0 +1,34 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form prependId="false" acceptcharset="ISO-8859-1">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="#{msg.zona_label}" id="panel">
+                    <p:dataTable id="zona" lazy="true" sortBy="#{zonas.nome}" value="#{zonaMB.zonasModel}" var="zonasele" 
+                    paginator="true" rows="10" selectionMode="single" dynamic="true" 
+                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                    selection="#{zonaMB.zona}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{zonasele.nome}" filterMatchMode="contains" filterBy="#{zonasele.nome}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.zona_nome}"/>
+                            </f:facet>
+                            <h:outputText value="#{zonasele.nome}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{zonaMB.novo}" value="Novo" update="infoZona"  ajax="false"/>
+                        <p:commandButton action="#{zonaMB.editar}"    value="Alterar" ajax="false"/>
+                        <p:commandButton actionListener="#{zonaMB.excluirAjax}" value="Excluir" ajax="true" update="panel" />
+                        <p:commandButton action="#{zonaMB.voltarFazenda}" value="Fazenda" ajax="false"/>
+                    </f:facet>
+                </p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

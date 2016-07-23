@@ -1,0 +1,36 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form prependId="false" id="form" acceptcharset="ISO-8859-1">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="#{msg.usu_label}">
+                    <p:dataTable id="estado" lazy="true" sortBy="#{estados.sigla}" value="#{estadoMB.estadosModel}" var="estados" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{estadoMB.estado}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{estados.sigla}" filterMatchMode="contains" filterBy="#{estados.sigla}">
+                            <f:facet name="header">
+                                <h:outputText value="Sigla"/>
+                            </f:facet>
+                            <h:outputText value="#{estados.sigla}"/>
+                        </p:column>
+                        <p:column sortBy="#{estados.nome}" filterMatchMode="contains" filterBy="#{estados.nome}">
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{estados.nome}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{estadoMB.novo}" value="Novo" update="infoEstado"  ajax="false"/>
+                        <p:commandButton action="#{estadoMB.editar}"    value="Alterar" ajax="false"/>
+                        <p:commandButton actionListener="#{estadoMB.excluirAjax}" value="Excluir" ajax="true" update="form" />
+                    </f:facet>
+                </p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

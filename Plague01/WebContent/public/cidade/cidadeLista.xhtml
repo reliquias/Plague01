@@ -1,0 +1,42 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form prependId="false" id="form" acceptcharset="ISO-8859-1">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="#{msg.cid_label}">
+                    <p:dataTable id="cidade" lazy="true" sortBy="#{cidades.nome}" value="#{cidadeMB.cidadesModel}" var="cidades" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{cidadeMB.cidade}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{cidades.nome}" filterMatchMode="contains" filterBy="#{cidades.nome}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.cid_nome}"/>
+                            </f:facet>
+                            <h:outputText value="#{cidades.nome}"/>
+                        </p:column>
+                        <p:column sortBy="#{cidades.estado}" filterMatchMode="contains" filterBy="#{cidades.estado}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.cid_estado}"/>
+                            </f:facet>
+                            <h:outputText value="#{cidades.estado}"/>
+                        </p:column>
+                        <p:column sortBy="#{cidades.pais}" filterMatchMode="contains" filterBy="#{cidades.pais}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.cid_pais}"/>
+                            </f:facet>
+                            <h:outputText value="#{cidades.pais}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{cidadeMB.novo}" value="Novo" update="infoCidade"  ajax="false"/>
+                        <p:commandButton action="#{cidadeMB.editar}"    value="Alterar" ajax="false"/>
+                        <p:commandButton actionListener="#{cidadeMB.excluirAjax}" value="Excluir" ajax="true" update="form" />
+                    </f:facet>
+                </p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>
