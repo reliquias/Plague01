@@ -2,9 +2,12 @@ package br.com.inicial.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.com.inicial.modelo.Estado;
+import br.com.inicial.modelo.Pais;
+import br.com.inicial.modelo.Zona;
 
 public class EstadoDAO {
 
@@ -36,5 +39,23 @@ public class EstadoDAO {
 	public List<Estado> listar() {
 		return this.session.createCriteria(Estado.class).list();
 		
+	}
+	
+	public Estado buscarPorCampo(String campo, Object valor) {
+		if(valor instanceof String){
+			valor = "'" + valor + "'";
+		}
+		String hql = "select c from Estado c where c." + campo +" = " + valor;
+		Query consulta = this.session.createQuery(hql);
+		return (Estado) consulta.uniqueResult();
+	}
+	
+	public List<Estado> buscarListaPorCampo(String campo, Object valor) {
+		if(valor instanceof String){
+			valor = "'" + valor + "'";
+		}
+		String hql = "select c from Estado c where c." + campo +" = " + valor;
+		Query consulta = this.session.createQuery(hql);
+		return (List<Estado>) consulta.list();
 	}
 }

@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,8 +22,12 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 
 import br.com.inicial.dao.DAOFactory;
+import br.com.inicial.dao.EstadoDAO;
 import br.com.inicial.dao.FazendaDAO;
+import br.com.inicial.modelo.Cidade;
+import br.com.inicial.modelo.Estado;
 import br.com.inicial.modelo.Fazenda;
+import br.com.inicial.modelo.Pais;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
 import de.micromata.opengis.kml.v_2_2_0.Boundary;
@@ -48,6 +54,8 @@ public class FazendaMB {
 	private String	       destinoSalvar;
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	private MapModel polygonModel;
+	private List<Estado> estados = new ArrayList<Estado>();
+	private List<Cidade> cidades = new ArrayList<Cidade>();
 	
 	private List<Coordinate> coordinates;
 
@@ -253,15 +261,6 @@ public class FazendaMB {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Polygon Selected", null));
     }
 
-	private void parseCoordinate(Coordinate coordinate) {
-	    if(coordinate != null) {
-	        System.out.println("Longitude: " +  coordinate.getLongitude());
-	        System.out.println("Latitude : " +  coordinate.getLatitude());
-	        System.out.println("Altitude : " +  coordinate.getAltitude());
-	        System.out.println("");
-	    }
-	}
-	
 	public ArrayList<Placemark> getPlacemarks(Feature root) { 
         ArrayList<Placemark> Placemarks = new ArrayList<Placemark>(); 
 
@@ -290,12 +289,6 @@ public class FazendaMB {
         } 
         return Placemarks; 
 	}
-	
-/*	public MapModel getPolygonModel() {
-		return polygonModel;
-	}*/
-	
-//	public MapModel montarPolygonModel(List<Coordinate> coordinates) {
 	
 	public MapModel getPolygonModel() {
 		carregarKmlFile();
@@ -350,7 +343,28 @@ public class FazendaMB {
 		return polygonModel;
     }
 	
-	/**
-	 * vaivaivaivaiavai
-	 */
+	
+	/**trecho que faz os trabalhos javascript*/
+	public void cmbEstadoChange(AjaxBehaviorEvent event) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		String idPais = event.getComponent().getAttributes().get("value").toString();
+		Pais pais = DAOFactory.criarPaisDAO().buscarPorCampo("sigla", idPais);
+		this.estados = DAOFactory.criarEstadoDAO().buscarListaPorCampo("pais.id", pais.getId());
+	}
+	
+	public SelectItem[] getItemsAvailableSelectOneEstado() {
+        return JsfUtil.getSelectItems(this.estados, true);
+    }
+
+	public void cmbCidadeChange(AjaxBehaviorEvent event) {
+		String idCidade = event.getComponent().getAttributes().get("value").toString();
+		EstadoDAO estadoDao = DAOFactory.criarEstadoDAO();
+		Estado estado = estadoDao.buscarPorCampo("nome", idCidade);
+		this.cidades = DAOFactory.criarCidadeDAO().buscarListaPorCampo("estado.id", estado.getId());
+	}
+	
+	public SelectItem[] getItemsAvailableSelectOneCidade() {
+		return JsfUtil.getSelectItems(this.cidades, true);
+	}
+	
 }

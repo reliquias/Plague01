@@ -29,16 +29,19 @@
 						<p:fileUpload auto="true" widgetVar="uploader" label="Procurar..."  fileUploadListener="#{fazendaMB.handleFileUpload}" mode="advanced"
 						description="Images" multiple="false" customUI="true" id="fileUpload" ajax="true" height="115px" width="150px"/>
 						<h:outputLabel value="#{msg.fazenda_pais}" for="pais"/>
-						<h:selectOneMenu id="pais" value="#{fazendaMB.fazenda.pais}" title="Paises" converter="simpleEntityConverter">
+						<p:selectOneMenu id="pais" value="#{fazendaMB.fazenda.pais}" title="Paises" converter="simpleEntityConverter">
                             <f:selectItems value="#{paisMB.itemsAvailableSelectOne}"/>
-                        </h:selectOneMenu>
+                            <p:ajax listener="#{fazendaMB.cmbEstadoChange}" update="estado"/>
+                        </p:selectOneMenu>
+                        
                         <h:outputLabel value="#{msg.fazenda_estado}" for="estado"/>
 						<h:selectOneMenu id="estado" value="#{fazendaMB.fazenda.estado}" title="Estados" converter="simpleEntityConverter">
-                            <f:selectItems value="#{estadoMB.itemsAvailableSelectOne}"/>
+                            <f:selectItems value="#{fazendaMB.itemsAvailableSelectOneEstado}"/>
+                            <p:ajax listener="#{fazendaMB.cmbCidadeChange}" update="cidade"/>
                         </h:selectOneMenu>
                         <h:outputLabel value="#{msg.fazenda_cidade}" for="cidade"/>
 						<h:selectOneMenu id="cidade" value="#{fazendaMB.fazenda.cidade}" title="Cidades" converter="simpleEntityConverter">
-                            <f:selectItems value="#{cidadeMB.itemsAvailableSelectOne}"/>
+                            <f:selectItems value="#{fazendaMB.itemsAvailableSelectOneCidade}"/>
                         </h:selectOneMenu>
                         <p:commandButton action="#{fazendaMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
 						<p:commandButton value="Zonas" ajax="false" action="#{fazendaMB.zonasForm}" />
