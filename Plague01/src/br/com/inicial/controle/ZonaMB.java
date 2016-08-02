@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -35,13 +36,16 @@ public class ZonaMB {
 	private Fazenda fazenda;
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	
+	@ManagedProperty(value="#{fazendaMB}")
+    private FazendaMB fazendaMB;
+	
 	private MapModel polygonModel;
 
 	public ZonaMB() {
 		this.zonaDAO = DAOFactory.criarZonaDAO();
-		facesContext = FacesContext.getCurrentInstance();
-		fazenda =  (Fazenda) facesContext.getExternalContext().getSessionMap().get("fazenda");
-		zonas = buscarZonasPorFazenda(fazenda.getId());
+//		facesContext = FacesContext.getCurrentInstance();
+//		fazenda =  (Fazenda) facesContext.getExternalContext().getSessionMap().get("fazenda");
+		zonas = buscarZonasPorFazenda(fazendaMB.getFazenda().getId());
 		zonasModel = new XLazyModel(zonas);
 		if(zonasModel.getPageSize() == 0){
 			zonasModel.setPageSize(1);
@@ -74,7 +78,7 @@ public class ZonaMB {
 	}
 	
 	public String novo() {
-		facesContext.getExternalContext().getSessionMap().remove("zona");
+//		facesContext.getExternalContext().getSessionMap().remove("zona");
 		this.zona = new Zona();
 		return "zona";
 	}
@@ -93,8 +97,8 @@ public class ZonaMB {
     }
 	
 	public void adicionaOuAtualiza() {
-		fazenda =  (Fazenda) facesContext.getExternalContext().getSessionMap().get("fazenda");
-		zona.setFazenda(fazenda);
+//		fazenda =  (Fazenda) facesContext.getExternalContext().getSessionMap().get("fazenda");
+		zona.setFazenda(fazendaMB.getFazenda());
 		if (zona.getId() == 0 || zona.getId() == null) {
 			try {
 				zonaDAO.salvar(zona);
@@ -145,9 +149,9 @@ public class ZonaMB {
 	}
 
 	public Zona getZona() {
-		if(facesContext.getExternalContext().getSessionMap().get("zona") !=null){
+		/*if(facesContext.getExternalContext().getSessionMap().get("zona") !=null){
 			zona = (Zona) facesContext.getExternalContext().getSessionMap().get("zona");
-		}
+		}*/
 		return zona;
 	}
 
@@ -164,9 +168,9 @@ public class ZonaMB {
 	}
 	public XLazyModel getZonasModel() {
 		if(zonasModel == null){
-			facesContext = FacesContext.getCurrentInstance();
-			fazenda =  (Fazenda) facesContext.getExternalContext().getSessionMap().get("fazenda");
-			zonas = buscarZonasPorFazenda(fazenda.getId());
+//			facesContext = FacesContext.getCurrentInstance();
+//			fazenda =  (Fazenda) facesContext.getExternalContext().getSessionMap().get("fazenda");
+			zonas = buscarZonasPorFazenda(fazendaMB.getFazenda().getId());
         	zonasModel = new XLazyModel(zonas);
         	if(zonasModel.getPageSize() == 0){
         		zonasModel.setPageSize(1);
@@ -184,7 +188,7 @@ public class ZonaMB {
     }
 	
 	public String talhaoForm() {
-		facesContext.getExternalContext().getSessionMap().put("zona", zona);
+//		facesContext.getExternalContext().getSessionMap().put("zona", zona);
     	return "/faces/public/talhao/talhaoLista.xhtml";
     }
 	

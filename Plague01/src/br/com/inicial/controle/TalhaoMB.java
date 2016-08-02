@@ -1,7 +1,10 @@
 package br.com.inicial.controle;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -10,7 +13,7 @@ import javax.faces.event.ActionEvent;
 
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.TalhaoDAO;
-import br.com.inicial.modelo.Zona;
+import br.com.inicial.modelo.Fazenda;
 import br.com.inicial.modelo.Talhao;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
@@ -25,14 +28,16 @@ public class TalhaoMB {
 	private List<Object>	talhoes = new ArrayList<Object>();
 	private XLazyModel talhoesModel;
 	private String	       destinoSalvar;
-	private Zona zona;
+	private FazendaMB fazendaMB;
+	private Fazenda fazenda;
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 
 	public TalhaoMB() {
 		this.talhaoDAO = DAOFactory.criarTalhaoDAO();
 		facesContext = FacesContext.getCurrentInstance();
-		zona =  (Zona) facesContext.getExternalContext().getSessionMap().get("zona");
-		talhoes = buscarTalhoesPorZona(zona.getId());
+		fazendaMB =  (FazendaMB) facesContext.getExternalContext().getSessionMap().get("fazendaMB");
+		fazenda = fazendaMB.getFazenda();
+		talhoes = buscarTalhoesPorFazenda(fazenda.getId());
 		talhoesModel = new XLazyModel(talhoes);
 		if(talhoesModel.getPageSize() == 0){
 			talhoesModel.setPageSize(1);
@@ -57,25 +62,24 @@ public class TalhaoMB {
     }
 	
 	public void adicionaOuAtualiza() {
-		zona =  (Zona) facesContext.getExternalContext().getSessionMap().get("zona");
-		talhao.setZona(zona);
-		if (talhao.getId() == 0 || talhao.getId() == null) {
-			try {
+		try {
+//			InputStream f = this.getClass().getResourceAsStream("C:\\Fontes Java\\Plague01Docs\\talhoes.properties");
+			Properties prop = new Properties();
+			prop.load(new FileInputStream("C:\\Fontes Java\\Plague01Docs\\talhoes.properties"));
+			talhao.setArea(prop.getProperty(talhao.getNome()));
+			talhao.setFazenda(fazenda);
+			if (talhao.getId() == 0 || talhao.getId() == null) {
 				talhaoDAO.salvar(talhao);
 				talhao = new Talhao();
 				JsfUtil.addSuccessMessage("Talhao salvo com Sucesso");
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-
-		} else {
-			try {
+			} else {
 				talhaoDAO.atualizar(talhao);
 				JsfUtil.addSuccessMessage("Talhao salvo com Sucesso");
-			} catch (Exception e) {
 			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-//		return "talhaoLista";
+		// return "talhaoLista";
 	}
 	
 	public String salvar() {
@@ -125,9 +129,9 @@ public class TalhaoMB {
 	}
 	public XLazyModel getTalhoesModel() {
 		if(talhoesModel == null){
-			facesContext = FacesContext.getCurrentInstance();
-			zona =  (Zona) facesContext.getExternalContext().getSessionMap().get("zona");
-			talhoes = buscarTalhoesPorZona(zona.getId());
+			/*facesContext = FacesContext.getCurrentInstance();
+			fazenda =  (Fazenda) facesContext.getExternalContext().getSessionMap().get("fazenda");*/
+			talhoes = buscarTalhoesPorFazenda(fazenda.getId());
         	talhoesModel = new XLazyModel(talhoes);
         	if(talhoesModel.getPageSize() == 0){
         		talhoesModel.setPageSize(1);
@@ -140,11 +144,27 @@ public class TalhaoMB {
 		this.talhoesModel = talhoesModel;
 	}
 	
-	public List buscarTalhoesPorZona(Integer idZona) {
-    	return talhaoDAO.buscarListaPorCampo("zona.id", idZona);
+	public List buscarTalhoesPorFazenda(Integer idFazenda) {
+    	return talhaoDAO.buscarListaPorCampo("fazenda.id", idFazenda);
     }
 	
-	public String voltarZona() {
-		return "/faces/public/zona/zona";
+	public String voltarFazenda() {
+		return "/faces/public/fazenda/fazenda";
+	}
+
+	public FazendaMB getFazendaMB() {
+		return fazendaMB;
+	}
+
+	public void setFazendaMB(FazendaMB fazendaMB) {
+		this.fazendaMB = fazendaMB;
+	}
+
+	public Fazenda getFazenda() {
+		return fazenda;
+	}
+
+	public void setFazenda(Fazenda fazenda) {
+		this.fazenda = fazenda;
 	}
 }

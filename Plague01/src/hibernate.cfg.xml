@@ -35,7 +35,7 @@
 	    <mapping class="br.com.inicial.modelo.Pais"/>
 	   	<mapping class="br.com.inicial.modelo.Estado"/>
 	   	<mapping class="br.com.inicial.modelo.Cidade"/>
-	    <mapping class="br.com.inicial.modelo.Zona"/>
+<!-- 	    <mapping class="br.com.inicial.modelo.Zona"/> -->
 	    <mapping class="br.com.inicial.modelo.Talhao"/>
 	    <mapping class="br.com.inicial.modelo.TipoDoenca"/>
 	    </session-factory>

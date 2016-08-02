@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -28,8 +29,16 @@ import br.com.inicial.modelo.Cidade;
 import br.com.inicial.modelo.Estado;
 import br.com.inicial.modelo.Fazenda;
 import br.com.inicial.modelo.Pais;
+import br.com.inicial.modelo.Talhao;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
+import com.firebase.client.ValueEventListener;
+
 import de.micromata.opengis.kml.v_2_2_0.Boundary;
 import de.micromata.opengis.kml.v_2_2_0.Container;
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
@@ -41,6 +50,7 @@ import de.micromata.opengis.kml.v_2_2_0.Kml;
 import de.micromata.opengis.kml.v_2_2_0.LinearRing;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Polygon;
+
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 @ManagedBean(name="fazendaMB")
@@ -72,10 +82,14 @@ public class FazendaMB {
 	public String novo() {
 //		facesContext.getExternalContext().getSessionMap().remove("fazenda");
 		this.fazenda = new Fazenda();
+		this.estados = new ArrayList<Estado>();
+		this.cidades = new ArrayList<Cidade>();
 		return "fazenda";
 	}
 
 	public String editar() {
+		this.estados = new ArrayList<Estado>();
+		this.cidades = new ArrayList<Cidade>();
 		return "fazenda";
 	}
 
@@ -93,6 +107,8 @@ public class FazendaMB {
 			try {
 				fazendaDAO.salvar(fazenda);
 				JsfUtil.addSuccessMessage("Fazenda salvo com Sucesso");
+				fazendaFirebase(fazenda);
+				ouvinteFirebase();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -101,6 +117,7 @@ public class FazendaMB {
 			try {
 				fazendaDAO.atualizar(fazenda);
 				JsfUtil.addSuccessMessage("Fazenda salvo com Sucesso");
+				fazendaFirebase(fazenda);
 			} catch (Exception e) {
 			}
 		}
@@ -171,9 +188,9 @@ public class FazendaMB {
 		this.fazendasModel = fazendasModel;
 	}
 	
-	public String zonasForm() {
+	public String talhoesForm() {
 //		facesContext.getExternalContext().getSessionMap().put("fazenda", fazenda);
-		return "/faces/public/zona/zonaLista.xhtml";
+		return "/faces/public/talhao/talhaoLista";
     }
 	
 	public void handleFileUpload(FileUploadEvent event) {
@@ -184,13 +201,19 @@ public class FazendaMB {
 			fazenda.setKmlFile(kmlFile);
 			fazenda.setNomeArquivo(event.getFile().getFileName());
 			//            File f = new File("C:\\Fontes Java\\Plague01Docs\\Fazenda Doricardo II.kml");
-			Kml kml = getKml(event.getFile().getInputstream());
+			Kml kml = kmlFile(event.getFile().getInputstream());
 			Feature feature = kml.getFeature();
 		    parseFeature(feature);
+		    String coordenadas = "";
+		    int x = 0;
 		    for (Coordinate c : coordinates) {
-				fazenda.setArea(c.getLatitude() + " " + c.getLongitude());
-				break;
-			}
+		    	coordenadas = coordenadas + c.getLatitude() + " " + c.getLongitude() + ";";
+		    	if(x == 0){
+		    		fazenda.setAreaInicial(c.getLatitude() + " " + c.getLongitude());
+		    		x++;
+		    	}
+		    }
+		    fazenda.setArea(coordenadas);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,7 +232,7 @@ public class FazendaMB {
 		}
 	}
 	
-	public static Kml getKml(InputStream is) throws Exception {
+	public static Kml kmlFile(InputStream is) throws Exception {
 	    String str = IOUtils.toString( is );
 	    IOUtils.closeQuietly( is );
 	    str = StringUtils.replace( str, "xmlns=\"http://earth.google.com/kml/2.2\"", "xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\"" );
@@ -291,17 +314,56 @@ public class FazendaMB {
 	}
 	
 	public MapModel getPolygonModel() {
+		if(fazenda.getArea()!=null && !fazenda.getArea().equalsIgnoreCase("")){
+			polygonModel = new DefaultMapModel();
+			org.primefaces.model.map.Polygon polygon = new org.primefaces.model.map.Polygon();
+			String[] areas = fazenda.getArea().split(";");
+			for (String longLat : areas) {
+				double lat = Double.parseDouble(longLat.split(" ")[0]);
+				double lon = Double.parseDouble(longLat.split(" ")[1]);
+				LatLng coord = new LatLng(lat,lon);
+				polygon.getPaths().add(coord);
+			}
+			  
+	        polygon.setStrokeColor("#00EE76");
+	        polygon.setFillColor("#00EE76");
+	        polygon.setStrokeOpacity(0.7);
+	        polygon.setFillOpacity(0.7);
+	        polygonModel.addOverlay(polygon);
+	        
+	        List<Talhao> talhoes = DAOFactory.criarTalhaoDAO().buscarListaPorCampo("fazenda.id", fazenda.getId());
+	        
+	        for (Talhao talhao: talhoes) {
+	        	org.primefaces.model.map.Polygon talhaoPolygon = new org.primefaces.model.map.Polygon();
+	        	String[] areasTalhao = talhao.getArea().split(";");
+	        	for (String longLat : areasTalhao) {
+	        		double lat = Double.parseDouble(longLat.split(" ")[0]);
+					double lon = Double.parseDouble(longLat.split(" ")[1]);
+					LatLng coord = new LatLng(lat,lon);
+					talhaoPolygon.getPaths().add(coord);
+				}
+	        	talhaoPolygon.setStrokeColor("#2E8B57");
+	        	talhaoPolygon.setFillColor("#2E8B57");
+	        	talhaoPolygon.setStrokeOpacity(0.7);
+	        	talhaoPolygon.setFillOpacity(0.7);
+		        polygonModel.addOverlay(talhaoPolygon);
+			}
+		}
+		return polygonModel;
+    }
+	
+	/*public MapModel getPolygonModelDoFile() {
 		carregarKmlFile();
 		if(coordinates!=null){
 			polygonModel = new DefaultMapModel();
 			org.primefaces.model.map.Polygon polygon = new org.primefaces.model.map.Polygon();
 			int x = 0;
 			for (Coordinate coordinate : coordinates) {
-				/*if(x==0){
+				if(x==0){
 					x++;
 					fazenda.setArea(coordinate.getLatitude() + " " + coordinate.getLongitude());
 					System.out.println(fazenda.getArea());
-				}*/
+				}
 				LatLng coord = new LatLng(coordinate.getLatitude(),coordinate.getLongitude());
 				polygon.getPaths().add(coord);
 			}
@@ -341,7 +403,7 @@ public class FazendaMB {
 		          
 		        polygonModel.addOverlay(polygon);
 		return polygonModel;
-    }
+    }*/
 	
 	
 	/**trecho que faz os trabalhos javascript*/
@@ -353,6 +415,9 @@ public class FazendaMB {
 	}
 	
 	public SelectItem[] getItemsAvailableSelectOneEstado() {
+		if(this.estados.size() == 0 && fazenda.getPais()!=null){
+			this.estados = DAOFactory.criarEstadoDAO().buscarListaPorCampo("pais.id", fazenda.getPais().getId());
+		}
         return JsfUtil.getSelectItems(this.estados, true);
     }
 
@@ -364,7 +429,70 @@ public class FazendaMB {
 	}
 	
 	public SelectItem[] getItemsAvailableSelectOneCidade() {
+		if(this.cidades.size() == 0 && fazenda.getEstado()!=null){
+			this.cidades = DAOFactory.criarCidadeDAO().buscarListaPorCampo("estado.id", fazenda.getEstado().getId());
+		}
 		return JsfUtil.getSelectItems(this.cidades, true);
+	}
+	
+	private void ouvinteFirebase(){
+		
+		final Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/fazenda/");
+		final String[] areaFazenda = {null};
+		final String[] areaInicialFazenda = {null};
+		firebase.addValueEventListener(new ValueEventListener() {
+		            @Override
+		            public void onDataChange(DataSnapshot snapshot) {
+		                //firebase.child("fazenda").push().setValue("novo");
+
+		                for (DataSnapshot fazendaSnapshot: snapshot.getChildren()) {
+		                    //Log.d("resultado","Cú");
+		                    if (fazendaSnapshot.child("nome").getValue()!=null) {
+		                        String nomeFazenda = fazendaSnapshot.child("nome").getValue().toString();//.getValue(RetrieveFirebaseFazenda.class);
+		                        if (nomeFazenda.equals("DoRicardo")) {
+		                            //Log.d("resultado", "Cuzão");
+		                            //Toast.makeText(this, "Cuzões",Toast.LENGTH_LONG );
+		                            areaFazenda[0] = fazendaSnapshot.child("area").getValue().toString();//.getValue(RetrieveFirebaseFazenda.class);
+		                            areaInicialFazenda[0] = fazendaSnapshot.child("areaInicial").getValue().toString();//.getValue(RetrieveFirebaseFazenda.class);
+		                            //Log.d("DENTRO: resultado Area", areaInicialFazenda[0]);
+		                            //teste[0] = areaInicialFazenda[0];
+		                            //areaFazenda[0] = fazendaSnapshot.child("area").getValue().toString();//.getValue(RetrieveFirebaseFazenda.class);
+		                        }
+		                    }
+		                }
+		}
+		            @Override
+		            public void onCancelled(FirebaseError firebaseError) {
+		                System.out.println("A leitura falhou: " + firebaseError.getMessage());
+		            }
+		        });
+	}
+	
+	private void fazendaFirebase(Fazenda fazenda){
+		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/fazenda/");
+		Firebase firebaseRef = firebase.push();
+		
+		firebaseRef.child("id").setValue(fazenda.getId());
+		firebaseRef.child("nome").setValue(fazenda.getNome());
+		firebaseRef.child("areaInicial").setValue(fazenda.getAreaInicial());
+		firebaseRef.child("area").setValue(fazenda.getArea());
+		firebaseRef.child("paisId").setValue(fazenda.getPais().getId());
+		firebaseRef.child("paisDescricao").setValue(fazenda.getPais().getDescricao());
+		firebaseRef.child("estadoId").setValue(fazenda.getEstado().getId());
+		firebaseRef.child("estadoNome").setValue(fazenda.getEstado().getSigla());
+		firebaseRef.child("cidadeId").setValue(fazenda.getCidade().getId());
+		firebaseRef.child("cidadeNome").setValue(fazenda.getCidade().getNome());
+	}
+	
+	public void onDataChange(DataSnapshot snapshot) {
+	    GenericTypeIndicator<Map<String,String>> mapType = new GenericTypeIndicator<Map<String, String>>() { };
+	    Map<String,String>  namelist =  snapshot.child("Driver name").getValue(mapType);
+	    Map<String,String> carlist =  snapshot.child("Drivers car").getValue(mapType);
+	    if (namelist!=null & carlist!=null) {
+	        for (String name: namelist.values()) {
+	            System.out.println(name);
+	        }
+	    }
 	}
 	
 }

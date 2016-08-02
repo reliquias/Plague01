@@ -21,9 +21,9 @@
 							required="true" requiredMessage="Sem nome!!">
 							<f:validateLength minimum="2" maximum="50" />
 						</h:inputText>
-						<h:outputLabel value="#{msg.fazenda_area}" for="area" />
-						<h:inputText id="area" label="Area"
-							value="#{fazendaMB.fazenda.area}" size="40" maxlength="40" readonly="true">
+						<h:outputLabel value="#{msg.fazenda_area}" for="areaInicial" />
+						<h:inputText id="areaInicial" label="Area"
+							value="#{fazendaMB.fazenda.areaInicial}" size="40" maxlength="40" readonly="true">
 						</h:inputText>
 						<p:spacer/>
 						<p:fileUpload auto="true" widgetVar="uploader" label="Procurar..."  fileUploadListener="#{fazendaMB.handleFileUpload}" mode="advanced"
@@ -44,7 +44,7 @@
                             <f:selectItems value="#{fazendaMB.itemsAvailableSelectOneCidade}"/>
                         </h:selectOneMenu>
                         <p:commandButton action="#{fazendaMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
-						<p:commandButton value="Zonas" ajax="false" action="#{fazendaMB.zonasForm}" />
+						<p:commandButton value="Talhaos" ajax="false" action="#{fazendaMB.talhoesForm}" />
 					</h:panelGrid>
 					<p:growl id="growl" life="3000" />
  					  <p:gmap id="w_gmap" widgetVar="w_gmap" center="-23.563556, -46.633307" zoom="14" type="ROADMAP" style="width:600px;height:400px" model="#{fazendaMB.polygonModel}">
@@ -76,7 +76,7 @@
 						}
 					}
 					function setMapCenter(latitude, longitude) {
-						var str = document.getElementById("cadastro:area").value;
+						var str = document.getElementById("cadastro:areaInicial").value;
 						console.log(str);
 						if (str > '') {
 							var la = str.split(" ")[0];

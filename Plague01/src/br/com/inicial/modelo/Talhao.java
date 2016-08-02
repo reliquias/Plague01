@@ -2,10 +2,14 @@ package br.com.inicial.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import br.com.inicial.interfaces.BaseEntity;
@@ -18,9 +22,14 @@ public class Talhao implements BaseEntity, Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private String talhao;
+	@Lob @Basic(fetch=FetchType.LAZY)
+	@Column(name="area")
+	private String area;
+	
+/*	@ManyToOne
+	private Zona zona;*/
 	@ManyToOne
-	private Zona zona;
+	private Fazenda fazenda;
 	
     @Override
     public Integer getIdi() {
@@ -43,20 +52,12 @@ public class Talhao implements BaseEntity, Serializable {
 		this.nome = nome;
 	}
 
-	public String getTalhao() {
-		return talhao;
+	public Fazenda getFazenda() {
+		return fazenda;
 	}
 
-	public void setTalhao(String talhao) {
-		this.talhao = talhao;
-	}
-
-	public Zona getZona() {
-		return zona;
-	}
-
-	public void setZona(Zona zona) {
-		this.zona = zona;
+	public void setFazenda(Fazenda fazenda) {
+		this.fazenda = fazenda;
 	}
 
 	@Override
@@ -88,5 +89,13 @@ public class Talhao implements BaseEntity, Serializable {
 		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 }

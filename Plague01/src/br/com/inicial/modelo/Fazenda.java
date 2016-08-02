@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,12 @@ public class Fazenda implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	
+	@Column(name="area_inicial")
+	private String areaInicial;
+	
+	@Lob @Basic(fetch=FetchType.LAZY)
+	@Column(name="area")
 	private String area;
 		
 	private String nomeArquivo;
@@ -38,8 +45,11 @@ public class Fazenda implements Serializable {
 	@ManyToOne
 	private Cidade cidade;
 	
+	/*@OneToMany(cascade=CascadeType.REMOVE, mappedBy="fazenda", fetch=FetchType.LAZY)
+	private List<Zona> zonas = new ArrayList<Zona>();*/
+	
 	@OneToMany(cascade=CascadeType.REMOVE, mappedBy="fazenda", fetch=FetchType.LAZY)
-	private List<Zona> zonas = new ArrayList<Zona>();
+	private List<Talhao> talhoes = new ArrayList<Talhao>();
 
 	public Integer getId() {
 		return id;
@@ -112,14 +122,6 @@ public class Fazenda implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public List<Zona> getZonas() {
-		return zonas;
-	}
-
-	public void setZonas(List<Zona> zonas) {
-		this.zonas = zonas;
-	}
-
 	public byte[] getKmlFile() {
 		return kmlFile;
 	}
@@ -142,5 +144,21 @@ public class Fazenda implements Serializable {
 
 	public void setArea(String area) {
 		this.area = area;
+	}
+
+	public String getAreaInicial() {
+		return areaInicial;
+	}
+
+	public void setAreaInicial(String areaInicial) {
+		this.areaInicial = areaInicial;
+	}
+
+	public List<Talhao> getTalhoes() {
+		return talhoes;
+	}
+
+	public void setTalhoes(List<Talhao> talhoes) {
+		this.talhoes = talhoes;
 	}
 }
