@@ -11,6 +11,11 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.TalhaoDAO;
 import br.com.inicial.modelo.Fazenda;
@@ -33,6 +38,7 @@ public class TalhaoMB {
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 
 	public TalhaoMB() {
+		ouvinteFirebase();
 		this.talhaoDAO = DAOFactory.criarTalhaoDAO();
 		facesContext = FacesContext.getCurrentInstance();
 		fazendaMB =  (FazendaMB) facesContext.getExternalContext().getSessionMap().get("fazendaMB");
@@ -70,8 +76,8 @@ public class TalhaoMB {
 			talhao.setFazenda(fazenda);
 			if (talhao.getId() == 0 || talhao.getId() == null) {
 				talhaoDAO.salvar(talhao);
-				talhao = new Talhao();
 				JsfUtil.addSuccessMessage("Talhao salvo com Sucesso");
+				talhaoFirebase(talhao);
 			} else {
 				talhaoDAO.atualizar(talhao);
 				JsfUtil.addSuccessMessage("Talhao salvo com Sucesso");
@@ -166,5 +172,54 @@ public class TalhaoMB {
 
 	public void setFazenda(Fazenda fazenda) {
 		this.fazenda = fazenda;
+	}
+	
+	private void talhaoFirebase(Talhao tahao){
+		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/talhao");
+		Firebase firebaseRef = firebase.push();
+		
+		firebaseRef.child("id").setValue(tahao.getId());
+		firebaseRef.child("nome").setValue(tahao.getNome());
+		firebaseRef.child("area").setValue(tahao.getArea());
+		firebaseRef.child("fazendaId").setValue(tahao.getFazenda().getId());
+		firebaseRef.child("fazendaDescricao").setValue(tahao.getFazenda().getNome());
+	}
+	
+	private void ouvinteFirebase(){
+		
+		final Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/fazenda/");
+		final String[] areaFazenda = {null};
+		final String[] areaInicialFazenda = {null};
+		areaInicialFazenda.toString().equals("");
+		firebase.addValueEventListener(new ValueEventListener() {
+
+		            @Override
+		            public void onDataChange(DataSnapshot ds) {
+		                
+		                for (DataSnapshot fazendaSnapshot: ds.getChildren()) {
+		                    if (fazendaSnapshot.child("nome").getValue()!=null) {
+		                        String nomeFazenda = fazendaSnapshot.child("nome").getValue().toString();
+		                        if (nomeFazenda.equals("DoRicardo")) {
+		                            areaFazenda[0] = fazendaSnapshot.child("area").getValue().toString();
+		                            areaInicialFazenda[0] = fazendaSnapshot.child("areaInicial").getValue().toString();
+		                        }
+		                    }
+		                }
+//		                System.out.println("Area Inicial = " + areaInicialFazenda[0]);
+		                
+		            }
+
+		            @Override
+		            public void onCancelled(FirebaseError fe) {
+		                
+		            }
+		        });
+		
+		while(areaInicialFazenda[0] == null){
+			System.out.println("Dentro do while");
+		}
+		String areaInicial = areaInicialFazenda[0];
+		System.out.println("Wanderson: "+areaInicial);
+		
 	}
 }

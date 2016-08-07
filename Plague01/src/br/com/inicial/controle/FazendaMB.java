@@ -70,6 +70,7 @@ public class FazendaMB {
 	private List<Coordinate> coordinates;
 
 	public FazendaMB() {
+		ouvinteFirebase();
 		this.fazendaDAO = DAOFactory.criarFazendaDAO();
 		fazendas = getLista();
 		fazendasModel = new XLazyModel(fazendas);
@@ -80,7 +81,7 @@ public class FazendaMB {
 	}
 	
 	public String novo() {
-//		facesContext.getExternalContext().getSessionMap().remove("fazenda");
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("fazendaMB");
 		this.fazenda = new Fazenda();
 		this.estados = new ArrayList<Estado>();
 		this.cidades = new ArrayList<Cidade>();
@@ -97,7 +98,7 @@ public class FazendaMB {
 	}
 	
 	public String listar() {
-//		facesContext.getExternalContext().getSessionMap().remove("fazenda");
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("fazendaMB");
 		fazendasModel = null;
     	return "fazendaLista";
     }
@@ -415,7 +416,7 @@ public class FazendaMB {
 	}
 	
 	public SelectItem[] getItemsAvailableSelectOneEstado() {
-		if(this.estados.size() == 0 && fazenda.getPais()!=null){
+		if(this.estados.size() == 0 && fazenda!=null && fazenda.getPais()!=null){
 			this.estados = DAOFactory.criarEstadoDAO().buscarListaPorCampo("pais.id", fazenda.getPais().getId());
 		}
         return JsfUtil.getSelectItems(this.estados, true);
@@ -429,7 +430,7 @@ public class FazendaMB {
 	}
 	
 	public SelectItem[] getItemsAvailableSelectOneCidade() {
-		if(this.cidades.size() == 0 && fazenda.getEstado()!=null){
+		if(this.cidades.size() == 0 && fazenda!=null && fazenda.getEstado()!=null){
 			this.cidades = DAOFactory.criarCidadeDAO().buscarListaPorCampo("estado.id", fazenda.getEstado().getId());
 		}
 		return JsfUtil.getSelectItems(this.cidades, true);
@@ -440,32 +441,35 @@ public class FazendaMB {
 		final Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/fazenda/");
 		final String[] areaFazenda = {null};
 		final String[] areaInicialFazenda = {null};
+		areaInicialFazenda.toString().equals("");
 		firebase.addValueEventListener(new ValueEventListener() {
-		            @Override
-		            public void onDataChange(DataSnapshot snapshot) {
-		                //firebase.child("fazenda").push().setValue("novo");
 
-		                for (DataSnapshot fazendaSnapshot: snapshot.getChildren()) {
-		                    //Log.d("resultado","Cú");
+		            @Override
+		            public void onDataChange(DataSnapshot ds) {
+		                
+		                for (DataSnapshot fazendaSnapshot: ds.getChildren()) {
 		                    if (fazendaSnapshot.child("nome").getValue()!=null) {
-		                        String nomeFazenda = fazendaSnapshot.child("nome").getValue().toString();//.getValue(RetrieveFirebaseFazenda.class);
+		                        String nomeFazenda = fazendaSnapshot.child("nome").getValue().toString();
 		                        if (nomeFazenda.equals("DoRicardo")) {
-		                            //Log.d("resultado", "Cuzão");
-		                            //Toast.makeText(this, "Cuzões",Toast.LENGTH_LONG );
-		                            areaFazenda[0] = fazendaSnapshot.child("area").getValue().toString();//.getValue(RetrieveFirebaseFazenda.class);
-		                            areaInicialFazenda[0] = fazendaSnapshot.child("areaInicial").getValue().toString();//.getValue(RetrieveFirebaseFazenda.class);
-		                            //Log.d("DENTRO: resultado Area", areaInicialFazenda[0]);
-		                            //teste[0] = areaInicialFazenda[0];
-		                            //areaFazenda[0] = fazendaSnapshot.child("area").getValue().toString();//.getValue(RetrieveFirebaseFazenda.class);
+		                            areaFazenda[0] = fazendaSnapshot.child("area").getValue().toString();
+		                            areaInicialFazenda[0] = fazendaSnapshot.child("areaInicial").getValue().toString();
 		                        }
 		                    }
 		                }
-		}
+//		                System.out.println("Area Inicial = " + areaInicialFazenda[0]);
+		                
+		            }
+
 		            @Override
-		            public void onCancelled(FirebaseError firebaseError) {
-		                System.out.println("A leitura falhou: " + firebaseError.getMessage());
+		            public void onCancelled(FirebaseError fe) {
+		                
 		            }
 		        });
+		
+		while(areaInicialFazenda[0] == null){
+			System.out.println("Dentro do while");
+		}
+		System.out.println("Wanderson: "+areaInicialFazenda[0]);
 	}
 	
 	private void fazendaFirebase(Fazenda fazenda){

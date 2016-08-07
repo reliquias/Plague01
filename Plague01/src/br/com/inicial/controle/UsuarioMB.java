@@ -8,8 +8,11 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import com.firebase.client.Firebase;
+
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.UsuarioDAO;
+import br.com.inicial.modelo.TipoDoenca;
 import br.com.inicial.modelo.Usuario;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
@@ -59,6 +62,7 @@ public class UsuarioMB {
 		if (usuario.getId() == 0 || usuario.getId() == null) {
 			try {
 				usuarioDAO.salvar(usuario);
+				usuarioFirebase(usuario);
 				usuario = new Usuario();
 				JsfUtil.addSuccessMessage("Usuario salvo com Sucesso");
 			} catch (Exception e) {
@@ -166,5 +170,13 @@ public class UsuarioMB {
 
 	public void setUsuariosModel(XLazyModel usuariosModel) {
 		this.usuariosModel = usuariosModel;
+	}
+	
+	private void usuarioFirebase(Usuario usuario){
+		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/usuario/");
+		Firebase firebaseRef = firebase.push();
+		
+		firebaseRef.child("id").setValue(usuario.getId());
+		firebaseRef.child("descricao").setValue(usuario.getNome());
 	}
 }

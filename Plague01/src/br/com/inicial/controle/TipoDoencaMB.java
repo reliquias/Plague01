@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
@@ -14,6 +13,8 @@ import br.com.inicial.dao.TipoDoencaDAO;
 import br.com.inicial.modelo.TipoDoenca;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
+
+import com.firebase.client.Firebase;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 @ManagedBean(name="tipoDoencaMB")
@@ -57,7 +58,7 @@ public class TipoDoencaMB {
 		if (tipoDoenca.getId() == 0 || tipoDoenca.getId() == null) {
 			try {
 				tipoDoencaDAO.salvar(tipoDoenca);
-				tipoDoenca = new TipoDoenca();
+				tipoDoencaFirebase(tipoDoenca);
 				JsfUtil.addSuccessMessage("TipoDoenca salvo com Sucesso");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -135,4 +136,13 @@ public class TipoDoencaMB {
 	public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(tipoDoencaDAO.listar(), true);
     }
+	
+	private void tipoDoencaFirebase(TipoDoenca tipoDoenca){
+		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/tipoDoenca/");
+		Firebase firebaseRef = firebase.push();
+		
+		firebaseRef.child("id").setValue(tipoDoenca.getId());
+		firebaseRef.child("descricao").setValue(tipoDoenca.getDescricao());
+		firebaseRef.child("doenca").setValue(tipoDoenca.getDoenca());
+	}
 }
