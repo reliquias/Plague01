@@ -63,6 +63,12 @@ public class DAOFactory {
 		return tipoDoencaDAO;
 	}
 
+	public static PlantaDAO criarPlantaDAO() {
+		PlantaDAO plantaDAO = new PlantaDAO();
+		plantaDAO.setSession(HibernateUtil.getSessionFactory().getCurrentSession());
+		return plantaDAO;
+	}
+
 
 	public Session getSession() {
 		return session;

@@ -26,7 +26,7 @@
 							value="#{fazendaMB.fazenda.areaInicial}" size="40" maxlength="40" readonly="true">
 						</h:inputText>
 						<p:spacer/>
-						<p:fileUpload auto="true" widgetVar="uploader" label="Procurar..."  fileUploadListener="#{fazendaMB.handleFileUpload}" mode="advanced"
+						<p:fileUpload auto="true" widgetVar="uploader" label="Kml..."  fileUploadListener="#{fazendaMB.handleFileUpload}" mode="advanced"
 						description="Images" multiple="false" customUI="true" id="fileUpload" ajax="true" height="115px" width="150px"/>
 						<h:outputLabel value="#{msg.fazenda_pais}" for="pais"/>
 						<p:selectOneMenu id="pais" value="#{fazendaMB.fazenda.pais}" title="Paises" converter="simpleEntityConverter">

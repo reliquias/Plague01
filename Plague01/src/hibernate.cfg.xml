@@ -38,6 +38,7 @@
 <!-- 	    <mapping class="br.com.inicial.modelo.Zona"/> -->
 	    <mapping class="br.com.inicial.modelo.Talhao"/>
 	    <mapping class="br.com.inicial.modelo.TipoDoenca"/>
+	    <mapping class="br.com.inicial.modelo.Planta"/>
 	    </session-factory>
 </hibernate-configuration>
 

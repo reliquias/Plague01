@@ -1,0 +1,35 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="centro">
+		<p:layoutUnit position="center">
+			<h:form id="cadastro" acceptcharset="ISO-8859-1">
+				<p:growl id="msg" />
+				<p:panel header="#{msg.planta_labelCad}">
+					<h:panelGrid id="infoPlanta" columns="2" style="margin-bottom: 10px">
+					<p:commandLink action="#{plantaMB.listar}" value="Voltar" ajax="false" immediate="true"/>
+					<p:spacer/><p:spacer/>
+						<h:inputHidden value="#{plantaMB.planta.id}" />
+						<h:outputLabel value="#{msg.planta_nome}" for="nome" />
+						<h:inputText id="nome" label="Nome"
+							value="#{plantaMB.planta.nome}" size="15" maxlength="15"
+							required="true" requiredMessage="Campo doenca obrigatorio!!">
+							<f:validateLength minimum="2" maximum="15" />
+						</h:inputText>
+						<h:outputLabel value="#{msg.planta_descricao}" for="descricao" />
+						<h:inputText id="descricao" label="Descricao"
+							value="#{plantaMB.planta.descricao}" size="100" maxlength="100">
+						</h:inputText>
+						<p:commandButton action="#{plantaMB.adicionaOuAtualiza}" ajax="false"
+							value="Salvar" update="cadastro"/>
+					</h:panelGrid>
+					<p:messages id="msgs"/>
+				</p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

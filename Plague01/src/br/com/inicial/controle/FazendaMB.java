@@ -207,12 +207,13 @@ public class FazendaMB {
 		    parseFeature(feature);
 		    String coordenadas = "";
 		    int x = 0;
+		    int y = coordinates.size()/2;
 		    for (Coordinate c : coordinates) {
 		    	coordenadas = coordenadas + c.getLatitude() + " " + c.getLongitude() + ";";
-		    	if(x == 0){
+		    	if(x == y){
 		    		fazenda.setAreaInicial(c.getLatitude() + " " + c.getLongitude());
-		    		x++;
 		    	}
+		    	x++;
 		    }
 		    fazenda.setArea(coordenadas);
 		} catch (Exception e) {
@@ -379,34 +380,6 @@ public class FazendaMB {
 		return polygonModel;
     }
 	
-	public MapModel getPolygonModel2() {
-        polygonModel = new DefaultMapModel();
-		
-        		double lat = Double.parseDouble("-23.563556");
-				double lon = Double.parseDouble("-46.633307");
-				
-				LatLng coord3 = new LatLng(lat+0.000784, lon+0.000378);
-		        LatLng coord2 = new LatLng(lat, lon);
-		        LatLng coord1 = new LatLng(lat+0.000735, lon+0.001242);
-		        
-		        System.out.println((lat+0.000784) + " * " + (lon+0.000378));
-		        System.out.println((lat+0.000735) + " * " + (lon+0.001242));
-
-		        org.primefaces.model.map.Polygon polygon = new org.primefaces.model.map.Polygon();
-		        polygon.getPaths().add(coord1);
-		        polygon.getPaths().add(coord2);
-		        polygon.getPaths().add(coord3);
-		  
-		        polygon.setStrokeColor("#FF9900");
-		        polygon.setFillColor("#FF9900");
-		        polygon.setStrokeOpacity(0.7);
-		        polygon.setFillOpacity(0.7);
-		          
-		        polygonModel.addOverlay(polygon);
-		return polygonModel;
-    }*/
-	
-	
 	/**trecho que faz os trabalhos javascript*/
 	public void cmbEstadoChange(AjaxBehaviorEvent event) {
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -437,7 +410,7 @@ public class FazendaMB {
 	}
 	
 	private void ouvinteFirebase(){
-		
+		final Fazenda fazendaFire = new Fazenda();
 		final Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/fazenda/");
 		final String[] areaFazenda = {null};
 		final String[] areaInicialFazenda = {null};
@@ -453,6 +426,10 @@ public class FazendaMB {
 		                        if (nomeFazenda.equals("DoRicardo")) {
 		                            areaFazenda[0] = fazendaSnapshot.child("area").getValue().toString();
 		                            areaInicialFazenda[0] = fazendaSnapshot.child("areaInicial").getValue().toString();
+		                            fazendaFire.setArea(fazendaSnapshot.child("area").getValue().toString());
+		                            fazendaFire.setAreaInicial(fazendaSnapshot.child("areaInicial").getValue().toString());
+		                            fazendaFire.setNome(fazendaSnapshot.child("nome").getValue().toString());
+		                            Pais pais = DAOFactory.criarPaisDAO().carregar(Integer.parseInt(fazendaSnapshot.child("paisId").getValue().toString()));
 		                        }
 		                    }
 		                }
@@ -465,11 +442,14 @@ public class FazendaMB {
 		                
 		            }
 		        });
-		
+		int cont =1;
 		while(areaInicialFazenda[0] == null){
-			System.out.println("Dentro do while");
+			System.out.println("Dentro do while: " + cont);
+			cont++;
 		}
-		System.out.println("Wanderson: "+areaInicialFazenda[0]);
+		String areaInicial = areaInicialFazenda[0];
+		System.out.println("Wanderson: "+ fazendaFire.getArea());
+		
 	}
 	
 	private void fazendaFirebase(Fazenda fazenda){
