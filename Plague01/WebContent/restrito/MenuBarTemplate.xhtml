@@ -16,15 +16,15 @@
 	 <p:separator></p:separator> -->
 	    <sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
 			<p:menuButton value="Sistema">
-				<p:menuitem value="Usuário" url="/faces/admin/usuario/usuarioLista.xhtml" />
+				<p:menuitem value="Usuário" url="/faces/restrito/admin/usuario/usuarioLista.xhtml" />
 			</p:menuButton>
 			<p:menuButton value="Cadastro">
-				<p:menuitem value="Pais" url="/faces/public/pais/paisLista.xhtml" />
-				<p:menuitem value="Estado" url="/faces/public/estado/estadoLista.xhtml" />
-				<p:menuitem value="Cidade" url="/faces/public/cidade/cidadeLista.xhtml" />
-				<p:menuitem value="Fazendas" url="/faces/public/fazenda/fazendaLista.xhtml" />
-				<p:menuitem value="Doencas" url="/faces/public/tipoDoenca/tipoDoencaLista.xhtml" />
-				<p:menuitem value="Planta" url="/faces/public/planta/plantaLista.xhtml" />
+				<p:menuitem value="Pais" url="/faces/restrito/public/pais/paisLista.xhtml" />
+				<p:menuitem value="Estado" url="/faces/restrito/public/estado/estadoLista.xhtml" />
+				<p:menuitem value="Cidade" url="/faces/restrito/public/cidade/cidadeLista.xhtml" />
+				<p:menuitem value="Fazendas" url="/faces/restrito/public/fazenda/fazendaLista.xhtml" />
+				<p:menuitem value="Doencas" url="/faces/restrito/public/tipoDoenca/tipoDoencaLista.xhtml" />
+				<p:menuitem value="Planta" url="/faces/restrito/public/planta/plantaLista.xhtml" />
 			</p:menuButton>
 			</sec:ifAnyGranted>
     </h:form>

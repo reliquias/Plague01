@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--        <h:outputStylesheet name="css/skin.css"/>-->
+        <title>Controle de Pragas</title>
+        <style type="text/css">
+                .ui-layout-north {
+                    z-index:80 !important;
+                    overflow:visible !important;
+                }
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+       </style>
+    </h:head>
+
+    <h:body>
+       <p:layout fullPage="true">
+               <ui:insert name="centro" id="centro">
+                    <p:layoutUnit collapsible="true" position="center">
+                    </p:layoutUnit>
+                </ui:insert>
+                <!-- <ui:insert name="Rodape" id="rodape">
+                    <p:layoutUnit collapsible="true" position="south" height="33" header="www.softleasing.com.br" resizable="true">
+                    </p:layoutUnit>
+                </ui:insert> -->
+            </p:layout>
+
+       
+    </h:body>
+</html>

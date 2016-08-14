@@ -5,6 +5,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import br.com.inicial.util.Utils;
+
 @Entity
 public class Usuario implements Serializable {
 
@@ -13,9 +15,10 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	/*private String email;
 	private String login;
 	private String senha;
+	/*private String email;
+	
 	private Date nascimento;
 	private String celular;
 	private String idioma;*/
@@ -98,6 +101,19 @@ public class Usuario implements Serializable {
 		return true;
 	}
 
+	public String getLogin() {
+		return Utils.substituiNuloPorString(login);
+	}
 
-	
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getSenha() {
+		return Utils.substituiNuloPorString(senha);
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 }

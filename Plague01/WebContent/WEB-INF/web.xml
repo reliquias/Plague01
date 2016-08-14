@@ -52,6 +52,14 @@
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
     <servlet-name>Faces Servlet</servlet-name>
   </filter-mapping>
+  <filter>
+		<filter-name>LoginRedirect</filter-name>
+		<filter-class>br.com.inicial.interceptadores.LoginRedirectFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginRedirect</filter-name>
+		<url-pattern>/faces/restrito/*</url-pattern>
+	</filter-mapping>
   <context-param>
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>

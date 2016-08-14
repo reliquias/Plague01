@@ -1,0 +1,30 @@
+<ui:composition template="/login/LoginTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form id="formLogin">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Login">
+                	<!-- <h:outputLabel value="Empresa" for="empresa"/>
+                    <h:inputText id="empresa"  maxlength="15" size="15"/> -->
+                    <br/>
+                    <h:outputLabel value="Login" for="login"/>
+                    <h:inputText id="login" value="#{loginMB.login}" maxlength="15" size="15"/>
+                    <br/>
+                    <h:outputLabel value="Senha" for="senha"/>
+                    <h:inputSecret id="senha" value="#{loginMB.senha}" maxlength="15" size="15"/>                    
+                    <br/>
+                    <p:separator/>
+                    <p:commandButton value="Logar" ajax="false" action="#{loginMB.verificaLogin}"/>
+<!--                <p:messages id="msgs"/>-->
+                </p:panel>
+            </h:form>
+        </p:layoutUnit>
+    </ui:define>
+</ui:composition>
+
