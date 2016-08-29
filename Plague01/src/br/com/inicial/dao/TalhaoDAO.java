@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Query;
+import org.hibernate.Transaction;
 
 import br.com.inicial.modelo.Talhao;
 
@@ -12,31 +13,52 @@ public class TalhaoDAO {
 	private Session	session;
 
 	public void setSession(Session session) {
-		if(!session.isConnected()){
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-		}
 		this.session = session;
 	}
 
-	public void salvar(Talhao talhao) {
-		if(!session.isConnected()){
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
+	public void salvar(Talhao objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.save(objeto);
+		    tx.commit();
 		}
-		this.session.save(talhao);		
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}		
 	}
 
-	public void atualizar(Talhao talhao) {
-		if(!session.isConnected()){
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
+	public void atualizar(Talhao objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.merge(objeto);
+		    tx.commit();
 		}
-		this.session.update(talhao);
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void excluir(Talhao talhao) {
-		if(!session.isConnected()){
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
+	public void excluir(Talhao objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.delete(objeto);
+		    tx.commit();
 		}
-		this.session.delete(talhao);
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
 	}
 
 	public Talhao carregar(Integer codigo) {

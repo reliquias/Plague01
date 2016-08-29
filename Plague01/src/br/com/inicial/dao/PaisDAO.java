@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.com.inicial.modelo.Pais;
 
@@ -16,15 +17,49 @@ public class PaisDAO {
 	}
 
 	public void salvar(Pais pais) {
-		this.session.save(pais);		
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.save(pais);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+//		    session.close();
+		}
+//		this.session.merge(pais);		
 	}
 
 	public void atualizar(Pais pais) {
-		this.session.update(pais);
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.merge(pais);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
 	public void excluir(Pais pais) {
-		this.session.delete(pais);
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.delete(pais);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
 	}
 
 	public Pais carregar(Integer codigo) {

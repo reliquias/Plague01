@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.com.inicial.modelo.Planta;
 
@@ -15,16 +16,49 @@ public class PlantaDAO {
 		this.session = session;
 	}
 
-	public void salvar(Planta planta) {
-		this.session.save(planta);		
+	public void salvar(Planta objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.save(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}		
 	}
 
-	public void atualizar(Planta planta) {
-		this.session.merge(planta);
+	public void atualizar(Planta objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.merge(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void excluir(Planta planta) {
-		this.session.delete(planta);
+	public void excluir(Planta objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.delete(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
 	}
 
 	public Planta carregar(Integer codigo) {

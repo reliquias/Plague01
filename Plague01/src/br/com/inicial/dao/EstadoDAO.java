@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.com.inicial.modelo.Estado;
-import br.com.inicial.modelo.Pais;
-import br.com.inicial.modelo.Zona;
 
 public class EstadoDAO {
 
@@ -17,16 +16,49 @@ public class EstadoDAO {
 		this.session = session;
 	}
 
-	public void salvar(Estado estado) {
-		this.session.save(estado);		
+	public void salvar(Estado objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.save(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}		
 	}
 
-	public void atualizar(Estado estado) {
-		this.session.update(estado);
+	public void atualizar(Estado objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.merge(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void excluir(Estado estado) {
-		this.session.delete(estado);
+	public void excluir(Estado objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.delete(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
 	}
 
 	public Estado carregar(Integer codigo) {

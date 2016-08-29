@@ -1,7 +1,6 @@
 package br.com.inicial.controle;
 
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -11,17 +10,18 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.TalhaoDAO;
+import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Fazenda;
 import br.com.inicial.modelo.Talhao;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 @ManagedBean(name="talhaoMB")
@@ -155,7 +155,7 @@ public class TalhaoMB {
     }
 	
 	public String voltarFazenda() {
-		return "/faces/public/fazenda/fazenda";
+		return "/faces/restrito/public/fazenda/fazenda";
 	}
 
 	public FazendaMB getFazendaMB() {
@@ -175,14 +175,17 @@ public class TalhaoMB {
 	}
 	
 	private void talhaoFirebase(Talhao tahao){
-		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/talhao");
-		Firebase firebaseRef = firebase.push();
-		
-		firebaseRef.child("id").setValue(tahao.getId());
-		firebaseRef.child("nome").setValue(tahao.getNome());
-		firebaseRef.child("area").setValue(tahao.getArea());
-		firebaseRef.child("fazendaId").setValue(tahao.getFazenda().getId());
-		firebaseRef.child("fazendaDescricao").setValue(tahao.getFazenda().getNome());
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		if(empresa!=null){
+			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/talhao");
+			Firebase firebaseRef = firebase.push();
+			
+			firebaseRef.child("id").setValue(tahao.getId());
+			firebaseRef.child("nome").setValue(tahao.getNome());
+			firebaseRef.child("area").setValue(tahao.getArea());
+			firebaseRef.child("fazendaId").setValue(tahao.getFazenda().getId());
+			firebaseRef.child("fazendaDescricao").setValue(tahao.getFazenda().getNome());
+		}
 	}
 	
 	private void ouvinteFirebase(){

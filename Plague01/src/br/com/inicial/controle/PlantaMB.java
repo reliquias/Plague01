@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.PlantaDAO;
+import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Planta;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
@@ -138,11 +140,14 @@ public class PlantaMB {
     }
 	
 	private void plantaFirebase(Planta planta){
-		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/planta/");
-		Firebase firebaseRef = firebase.push();
-		
-		firebaseRef.child("id").setValue(planta.getId());
-		firebaseRef.child("nome").setValue(planta.getNome());
-		firebaseRef.child("descricao").setValue(planta.getDescricao());
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		if(empresa!=null){
+			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/planta/");
+			Firebase firebaseRef = firebase.push();
+			
+			firebaseRef.child("id").setValue(planta.getId());
+			firebaseRef.child("nome").setValue(planta.getNome());
+			firebaseRef.child("descricao").setValue(planta.getDescricao());
+		}
 	}
 }

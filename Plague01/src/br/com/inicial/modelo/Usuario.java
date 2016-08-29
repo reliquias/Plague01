@@ -1,9 +1,11 @@
 package br.com.inicial.modelo;
 
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import br.com.inicial.util.Utils;
 
@@ -23,10 +25,10 @@ public class Usuario implements Serializable {
 	private String celular;
 	private String idioma;*/
 	private boolean ativo;
-	@ElementCollection(targetClass=String.class)
+	/*@ElementCollection(targetClass=String.class)
 	@JoinTable(name="usuario_permissao",uniqueConstraints={@UniqueConstraint(columnNames={"usuario", "permissao"})},joinColumns=@JoinColumn(name="usuario"))
 	@Column(name="permissao", length=50)
-	private Set<String> permissao = new HashSet<String>();
+	private Set<String> permissao = new HashSet<String>();*/
 
 	public Integer getId() {
 		return id;
@@ -52,13 +54,13 @@ public class Usuario implements Serializable {
 		this.ativo = ativo;
 	}
 
-	public Set<String> getPermissao() {
+	/*public Set<String> getPermissao() {
 		return permissao;
 	}
 
 	public void setPermissao(Set<String> permissao) {
 		this.permissao = permissao;
-	}
+	}*/
 
 	@Override
 	public int hashCode() {
@@ -67,8 +69,6 @@ public class Usuario implements Serializable {
 		result = prime * result + (ativo ? 1231 : 1237);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result
-				+ ((permissao == null) ? 0 : permissao.hashCode());
 		return result;
 	}
 
@@ -93,16 +93,11 @@ public class Usuario implements Serializable {
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
-		if (permissao == null) {
-			if (other.permissao != null)
-				return false;
-		} else if (!permissao.equals(other.permissao))
-			return false;
 		return true;
 	}
 
 	public String getLogin() {
-		return Utils.substituiNuloPorString(login);
+		return login;
 	}
 
 	public void setLogin(String login) {
@@ -110,7 +105,7 @@ public class Usuario implements Serializable {
 	}
 
 	public String getSenha() {
-		return Utils.substituiNuloPorString(senha);
+		return senha;
 	}
 
 	public void setSenha(String senha) {

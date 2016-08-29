@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.com.inicial.modelo.Cidade;
-import br.com.inicial.modelo.Estado;
 
 public class CidadeDAO {
 
@@ -16,16 +16,49 @@ public class CidadeDAO {
 		this.session = session;
 	}
 
-	public void salvar(Cidade cidade) {
-		this.session.save(cidade);		
+	public void salvar(Cidade objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.save(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void atualizar(Cidade cidade) {
-		this.session.update(cidade);
+	public void atualizar(Cidade objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.merge(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void excluir(Cidade cidade) {
-		this.session.delete(cidade);
+	public void excluir(Cidade objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.delete(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
 	}
 
 	public Cidade carregar(Integer codigo) {

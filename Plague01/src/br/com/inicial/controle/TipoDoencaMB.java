@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.TipoDoencaDAO;
+import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.TipoDoenca;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
@@ -138,11 +140,14 @@ public class TipoDoencaMB {
     }
 	
 	private void tipoDoencaFirebase(TipoDoenca tipoDoenca){
-		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/tipoDoenca/");
-		Firebase firebaseRef = firebase.push();
-		
-		firebaseRef.child("id").setValue(tipoDoenca.getId());
-		firebaseRef.child("descricao").setValue(tipoDoenca.getDescricao());
-		firebaseRef.child("doenca").setValue(tipoDoenca.getDoenca());
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		if(empresa!=null){
+			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/tipoDoenca/");
+			Firebase firebaseRef = firebase.push();
+			
+			firebaseRef.child("id").setValue(tipoDoenca.getId());
+			firebaseRef.child("descricao").setValue(tipoDoenca.getDescricao());
+			firebaseRef.child("doenca").setValue(tipoDoenca.getDoenca());
+		}
 	}
 }

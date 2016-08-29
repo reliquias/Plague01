@@ -3,6 +3,7 @@ package br.com.inicial.dao;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.com.inicial.modelo.Fazenda;
 
@@ -11,31 +12,55 @@ public class FazendaDAO {
 	private Session	session;
 
 	public void setSession(Session session) {
-		if(!session.isConnected()){
+		/*if(!session.isConnected()){
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
-		}
+		}*/
 		this.session = session;
 	}
 
-	public void salvar(Fazenda fazenda) {
-		if(!session.isConnected()){
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
+	public void salvar(Fazenda objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.save(objeto);
+		    tx.commit();
 		}
-		this.session.save(fazenda);		
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}		
 	}
 
-	public void atualizar(Fazenda fazenda) {
-		if(!session.isConnected()){
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
+	public void atualizar(Fazenda objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.merge(objeto);
+		    tx.commit();
 		}
-		this.session.update(fazenda);
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void excluir(Fazenda fazenda) {
-		if(!session.isConnected()){
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
+	public void excluir(Fazenda objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.delete(objeto);
+		    tx.commit();
 		}
-		this.session.delete(fazenda);
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
 	}
 
 	public Fazenda carregar(Integer codigo) {

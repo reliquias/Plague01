@@ -26,6 +26,7 @@ import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.EstadoDAO;
 import br.com.inicial.dao.FazendaDAO;
 import br.com.inicial.modelo.Cidade;
+import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Estado;
 import br.com.inicial.modelo.Fazenda;
 import br.com.inicial.modelo.Pais;
@@ -118,7 +119,7 @@ public class FazendaMB {
 			try {
 				fazendaDAO.atualizar(fazenda);
 				JsfUtil.addSuccessMessage("Fazenda salvo com Sucesso");
-				fazendaFirebase(fazenda);
+//				fazendaFirebase(fazenda);
 			} catch (Exception e) {
 			}
 		}
@@ -191,7 +192,7 @@ public class FazendaMB {
 	
 	public String talhoesForm() {
 //		facesContext.getExternalContext().getSessionMap().put("fazenda", fazenda);
-		return "/faces/public/talhao/talhaoLista";
+		return "/faces/restrito/public/talhao/talhaoLista";
     }
 	
 	public void handleFileUpload(FileUploadEvent event) {
@@ -429,7 +430,7 @@ public class FazendaMB {
 		                            fazendaFire.setArea(fazendaSnapshot.child("area").getValue().toString());
 		                            fazendaFire.setAreaInicial(fazendaSnapshot.child("areaInicial").getValue().toString());
 		                            fazendaFire.setNome(fazendaSnapshot.child("nome").getValue().toString());
-		                            Pais pais = DAOFactory.criarPaisDAO().carregar(Integer.parseInt(fazendaSnapshot.child("paisId").getValue().toString()));
+//		                            Pais pais = DAOFactory.criarPaisDAO().carregar(Integer.parseInt(fazendaSnapshot.child("paisId").getValue().toString()));
 		                        }
 		                    }
 		                }
@@ -453,19 +454,22 @@ public class FazendaMB {
 	}
 	
 	private void fazendaFirebase(Fazenda fazenda){
-		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/fazenda/");
-		Firebase firebaseRef = firebase.push();
-		
-		firebaseRef.child("id").setValue(fazenda.getId());
-		firebaseRef.child("nome").setValue(fazenda.getNome());
-		firebaseRef.child("areaInicial").setValue(fazenda.getAreaInicial());
-		firebaseRef.child("area").setValue(fazenda.getArea());
-		firebaseRef.child("paisId").setValue(fazenda.getPais().getId());
-		firebaseRef.child("paisDescricao").setValue(fazenda.getPais().getDescricao());
-		firebaseRef.child("estadoId").setValue(fazenda.getEstado().getId());
-		firebaseRef.child("estadoNome").setValue(fazenda.getEstado().getSigla());
-		firebaseRef.child("cidadeId").setValue(fazenda.getCidade().getId());
-		firebaseRef.child("cidadeNome").setValue(fazenda.getCidade().getNome());
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		if(empresa!=null){
+			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/fazenda/");
+			Firebase firebaseRef = firebase.push();
+			
+			firebaseRef.child("id").setValue(fazenda.getId());
+			firebaseRef.child("nome").setValue(fazenda.getNome());
+			firebaseRef.child("areaInicial").setValue(fazenda.getAreaInicial());
+			firebaseRef.child("area").setValue(fazenda.getArea());
+			firebaseRef.child("paisId").setValue(fazenda.getPais().getId());
+			firebaseRef.child("paisDescricao").setValue(fazenda.getPais().getDescricao());
+			firebaseRef.child("estadoId").setValue(fazenda.getEstado().getId());
+			firebaseRef.child("estadoNome").setValue(fazenda.getEstado().getSigla());
+			firebaseRef.child("cidadeId").setValue(fazenda.getCidade().getId());
+			firebaseRef.child("cidadeNome").setValue(fazenda.getCidade().getNome());
+		}
 	}
 	
 	public void onDataChange(DataSnapshot snapshot) {

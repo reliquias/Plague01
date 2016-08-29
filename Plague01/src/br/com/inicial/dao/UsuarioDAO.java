@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.com.inicial.modelo.Usuario;
 
@@ -15,21 +16,54 @@ public class UsuarioDAO {
 		this.session = session;
 	}
 
-	public void salvar(Usuario usuario) {
-		this.session.save(usuario);		
+	public void salvar(Usuario objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.save(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void atualizar(Usuario usuario) {
-		if(usuario.getPermissao() == null || usuario.getPermissao().size() == 0){
+	public void atualizar(Usuario objeto) {
+		/*if(usuario.getPermissao() == null || usuario.getPermissao().size() == 0){
 			Usuario usuarioPermissao = this.carregar(usuario.getId());
 			usuario.setPermissao(usuarioPermissao.getPermissao());
 			this.session.evict(usuarioPermissao);
+		}*/
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.merge(objeto);
+		    tx.commit();
 		}
-		this.session.update(usuario);
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void excluir(Usuario usuario) {
-		this.session.delete(usuario);
+	public void excluir(Usuario objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.delete(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
 	}
 
 	public Usuario carregar(Integer codigo) {
@@ -39,6 +73,9 @@ public class UsuarioDAO {
 	}
 
 	public Usuario buscarPorLogin(String login) {
+		if(!session.isConnected()){
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
 		String hql = "select u from Usuario u where u.login = :login";
 		Query consulta = this.session.createQuery(hql);
 		consulta.setString("login", login);

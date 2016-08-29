@@ -10,7 +10,7 @@
             <h:form prependId="false" id="form" acceptcharset="ISO-8859-1">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="#{msg.planta_label}">
-                    <p:dataTable id="planta" lazy="true" sortBy="#{plantas.planta}" value="#{plantaMB.plantasModel}" var="plantas" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{plantaMB.planta}" rowsPerPageTemplate="5,10,15">
+                    <p:dataTable id="planta" lazy="true" sortBy="#{plantas.nome}" value="#{plantaMB.plantasModel}" var="plantas" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{plantaMB.planta}" rowsPerPageTemplate="5,10,15">
                 		<p:column sortBy="#{plantas.nome}" filterMatchMode="contains" filterBy="#{plantas.nome}">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.planta_nome}"/>

@@ -9,8 +9,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.Session;
+
 import br.com.inicial.dao.DAOFactory;
+import br.com.inicial.dao.HibernateUtil;
 import br.com.inicial.dao.PaisDAO;
+import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Pais;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
@@ -25,9 +29,15 @@ public class PaisMB {
 	private List<Object>	paiss = new ArrayList<Object>();
 	private XLazyModel paissModel;
 	private String	       destinoSalvar;
+	DAOFactory daoFachada;
 
 	public PaisMB() {
-		this.paisDAO = DAOFactory.criarPaisDAO();
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		Session session = HibernateUtil.getSession(empresa);
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		daoFachada = new DAOFactory(session);
+		this.paisDAO = daoFachada.getPaisDAO();
+//		this.paisDAO = DAOFactory.criarPaisDAO();
 		paiss = lista();
 		paissModel = new XLazyModel(paiss);
 		if(paissModel.getPageSize() == 0){
@@ -69,6 +79,7 @@ public class PaisMB {
 				paisDAO.atualizar(pais);
 				JsfUtil.addSuccessMessage("Pais salvo com Sucesso");
 			} catch (Exception e) {
+				System.out.println("Erro");
 			}
 		}
 //		return "paisLista";

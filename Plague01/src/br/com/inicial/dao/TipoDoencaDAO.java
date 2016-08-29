@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.com.inicial.modelo.TipoDoenca;
 
@@ -15,16 +16,49 @@ public class TipoDoencaDAO {
 		this.session = session;
 	}
 
-	public void salvar(TipoDoenca tipoDoenca) {
-		this.session.save(tipoDoenca);		
+	public void salvar(TipoDoenca objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.save(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void atualizar(TipoDoenca tipoDoenca) {
-		this.session.merge(tipoDoenca);
+	public void atualizar(TipoDoenca objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.merge(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
+		finally {
+		    session.close();
+		}
 	}
 
-	public void excluir(TipoDoenca tipoDoenca) {
-		this.session.delete(tipoDoenca);
+	public void excluir(TipoDoenca objeto) {
+		Transaction tx = null;
+		try {
+		    tx = session.beginTransaction();
+		    this.session.delete(objeto);
+		    tx.commit();
+		}
+		catch (Exception e) {
+		    if (tx != null) tx.rollback();
+		    throw e;
+		}
 	}
 
 	public TipoDoenca carregar(Integer codigo) {

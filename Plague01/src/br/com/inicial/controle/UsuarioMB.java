@@ -3,19 +3,23 @@ package br.com.inicial.controle;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import com.firebase.client.Firebase;
+import org.hibernate.Session;
 
 import br.com.inicial.dao.DAOFactory;
+import br.com.inicial.dao.HibernateUtil;
 import br.com.inicial.dao.UsuarioDAO;
-import br.com.inicial.modelo.TipoDoenca;
+import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Usuario;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
+
+import com.firebase.client.Firebase;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 @ManagedBean(name="usuarioMB")
@@ -30,6 +34,10 @@ public class UsuarioMB {
 	private String	       destinoSalvar;
 
 	public UsuarioMB() {
+		/*Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		Session session = HibernateUtil.getSession(empresa);
+		DAOFactory daoFachada = new DAOFactory(session);
+		this.usuarioDAO = daoFachada.getUsuarioDAO();*/
 		this.usuarioDAO = DAOFactory.criarUsuarioDAO();
 		usuarios = getLista();
 		usuariosModel = new XLazyModel(usuarios);
@@ -45,12 +53,12 @@ public class UsuarioMB {
 	}
 
 	public String editar() {
-//		this.confirmarSenha = this.usuario.getSenha();
+		this.confirmarSenha = this.usuario.getSenha();
 		return "usuario";
 	}
 
 	public void preparaEditar(ActionEvent actionEvent) {
-//		this.confirmarSenha = this.usuario.getSenha();
+		this.confirmarSenha = this.usuario.getSenha();
 	}
 	
 	public String listar() {
@@ -59,16 +67,24 @@ public class UsuarioMB {
     }
 	
 	public void adicionaOuAtualiza() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		String senha = this.usuario.getSenha();
 		if (usuario.getId() == 0 || usuario.getId() == null) {
-			try {
-				usuarioDAO.salvar(usuario);
-				usuarioFirebase(usuario);
-				usuario = new Usuario();
-				JsfUtil.addSuccessMessage("Usuario salvo com Sucesso");
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+			if (!senha.equals(this.confirmarSenha)) {
+				FacesMessage facesMessage = new FacesMessage("A senha não foi confirmada corretamente");
+				context.addMessage(null, facesMessage);
+			} else {
+				Integer id = usuario.getId();
+				if(id==null||id==0){
+					usuario.setAtivo(true);
+				}
+				try {
+					usuarioDAO.salvar(usuario);
+					usuarioFirebase(usuario);
+					JsfUtil.addSuccessMessage("Usuario salvo com Sucesso");
+				} catch (Exception e) {
+				}
 			}
-
 		} else {
 			try {
 				usuarioDAO.atualizar(usuario);
@@ -76,16 +92,15 @@ public class UsuarioMB {
 			} catch (Exception e) {
 			}
 		}
-//		return "usuarioLista";
 	}
 	
 	public String salvar() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		
-		Integer id = usuario.getId();
+		/*Integer id = usuario.getId();
 		if(id==null||id==0){
 			usuario.getPermissao().add("ROLE_USUARIO");
-		}
+		}*/
 
 		/*String senha = this.usuario.getSenha();
 		if (!senha.equals(this.confirmarSenha)) {
@@ -173,10 +188,13 @@ public class UsuarioMB {
 	}
 	
 	private void usuarioFirebase(Usuario usuario){
-		Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/cliente01/usuario/");
-		Firebase firebaseRef = firebase.push();
-		
-		firebaseRef.child("id").setValue(usuario.getId());
-		firebaseRef.child("descricao").setValue(usuario.getNome());
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		if(empresa!=null){
+			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/usuario/");
+			Firebase firebaseRef = firebase.push();
+			
+			firebaseRef.child("id").setValue(usuario.getId());
+			firebaseRef.child("descricao").setValue(usuario.getNome());
+		}
 	}
 }

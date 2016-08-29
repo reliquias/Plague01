@@ -9,7 +9,7 @@
         <p:layoutUnit position="center">
             <h:form prependId="false" id="form" acceptcharset="ISO-8859-1">
                 <p:growl id="msg" showDetail="true"/>
-                <p:panel header="#{msg.usu_label}" id="panel">
+                <p:panel header="#{msg.usuario_label}" id="panel">
                     <p:dataTable id="usuario" lazy="true" sortBy="#{usuarios.nome}" value="#{usuarioMB.usuariosModel}" var="usuarios" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{usuarioMB.usuario}" rowsPerPageTemplate="5,10,15">
                 		<!-- <p:column>
                             <h:commandLink action="#{usuarioMB.ativar}">
@@ -19,7 +19,7 @@
                         </p:column> -->
                 		<p:column sortBy="#{usuarios.nome}" filterMatchMode="contains" filterBy="#{usuarios.nome}">
                             <f:facet name="header">
-                                <h:outputText value="Nome"/>
+                                <h:outputText value="#{msg.usuario_nome}"/>
                             </f:facet>
                             <h:outputText value="#{usuarios.nome}"/>
                         </p:column>

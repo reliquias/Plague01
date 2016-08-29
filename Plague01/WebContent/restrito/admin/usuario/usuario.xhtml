@@ -9,20 +9,33 @@
 		<p:layoutUnit position="center">
 			<h:form id="cadastro" acceptcharset="ISO-8859-1">
 				<p:growl id="msg" />
-				<p:panel header="Cadastro de Usuario">
+				<p:panel header="#{msg.usuario_labelCad}">
 					<h:panelGrid id="infoUsu" columns="2" style="margin-bottom: 10px">
 					<p:commandLink action="#{usuarioMB.listar}" value="Voltar" ajax="false" immediate="true"/>
 					<p:spacer/>
 						<h:inputHidden value="#{usuarioMB.usuario.id}" />
 						<h:inputHidden value="#{usuarioMB.usuario.ativo}" />
-						<h:outputLabel value="Nome" for="nome" />
+						<h:outputLabel value="#{msg.usuario_nome}" for="nome" />
 						<h:inputText id="nome" label="Nome"
 							value="#{usuarioMB.usuario.nome}" size="50" maxlength="50"
 							required="true" requiredMessage="Sem nome!!">
 							<f:validateLength minimum="2" maximum="30" />
 						</h:inputText>
-						<p:commandButton action="#{usuarioMB.adicionaOuAtualiza}" ajax="false"
-							value="Salvar" update="cadastro"/>
+						<h:outputLabel value="#{msg.usuario_login}" for="login" />
+						<h:inputText id="login" label="Login"
+							value="#{usuarioMB.usuario.login}" size="15" maxlength="15"
+							required="true" requiredMessage="Sem login!!" >
+							<f:validateLength minimum="2" maximum="15" />
+						</h:inputText>
+						<h:outputLabel value="#{msg.usuario_senha}" for="senha" />
+						<h:inputSecret id="senha" label="Senha"
+							value="#{usuarioMB.usuario.senha}" size="10" maxlength="10"/>
+
+						<h:outputLabel value="#{msg.usuario_confirmarSenha}" for="confirmarSenha" />
+						<h:inputSecret id="confirmarSenha" label="Confirmar senha"
+							value="#{usuarioMB.confirmarSenha}" size="10" maxlength="10"/>
+							
+						<p:commandButton action="#{usuarioMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
 					</h:panelGrid>
 					<p:messages id="msgs"/>
 				</p:panel>
