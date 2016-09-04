@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    
+    <session-factory>
+              
+<!--  SQL SERVER 2008 RACK 1 
+	
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://rack1:1433;databasename=FTMWEB_VR_TESTES</property>   
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password">asenna</property>
+         -->       
+        <property name="hibernate.hbm2ddl.auto">update</property>
+	    <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+		<property name="current_session_context_class">thread</property>
+	    
+	    <property name="hibernate.c3p0.min_size">1</property>
+  		<property name="hibernate.c3p0.max_size">10000</property>
+  		<property name="hibernate.c3p0.timeout">1800</property>
+  		<property name="hibernate.c3p0.max_statements">10000</property>
+  		<property name="hibernate.c3p0.idle_test_period">60</property>
+	     
+        <!-- Mapeamento das classes -->
+	    <mapping class="br.com.inicial.modelo.Usuario"/>
+	    <mapping class="br.com.inicial.modelo.Fazenda"/>
+	    <mapping class="br.com.inicial.modelo.Pais"/>
+	   	<mapping class="br.com.inicial.modelo.Estado"/>
+	   	<mapping class="br.com.inicial.modelo.Cidade"/>
+<!-- 	    <mapping class="br.com.inicial.modelo.Zona"/> -->
+	    <mapping class="br.com.inicial.modelo.Talhao"/>
+	    <mapping class="br.com.inicial.modelo.TipoDoenca"/>
+	    <mapping class="br.com.inicial.modelo.Planta"/>
+				                                                                                                                  
+    </session-factory>
+    
+</hibernate-configuration>

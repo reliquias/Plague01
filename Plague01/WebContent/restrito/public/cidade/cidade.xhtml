@@ -23,10 +23,11 @@
 						<h:outputLabel value="#{msg.cid_pais}" for="pais"/>
 						<h:selectOneMenu id="pais" value="#{cidadeMB.cidade.pais}" title="Paises" converter="simpleEntityConverter">
                             <f:selectItems value="#{paisMB.itemsAvailableSelectOne}"/>
+                            <p:ajax listener="#{cidadeMB.cmbEstadoChange}" update="estado"/>
                         </h:selectOneMenu>
                         <h:outputLabel value="#{msg.cid_estado}" for="estado"/>
 						<h:selectOneMenu id="estado" value="#{cidadeMB.cidade.estado}" title="Estados" converter="simpleEntityConverter">
-                            <f:selectItems value="#{estadoMB.itemsAvailableSelectOne}"/>
+                            <f:selectItems value="#{cidadeMB.itemsAvailableSelectOneEstado}"/>
                         </h:selectOneMenu>
 						<p:commandButton action="#{cidadeMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
 					</h:panelGrid>

@@ -71,6 +71,7 @@ public class TipoDoencaMB {
 				tipoDoencaDAO.atualizar(tipoDoenca);
 				JsfUtil.addSuccessMessage("TipoDoenca salvo com Sucesso");
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
 		}
 //		return "tipoDoencaLista";

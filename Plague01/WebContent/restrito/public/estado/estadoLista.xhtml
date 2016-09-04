@@ -9,7 +9,7 @@
         <p:layoutUnit position="center">
             <h:form prependId="false" id="form" acceptcharset="ISO-8859-1">
                 <p:growl id="msg" showDetail="true"/>
-                <p:panel header="#{msg.usu_label}">
+                <p:panel header="#{msg.estado_label}">
                     <p:dataTable id="estado" lazy="true" sortBy="#{estados.sigla}" value="#{estadoMB.estadosModel}" var="estados" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{estadoMB.estado}" rowsPerPageTemplate="5,10,15">
                 		<p:column sortBy="#{estados.sigla}" filterMatchMode="contains" filterBy="#{estados.sigla}">
                             <f:facet name="header">

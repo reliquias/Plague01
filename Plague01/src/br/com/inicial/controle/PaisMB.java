@@ -68,7 +68,6 @@ public class PaisMB {
 		if (pais.getId() == 0 || pais.getId() == null) {
 			try {
 				paisDAO.salvar(pais);
-				pais = new Pais();
 				JsfUtil.addSuccessMessage("Pais salvo com Sucesso");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -79,7 +78,7 @@ public class PaisMB {
 				paisDAO.atualizar(pais);
 				JsfUtil.addSuccessMessage("Pais salvo com Sucesso");
 			} catch (Exception e) {
-				System.out.println("Erro");
+				System.out.println(e.getMessage());
 			}
 		}
 //		return "paisLista";

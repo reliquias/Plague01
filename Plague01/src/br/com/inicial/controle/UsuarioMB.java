@@ -83,6 +83,7 @@ public class UsuarioMB {
 					usuarioFirebase(usuario);
 					JsfUtil.addSuccessMessage("Usuario salvo com Sucesso");
 				} catch (Exception e) {
+					e.getStackTrace();
 				}
 			}
 		} else {
@@ -90,6 +91,7 @@ public class UsuarioMB {
 				usuarioDAO.atualizar(usuario);
 				JsfUtil.addSuccessMessage("Usuario salvo com Sucesso");
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
 		}
 	}

@@ -31,7 +31,7 @@
 		<url-pattern>/faces/restrito/*</url-pattern>
 	</filter-mapping> 
 <!--   Web Service -->
-<listener>
+<!-- <listener>
 	<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
 </listener>
 <servlet>
@@ -44,7 +44,7 @@
 <servlet-mapping>
 	<servlet-name>pragaWS</servlet-name>
 	<url-pattern>/webservice/pragaWS</url-pattern>
-</servlet-mapping>
+</servlet-mapping> -->
 <filter>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
     <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
@@ -57,5 +57,9 @@
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
+  </context-param>
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>south-street</param-value>
   </context-param>
 </web-app>

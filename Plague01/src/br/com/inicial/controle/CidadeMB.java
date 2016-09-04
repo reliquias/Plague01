@@ -4,20 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 
 import br.com.inicial.dao.CidadeDAO;
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.modelo.Cidade;
+import br.com.inicial.modelo.Estado;
+import br.com.inicial.modelo.Pais;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 @ManagedBean(name="cidadeMB")
-@RequestScoped
+@SessionScoped
 public class CidadeMB {
 
 	private Cidade cidade = new Cidade();
@@ -25,6 +28,7 @@ public class CidadeMB {
 	private List<Object>	cidades = new ArrayList<Object>();
 	private XLazyModel cidadesModel;
 	private String	       destinoSalvar;
+	private List<Estado> estados = new ArrayList<Estado>();
 
 	public CidadeMB() {
 		this.cidadeDAO = DAOFactory.criarCidadeDAO();
@@ -37,11 +41,13 @@ public class CidadeMB {
 	
 	public String novo() {
 		this.cidade = new Cidade();
+		this.estados = new ArrayList<Estado>();
 		return "cidade";
 	}
 
 	public String editar() {
 //		this.confirmarSenha = this.cidade.getSenha();
+		this.estados = new ArrayList<Estado>();
 		return "cidade";
 	}
 
@@ -50,6 +56,7 @@ public class CidadeMB {
 	}
 	
 	public String listar() {
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("cidadeMB");
 		cidadesModel = null;
     	return "cidadeLista";
     }
@@ -58,7 +65,6 @@ public class CidadeMB {
 		if (cidade.getId() == 0 || cidade.getId() == null) {
 			try {
 				cidadeDAO.salvar(cidade);
-				cidade = new Cidade();
 				JsfUtil.addSuccessMessage("Cidade salvo com Sucesso");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -69,6 +75,7 @@ public class CidadeMB {
 				cidadeDAO.atualizar(cidade);
 				JsfUtil.addSuccessMessage("Cidade salvo com Sucesso");
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
 		}
 //		return "cidadeLista";
@@ -133,4 +140,22 @@ public class CidadeMB {
 	public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(cidadeDAO.listar(), true);
     }
+	
+	/**trecho que faz os trabalhos javascript*/
+	public void cmbEstadoChange(AjaxBehaviorEvent event) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		String idPais = event.getComponent().getAttributes().get("value").toString();
+		Pais pais = DAOFactory.criarPaisDAO().buscarPorCampo("sigla", idPais);
+		this.estados = DAOFactory.criarEstadoDAO().buscarListaPorCampo("pais.id", pais.getId());
+	}
+	
+	public SelectItem[] getItemsAvailableSelectOneEstado() {
+		if(this.estados.size() == 0 && cidade!=null && cidade.getPais()!=null){
+			this.estados = DAOFactory.criarEstadoDAO().buscarListaPorCampo("pais.id", cidade.getPais().getId());
+		}
+        return JsfUtil.getSelectItems(this.estados, true);
+    }
+
+	
+	
 }

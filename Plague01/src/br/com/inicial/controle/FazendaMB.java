@@ -121,6 +121,7 @@ public class FazendaMB {
 				JsfUtil.addSuccessMessage("Fazenda salvo com Sucesso");
 //				fazendaFirebase(fazenda);
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
 		}
 //		return "fazendaLista";

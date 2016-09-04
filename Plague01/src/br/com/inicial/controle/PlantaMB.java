@@ -71,6 +71,7 @@ public class PlantaMB {
 				plantaDAO.atualizar(planta);
 				JsfUtil.addSuccessMessage("Planta salvo com Sucesso");
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
 		}
 //		return "plantaLista";

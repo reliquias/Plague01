@@ -69,6 +69,9 @@ public class CidadeDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Cidade> listar() {
+		if(!session.isConnected()){
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
 		return this.session.createCriteria(Cidade.class).list();
 		
 	}

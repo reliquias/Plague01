@@ -58,7 +58,6 @@ public class EstadoMB {
 		if (estado.getId() == 0 || estado.getId() == null) {
 			try {
 				estadoDAO.salvar(estado);
-				estado = new Estado();
 				JsfUtil.addSuccessMessage("Estado salvo com Sucesso");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -69,6 +68,7 @@ public class EstadoMB {
 				estadoDAO.atualizar(estado);
 				JsfUtil.addSuccessMessage("Estado salvo com Sucesso");
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
 		}
 //		return "estadoLista";

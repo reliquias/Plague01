@@ -73,5 +73,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/streambuffer.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/woodstox-core-asl.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/firebase-client-android-2.5.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/le-frog-1.0.10.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/south-street-1.0.10.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
