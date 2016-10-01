@@ -35,11 +35,11 @@ public class PlantaTalhaoMB {
 	public PlantaTalhaoMB() {
 		this.plantaTalhaoDAO = DAOFactory.criarPlantaTalhaoDAO();
 		talhao = (Talhao) facesContext.getExternalContext().getSessionMap().get("talhao");
-		plantaTalhaos = buscarPlantaPorTalhao(talhao.getId());
+		/*plantaTalhaos = buscarPlantaPorTalhao(talhao.getId());
 		plantaTalhaosModel = new XLazyModel(plantaTalhaos);
 		if(plantaTalhaosModel.getPageSize() == 0){
 			plantaTalhaosModel.setPageSize(1);
-		}
+		}*/
 	}
 	
 	/*public String novo() {
@@ -48,7 +48,7 @@ public class PlantaTalhaoMB {
 	}*/
 	
 	public void novo(ActionEvent actionEvent) {
-		this.plantaTalhao = new PlantaTalhao();
+		plantaTalhao = new PlantaTalhao();
     }
 
 	public String editar() {
@@ -56,7 +56,9 @@ public class PlantaTalhaoMB {
 	}
 
 	public void preparaEditar(ActionEvent actionEvent) {
-//		this.confirmarSenha = this.plantaTalhao.getSenha();
+		System.out.println("Yep");
+//		this.plantaTalhao = plantaTalhao;
+
 	}
 	
 	public String listar() {
@@ -84,6 +86,7 @@ public class PlantaTalhaoMB {
 			}
 		}
 		plantaTalhaosModel = null;
+		this.plantaTalhao = new PlantaTalhao();
 //		return "plantaTalhaoLista";
 	}
 	
@@ -137,7 +140,7 @@ public class PlantaTalhaoMB {
 	}
 
 	public XLazyModel getPlantaTalhaosModel() {
-		if (plantaTalhaosModel == null) {
+		if (talhao != null && plantaTalhaosModel == null) {
 			plantaTalhaos = buscarPlantaPorTalhao(talhao.getId());
 			plantaTalhaosModel = new XLazyModel(plantaTalhaos);
 			if (plantaTalhaosModel.getPageSize() == 0) {

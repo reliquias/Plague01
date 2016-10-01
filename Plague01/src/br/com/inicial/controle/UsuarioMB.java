@@ -80,7 +80,7 @@ public class UsuarioMB {
 				}
 				try {
 					usuarioDAO.salvar(usuario);
-					usuarioFirebase(usuario);
+					firebaseUsuario(usuario);
 					JsfUtil.addSuccessMessage("Usuario salvo com Sucesso");
 				} catch (Exception e) {
 					e.getStackTrace();
@@ -189,14 +189,16 @@ public class UsuarioMB {
 		this.usuariosModel = usuariosModel;
 	}
 	
-	private void usuarioFirebase(Usuario usuario){
+	private void firebaseUsuario(Usuario usuario){
 		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
 		if(empresa!=null){
 			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/usuario/");
 			Firebase firebaseRef = firebase.push();
 			
 			firebaseRef.child("id").setValue(usuario.getId());
-			firebaseRef.child("descricao").setValue(usuario.getNome());
+			firebaseRef.child("nome").setValue(usuario.getNome());
+			firebaseRef.child("cpf").setValue(usuario.getCpf());
+			firebaseRef.child("matricula").setValue(usuario.getMatricula());
 		}
 	}
 }

@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<ui:define name="centro">
-		<p:layoutUnit position="center">
+		<p:layoutUnit position="center" id="talhaoTodo">
 			<h:form id="cadastro" acceptcharset="ISO-8859-1">
 				<p:growl id="msg" />
 				<p:panel header="#{msg.talhao_labelCad}">
@@ -20,13 +20,13 @@
 							required="true" requiredMessage="Sem nome!!">
 							<f:validateLength minimum="2" maximum="30" />
 						</h:inputText>
-						<p:commandButton action="#{talhaoMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
+						<p:commandButton action="#{talhaoMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro, formPlanta"/>
 					</h:panelGrid>
 					<p:messages id="msgs"/>
 				</p:panel>
 			</h:form>
 			
-			<h:form prependId="false" acceptcharset="ISO-8859-1" id="formPlanta">
+			<h:form prependId="false" acceptcharset="ISO-8859-1" id="formPlanta" rendered="#{plantaTalhaoMB != null}">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="#{msg.plantaTalhao_label}" id="panelPlanta">
                     <p:dataTable id="plantaTalhao" lazy="true" sortBy="#{plantas.codigo}" value="#{plantaTalhaoMB.plantaTalhaosModel}" var="plantas" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{plantaTalhaoMB.plantaTalhao}" rowsPerPageTemplate="5,10,15">
@@ -43,10 +43,10 @@
                             <h:outputText value="#{plantas.planta}"/>
                         </p:column>
 <!--                         <p:ajax event="rowSelect" oncomplete="PF('dialogPlanta').show()" update=":dlgPlanta" /> -->
-                        </p:dataTable>
+						</p:dataTable>
                         <f:facet name="footer">
                         	<p:commandButton actionListener="#{plantaTalhaoMB.novo}"          value="#{msg.btn_Novo}"    update=":plantaTalhao" oncomplete="PF('dialogPlanta').show()"/>
-                        	<p:commandButton actionListener="#{plantaTalhaoMB.preparaEditar}" value="#{msg.btn_alterar}" update=":plantaTalhao" oncomplete="PF('dialogPlanta').show()"/>
+                        	<p:commandButton actionListener="#{plantaTalhaoMB.preparaEditar}" value="#{msg.btn_alterar}" update=":plantaTalhao, dlgPlanta" oncomplete="PF('dialogPlanta').show()"/>
                         	<p:commandButton actionListener="#{plantaTalhaoMB.excluirAjax}"	  value="#{msg.btn_excluir}" update=":formPlanta" />
 				        </f:facet>
                 </p:panel>
@@ -61,6 +61,10 @@
                 	<h:outputLabel value="#{msg.plantaTalhao_codigo}" for="codigo" />
 						<h:inputText id="codigo" label="Codigo"
 							value="#{plantaTalhaoMB.plantaTalhao.codigo}" size="10" maxlength="12">
+						</h:inputText>
+                	<h:outputLabel value="#{msg.plantaTalhao_coordenadas}" for="coordenadas" />
+						<h:inputText id="coordenadas" label="Coordenadas"
+							value="#{plantaTalhaoMB.plantaTalhao.coordenadas}" size="50" maxlength="60">
 						</h:inputText>
                 	<h:outputLabel value="#{msg.plantaTalhao_planta}" for="planta"/>
 					<h:selectOneMenu id="planta" value="#{plantaTalhaoMB.plantaTalhao.planta}" title="Plantas" converter="simpleEntityConverter">

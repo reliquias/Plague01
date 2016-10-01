@@ -19,6 +19,10 @@ public class Usuario implements Serializable {
 	private String nome;
 	private String login;
 	private String senha;
+	private String cpf;
+	private String matricula;
+	
+	
 	/*private String email;
 	
 	private Date nascimento;
@@ -110,5 +114,21 @@ public class Usuario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
 	}
 }

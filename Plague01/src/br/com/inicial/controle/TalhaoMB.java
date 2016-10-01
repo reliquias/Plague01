@@ -86,6 +86,7 @@ public class TalhaoMB {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		facesContext.getExternalContext().getSessionMap().put("talhao", talhao);
 		// return "talhaoLista";
 	}
 	

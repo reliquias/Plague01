@@ -21,6 +21,16 @@
 							required="true" requiredMessage="Sem nome!!">
 							<f:validateLength minimum="2" maximum="30" />
 						</h:inputText>
+						<h:outputLabel value="#{msg.usuario_cpf}" for="cpf" />
+						<h:inputText id="cpf" label="Cpf"
+							value="#{usuarioMB.usuario.cpf}" size="50" maxlength="50"
+							required="true" requiredMessage="Sem CPF!!">
+							<f:validateLength minimum="2" maximum="30" />
+						</h:inputText>
+						<h:outputLabel value="#{msg.usuario_matricula}" for="matricula" />
+						<h:inputText id="matricula" label="Matricula"
+							value="#{usuarioMB.usuario.matricula}" size="50" maxlength="50">
+						</h:inputText>
 						<h:outputLabel value="#{msg.usuario_login}" for="login" />
 						<h:inputText id="login" label="Login"
 							value="#{usuarioMB.usuario.login}" size="15" maxlength="15"
