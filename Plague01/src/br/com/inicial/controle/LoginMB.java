@@ -81,6 +81,7 @@ public class LoginMB{
 //	    	Usuario usuario = DAOFactory.criarUsuarioDAO().buscarPorLogin(login);
 	    	if(usuario!=null && usuario.getId()!=null){
 				if(usuario.getSenha().equalsIgnoreCase(senha)){
+					
 					return "/restrito/principal";
 				}
 			}

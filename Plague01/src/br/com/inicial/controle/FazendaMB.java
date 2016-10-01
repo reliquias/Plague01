@@ -110,7 +110,7 @@ public class FazendaMB {
 				fazendaDAO.salvar(fazenda);
 				JsfUtil.addSuccessMessage("Fazenda salvo com Sucesso");
 				fazendaFirebase(fazenda);
-				ouvinteFirebase();
+//				ouvinteFirebase();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -285,6 +285,7 @@ public class FazendaMB {
 	}
 	
 	public void onPolygonSelect(OverlaySelectEvent event) {
+		org.primefaces.model.map.Polygon polygon = (org.primefaces.model.map.Polygon) event.getComponent().getAttributes();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Polygon Selected", null));
     }
 

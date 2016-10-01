@@ -38,7 +38,6 @@ public class TalhaoMB {
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 
 	public TalhaoMB() {
-		ouvinteFirebase();
 		this.talhaoDAO = DAOFactory.criarTalhaoDAO();
 		facesContext = FacesContext.getCurrentInstance();
 		fazendaMB =  (FazendaMB) facesContext.getExternalContext().getSessionMap().get("fazendaMB");
@@ -56,6 +55,7 @@ public class TalhaoMB {
 	}
 
 	public String editar() {
+		facesContext.getExternalContext().getSessionMap().put("talhao", talhao);
 		return "talhao";
 	}
 
@@ -63,8 +63,9 @@ public class TalhaoMB {
 	}
 	
 	public String listar() {
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("talhao");
 		talhoesModel = null;
-    	return "talhaoLista";
+		return "talhaoLista";
     }
 	
 	public void adicionaOuAtualiza() {

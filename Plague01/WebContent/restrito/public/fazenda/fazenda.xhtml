@@ -17,17 +17,20 @@
 						<h:inputHidden value="#{fazendaMB.fazenda.id}" />
 						<h:outputLabel value="#{msg.fazenda_nome}" for="nome" />
 						<h:inputText id="nome" label="Nome"
-							value="#{fazendaMB.fazenda.nome}" size="50" maxlength="50"
+							value="#{fazendaMB.fazenda.nome}" size="35" maxlength="35"
 							required="true" requiredMessage="Sem nome!!">
 							<f:validateLength minimum="2" maximum="50" />
 						</h:inputText>
 						<h:outputLabel value="#{msg.fazenda_area}" for="areaInicial" />
 						<h:inputText id="areaInicial" label="Area"
-							value="#{fazendaMB.fazenda.areaInicial}" size="40" maxlength="40" readonly="true">
+							value="#{fazendaMB.fazenda.areaInicial}" size="35" maxlength="35" readonly="true">
 						</h:inputText>
 						<p:spacer/>
 						<p:fileUpload auto="true" widgetVar="uploader" label="Kml..."  fileUploadListener="#{fazendaMB.handleFileUpload}" mode="advanced"
 						description="Images" multiple="false" customUI="true" id="fileUpload" ajax="true" height="115px" width="150px"/>
+						</h:panelGrid>
+						
+						<h:panelGrid id="infoFazenda2" columns="6" style="margin-bottom: 10px">					
 						<h:outputLabel value="#{msg.fazenda_pais}" for="pais"/>
 						<p:selectOneMenu id="pais" value="#{fazendaMB.fazenda.pais}" title="Paises" converter="simpleEntityConverter">
                             <f:selectItems value="#{paisMB.itemsAvailableSelectOne}"/>
@@ -35,14 +38,14 @@
                         </p:selectOneMenu>
                         
                         <h:outputLabel value="#{msg.fazenda_estado}" for="estado"/>
-						<h:selectOneMenu id="estado" value="#{fazendaMB.fazenda.estado}" title="Estados" converter="simpleEntityConverter">
+						<p:selectOneMenu id="estado" value="#{fazendaMB.fazenda.estado}" title="Estados" converter="simpleEntityConverter">
                             <f:selectItems value="#{fazendaMB.itemsAvailableSelectOneEstado}"/>
                             <p:ajax listener="#{fazendaMB.cmbCidadeChange}" update="cidade"/>
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
                         <h:outputLabel value="#{msg.fazenda_cidade}" for="cidade"/>
-						<h:selectOneMenu id="cidade" value="#{fazendaMB.fazenda.cidade}" title="Cidades" converter="simpleEntityConverter">
+						<p:selectOneMenu id="cidade" value="#{fazendaMB.fazenda.cidade}" title="Cidades" converter="simpleEntityConverter">
                             <f:selectItems value="#{fazendaMB.itemsAvailableSelectOneCidade}"/>
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
                         <p:commandButton action="#{fazendaMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
 						<p:commandButton value="Talhaos" ajax="false" action="#{fazendaMB.talhoesForm}" />
 					</h:panelGrid>

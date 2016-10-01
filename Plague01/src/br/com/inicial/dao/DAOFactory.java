@@ -96,6 +96,20 @@ public class DAOFactory {
 		return plantaDAO;
 	}
 
+	public static PlantaTalhaoDAO criarPlantaTalhaoDAO() {
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		PlantaTalhaoDAO plantaTalhaoDAO = new PlantaTalhaoDAO();
+		plantaTalhaoDAO.setSession(HibernateUtil.getSession(empresa));
+		return plantaTalhaoDAO;
+	}
+
+	public static VistoriaDAO criarVistoriaDAO() {
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		VistoriaDAO vistoriaDAO = new VistoriaDAO();
+		vistoriaDAO.setSession(HibernateUtil.getSession(empresa));
+		return vistoriaDAO;
+	}
+
 
 	public Session getSession() {
 		return session;

@@ -1,12 +1,17 @@
 package br.com.inicial.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import br.com.inicial.interfaces.BaseEntity;
 
@@ -20,6 +25,9 @@ public class Planta implements BaseEntity, Serializable {
 	private String nome;
 	@Column(length = 100, name = "descricao")
 	private String descricao;
+	
+	@OneToMany(mappedBy="planta", fetch=FetchType.LAZY)
+	private List<PlantaTalhao> plantas = new ArrayList<PlantaTalhao>();
 
 	@Override
     public Integer getIdi() {
@@ -84,5 +92,13 @@ public class Planta implements BaseEntity, Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public List<PlantaTalhao> getPlantas() {
+		return plantas;
+	}
+
+	public void setPlantas(List<PlantaTalhao> plantas) {
+		this.plantas = plantas;
 	}
 }

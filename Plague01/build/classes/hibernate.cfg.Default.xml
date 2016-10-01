@@ -35,6 +35,8 @@
 	    <mapping class="br.com.inicial.modelo.Talhao"/>
 	    <mapping class="br.com.inicial.modelo.TipoDoenca"/>
 	    <mapping class="br.com.inicial.modelo.Planta"/>
+	    <mapping class="br.com.inicial.modelo.PlantaTalhao"/>
+	    <mapping class="br.com.inicial.modelo.Vistoria"/>
 				                                                                                                                  
     </session-factory>
     

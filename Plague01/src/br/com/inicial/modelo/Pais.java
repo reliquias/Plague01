@@ -1,6 +1,7 @@
 package br.com.inicial.modelo;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +11,7 @@ import javax.persistence.Id;
 import br.com.inicial.interfaces.BaseEntity;
 
 @Entity
-public class Pais implements BaseEntity, Serializable {
+public class Pais implements BaseEntity, Serializable, Comparator<Pais> {
 
 	private static final long serialVersionUID = 2471765773806278661L;
 	@Id
@@ -83,6 +84,9 @@ public class Pais implements BaseEntity, Serializable {
 	public String toString() {
 		return sigla;
 	}
-	
-	
+
+	@Override
+	public int compare(Pais o1, Pais o2) {
+		return o1.getSigla().compareTo(o2.getSigla());
+	}
 }

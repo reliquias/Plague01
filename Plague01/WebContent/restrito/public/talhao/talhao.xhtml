@@ -25,6 +25,50 @@
 					<p:messages id="msgs"/>
 				</p:panel>
 			</h:form>
+			
+			<h:form prependId="false" acceptcharset="ISO-8859-1" id="formPlanta">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="#{msg.plantaTalhao_label}" id="panelPlanta">
+                    <p:dataTable id="plantaTalhao" lazy="true" sortBy="#{plantas.codigo}" value="#{plantaTalhaoMB.plantaTalhaosModel}" var="plantas" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{plantaTalhaoMB.plantaTalhao}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{plantas.codigo}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.plantaTalhao_codigo}"/>
+                            </f:facet>
+                            <h:outputText value="#{plantas.codigo}"/>
+                        </p:column>
+                		<p:column >
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.plantaTalhao_planta}"/>
+                            </f:facet>
+                            <h:outputText value="#{plantas.planta}"/>
+                        </p:column>
+<!--                         <p:ajax event="rowSelect" oncomplete="PF('dialogPlanta').show()" update=":dlgPlanta" /> -->
+                        </p:dataTable>
+                        <f:facet name="footer">
+                        	<p:commandButton actionListener="#{plantaTalhaoMB.novo}"          value="#{msg.btn_Novo}"    update=":plantaTalhao" oncomplete="PF('dialogPlanta').show()"/>
+                        	<p:commandButton actionListener="#{plantaTalhaoMB.preparaEditar}" value="#{msg.btn_alterar}" update=":plantaTalhao" oncomplete="PF('dialogPlanta').show()"/>
+                        	<p:commandButton actionListener="#{plantaTalhaoMB.excluirAjax}"	  value="#{msg.btn_excluir}" update=":formPlanta" />
+				        </f:facet>
+                </p:panel>
+			</h:form>
 		</p:layoutUnit>
+		
+		<p:dialog id="dlgPlanta" header="#{msg.plantaTalhao_labelCad}" widgetVar="dialogPlanta" resizable="false" modal="true" showEffect="slide" width="500" dynamic="true">
+            <h:form prependId="false" id="infoPlanta">
+                <h:panelGrid columns="2" style="margin-bottom: 10px">
+                <p:spacer/>
+                	<h:inputHidden value="#{plantaTalhaoMB.plantaTalhao.id}" />
+                	<h:outputLabel value="#{msg.plantaTalhao_codigo}" for="codigo" />
+						<h:inputText id="codigo" label="Codigo"
+							value="#{plantaTalhaoMB.plantaTalhao.codigo}" size="10" maxlength="12">
+						</h:inputText>
+                	<h:outputLabel value="#{msg.plantaTalhao_planta}" for="planta"/>
+					<h:selectOneMenu id="planta" value="#{plantaTalhaoMB.plantaTalhao.planta}" title="Plantas" converter="simpleEntityConverter">
+                    	<f:selectItems value="#{plantaMB.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <p:commandButton update=":plantaTalhao" oncomplete="PF('dialogPlanta').hide()" actionListener="#{plantaTalhaoMB.adicionaOuAtualiza}" value="#{msg.btn_salvar}"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
 	</ui:define>
 </ui:composition>
