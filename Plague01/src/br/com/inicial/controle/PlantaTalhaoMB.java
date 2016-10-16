@@ -48,7 +48,7 @@ public class PlantaTalhaoMB {
 	}*/
 	
 	public void novo(ActionEvent actionEvent) {
-		plantaTalhao = new PlantaTalhao();
+		this.plantaTalhao = new PlantaTalhao();
     }
 
 	public String editar() {
@@ -56,9 +56,7 @@ public class PlantaTalhaoMB {
 	}
 
 	public void preparaEditar(ActionEvent actionEvent) {
-		System.out.println("Yep");
-//		this.plantaTalhao = plantaTalhao;
-
+//		this.confirmarSenha = this.plantaTalhao.getSenha();
 	}
 	
 	public String listar() {
@@ -86,7 +84,6 @@ public class PlantaTalhaoMB {
 			}
 		}
 		plantaTalhaosModel = null;
-		this.plantaTalhao = new PlantaTalhao();
 //		return "plantaTalhaoLista";
 	}
 	
@@ -140,8 +137,10 @@ public class PlantaTalhaoMB {
 	}
 
 	public XLazyModel getPlantaTalhaosModel() {
-		if (talhao != null && plantaTalhaosModel == null) {
+		if (talhao != null) {
 			plantaTalhaos = buscarPlantaPorTalhao(talhao.getId());
+		}
+		if (plantaTalhaosModel == null) {
 			plantaTalhaosModel = new XLazyModel(plantaTalhaos);
 			if (plantaTalhaosModel.getPageSize() == 0) {
 				plantaTalhaosModel.setPageSize(1);

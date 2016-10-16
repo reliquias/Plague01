@@ -26,7 +26,7 @@
 				</p:panel>
 			</h:form>
 			
-			<h:form prependId="false" acceptcharset="ISO-8859-1" id="formPlanta" rendered="#{plantaTalhaoMB != null}">
+			<h:form prependId="false" acceptcharset="ISO-8859-1" id="formPlanta" rendered="#{plantaTalhaoMB.talhao != null}">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="#{msg.plantaTalhao_label}" id="panelPlanta">
                     <p:dataTable id="plantaTalhao" lazy="true" sortBy="#{plantas.codigo}" value="#{plantaTalhaoMB.plantaTalhaosModel}" var="plantas" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{plantaTalhaoMB.plantaTalhao}" rowsPerPageTemplate="5,10,15">
@@ -46,7 +46,7 @@
 						</p:dataTable>
                         <f:facet name="footer">
                         	<p:commandButton actionListener="#{plantaTalhaoMB.novo}"          value="#{msg.btn_Novo}"    update=":plantaTalhao" oncomplete="PF('dialogPlanta').show()"/>
-                        	<p:commandButton actionListener="#{plantaTalhaoMB.preparaEditar}" value="#{msg.btn_alterar}" update=":plantaTalhao, dlgPlanta" oncomplete="PF('dialogPlanta').show()"/>
+                        	<p:commandButton actionListener="#{plantaTalhaoMB.preparaEditar}" value="#{msg.btn_alterar}" update=":plantaTalhao" oncomplete="PF('dialogPlanta').show()"/>
                         	<p:commandButton actionListener="#{plantaTalhaoMB.excluirAjax}"	  value="#{msg.btn_excluir}" update=":formPlanta" />
 				        </f:facet>
                 </p:panel>
