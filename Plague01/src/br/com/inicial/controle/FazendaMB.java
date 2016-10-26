@@ -71,7 +71,7 @@ public class FazendaMB {
 	private List<Coordinate> coordinates;
 
 	public FazendaMB() {
-		ouvinteFirebase();
+//		ouvinteFirebase();
 		this.fazendaDAO = DAOFactory.criarFazendaDAO();
 		fazendas = getLista();
 		fazendasModel = new XLazyModel(fazendas);
