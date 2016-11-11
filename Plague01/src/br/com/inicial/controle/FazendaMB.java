@@ -1,8 +1,12 @@
 package br.com.inicial.controle;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,17 +14,29 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
+import org.geotools.data.FeatureSource;
+import org.geotools.feature.FeatureIterator;
+import org.opengis.feature.simple.SimpleFeature;
+import org.primefaces.component.gmap.GMap;
+import org.primefaces.component.gmap.GMapInfoWindow;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.map.GeocodeEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.GeocodeResult;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
+import org.primefaces.model.map.Overlay;
 
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.EstadoDAO;
@@ -39,6 +55,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
+import com.vividsolutions.jts.geom.MultiLineString;
 
 import de.micromata.opengis.kml.v_2_2_0.Boundary;
 import de.micromata.opengis.kml.v_2_2_0.Container;
@@ -209,7 +226,7 @@ public class FazendaMB {
 		    parseFeature(feature);
 		    String coordenadas = "";
 		    int x = 0;
-		    int y = coordinates.size()/2;
+		    int y = coordinates.size()/4;
 		    for (Coordinate c : coordinates) {
 		    	coordenadas = coordenadas + c.getLatitude() + " " + c.getLongitude() + ";";
 		    	if(x == y){
@@ -284,9 +301,35 @@ public class FazendaMB {
 	    }
 	}
 	
-	public void onPolygonSelect(OverlaySelectEvent event) {
-		org.primefaces.model.map.Polygon polygon = (org.primefaces.model.map.Polygon) event.getComponent().getAttributes();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Polygon Selected", null));
+	public void onPointSelect(org.primefaces.event.map.PointSelectEvent event) {
+		System.out.println("oint");
+        LatLng latlng = event.getLatLng();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circle Selected", null));
+//        addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Point Selected", "Lat:" + latlng.getLat() + ", Lng:" + latlng.getLng()));
+    }
+	
+	public void onPolygonSelect(org.primefaces.event.map.OverlaySelectEvent event) {
+		System.out.println("Overlay");
+		Overlay latlng = event.getOverlay();
+		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Double latitude = Double.parseDouble(params.get("latitude"));
+        Double longitude = Double.parseDouble(params.get("longitude"));
+    }
+	
+	public void onGeocode(GeocodeEvent event) {
+		List<GeocodeResult> results = event.getResults();
+		System.out.println("teste");
+	}
+	
+	public void onMarkerSelect(OverlaySelectEvent event) {
+		System.out.println("Ts");
+		Marker selectedMarker = (Marker) event.getOverlay();
+
+		 }
+	
+	public void onCircleSelect(OverlaySelectEvent event) {
+		System.out.println("Circle");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circle Selected", null));
     }
 
 	public ArrayList<Placemark> getPlacemarks(Feature root) { 
@@ -347,15 +390,67 @@ public class FazendaMB {
 					LatLng coord = new LatLng(lat,lon);
 					talhaoPolygon.getPaths().add(coord);
 				}
-	        	talhaoPolygon.setStrokeColor("#2E8B57");
-	        	talhaoPolygon.setFillColor("#2E8B57");
+	        	talhaoPolygon.setStrokeColor("#d10a21");
+	        	talhaoPolygon.setFillColor("#d10a21");
+	        	talhaoPolygon.setStrokeOpacity(0.7);
+	        	talhaoPolygon.setFillOpacity(0.7);
+	        	talhaoPolygon.setId(talhao.getId().toString());
+		        polygonModel.addOverlay(talhaoPolygon);
+			}
+	        
+/*	        try {
+				talhaoShape();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		}
+		return polygonModel;
+    }
+	
+	private void talhaoShape() throws IOException{
+		File file = new File("C:\\Fontes Java\\Plague01Docs\\Fazenda Santo Antonio\\Shapes\\Shapes\\FazStoAn.shp");
+//		File file = new File("C:\\Fontes Java\\Plague01Docs\\Fazenda Santo Antonio\\Shapes\\Shapes\\FazStoRe.shp");
+		Map<String, Serializable> map = new HashMap<>();
+		map.put("url", file.toURI().toURL());
+
+		DataStore dataStore = DataStoreFinder.getDataStore(map);
+		String typeName = dataStore.getTypeNames()[0];
+
+		FeatureSource source = dataStore.getFeatureSource(typeName);
+
+		org.geotools.feature.FeatureCollection collection = source.getFeatures();
+		FeatureIterator<SimpleFeature> results = collection.features();
+		try {
+			int x = 1;
+			while (results.hasNext()) {
+				System.out.println("Coodenadas=" +x);
+				x++;
+				org.primefaces.model.map.Polygon talhaoPolygon = new org.primefaces.model.map.Polygon();
+				SimpleFeature feature = (SimpleFeature) results.next();
+				MultiLineString mult = (MultiLineString) feature.getAttribute(0);
+				com.vividsolutions.jts.geom.Coordinate[] coordenadas = mult.getCoordinates();
+				for (com.vividsolutions.jts.geom.Coordinate coordinate : coordenadas) {
+					double lat = coordinate.y;
+					double lon = coordinate.x;
+					LatLng coord = new LatLng(lat,lon);
+					talhaoPolygon.getPaths().add(coord);
+					System.out.println(coordinate.y);
+					System.out.println(coordinate.x);
+				}
+				talhaoPolygon.setStrokeColor("#d10a21");
+	        	talhaoPolygon.setFillColor("#d10a21");
 	        	talhaoPolygon.setStrokeOpacity(0.7);
 	        	talhaoPolygon.setFillOpacity(0.7);
 		        polygonModel.addOverlay(talhaoPolygon);
 			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			results.close();
+			dataStore.dispose();
 		}
-		return polygonModel;
-    }
+	}
 	
 	/*public MapModel getPolygonModelDoFile() {
 		carregarKmlFile();
@@ -483,6 +578,78 @@ public class FazendaMB {
 	            System.out.println(name);
 	        }
 	    }
+	}
+	
+	private void testeShape(){
+		File file = new File("mayshapefile.shp");
+/*
+		try {
+		  Map connect = new HashMap();
+		  connect.put("url", file.toURL());
+
+		  DataStore dataStore = DataStoreFinder.getDataStore(connect);
+		  String[] typeNames = dataStore.getTypeNames();
+		  String typeName = typeNames[0];
+
+		  System.out.println("Reading content " + typeName);
+
+		  FeatureSource featureSource = dataStore.getFeatureSource(typeName);
+		  FeatureCollection collection = featureSource.getFeatures();
+		  FeatureIterator iterator = collection.features();
+
+
+		  try {
+		    while (iterator.hasNext()) {
+		      Feature feature = iterator.next();
+		      Geometry sourceGeometry = feature.getDefaultGeometry();
+		    }
+		  } finally {
+		    iterator.close();
+		  }
+
+		} catch (Throwable e) {}
+		*/
+	}
+	
+	public String getCentroMapa(){
+		String centro = "";
+		if(fazenda!=null && fazenda.getAreaInicial() !=null && !fazenda.getAreaInicial().equals("")){
+			centro = fazenda.getAreaInicial().split(" ")[0] +", " + fazenda.getAreaInicial().split(" ")[1];
+		}
+		return centro;
+	}
+	
+	protected void encodeOverlays(FacesContext context, GMap map) throws IOException {
+		MapModel model = map.getModel();
+		ResponseWriter writer = context.getResponseWriter();
+		
+		//Overlays
+		if(model != null) {
+			if(!model.getMarkers().isEmpty()) { 
+//				encodeMarkers(context, map);
+			}
+			if(!model.getPolylines().isEmpty()){ 
+//				encodePolylines(context, map);
+			if(!model.getPolygons().isEmpty()){ 
+//				encodePolygons(context, map);
+			}
+			if(!model.getCircles().isEmpty()){ 
+//				encodeCircles(context, map);
+			}
+			if(!model.getRectangles().isEmpty()){ 
+//				encodeRectangles(context, map);
+			}
+		}
+	       
+	       GMapInfoWindow infoWindow = map.getInfoWindow();
+
+	       if(infoWindow != null) {
+	           writer.write(",infoWindow: new google.maps.InfoWindow({");
+	           writer.write("id:'" + infoWindow.getClientId(context) + "'");
+	           writer.write("})");
+	       }
+	}
+	
 	}
 	
 }

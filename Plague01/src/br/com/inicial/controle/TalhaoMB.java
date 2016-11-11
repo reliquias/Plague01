@@ -1,14 +1,34 @@
 package br.com.inicial.controle;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
+import org.apache.commons.io.FilenameUtils;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
+import org.geotools.data.FeatureSource;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+import org.opengis.feature.simple.SimpleFeature;
+import org.primefaces.event.FileUploadEvent;
 
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.TalhaoDAO;
@@ -22,6 +42,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.MultiLineString;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 @ManagedBean(name="talhaoMB")
@@ -36,6 +58,7 @@ public class TalhaoMB {
 	private FazendaMB fazendaMB;
 	private Fazenda fazenda;
 	FacesContext facesContext = FacesContext.getCurrentInstance();
+	File fileTalhao;
 
 	public TalhaoMB() {
 		this.talhaoDAO = DAOFactory.criarTalhaoDAO();
@@ -226,5 +249,99 @@ public class TalhaoMB {
 		String areaInicial = areaInicialFazenda[0];
 		System.out.println("Wanderson: "+areaInicial);
 		
+	}
+	
+	private void carregarShape()throws IOException {
+		File file = new File("C:\\Fontes Java\\Plague01Docs\\Fazenda Santo Antonio\\Shapes\\Shapes\\FazStoAn.shp");
+//		File file = new File("C:\\Fontes Java\\Plague01Docs\\Fazenda Santo Antonio\\Shapes\\Shapes\\FazStoRe.shp");
+		Map<String, Serializable> map = new HashMap<>();
+		map.put("url", file.toURI().toURL());
+
+		DataStore dataStore = DataStoreFinder.getDataStore(map);
+		String typeName = dataStore.getTypeNames()[0];
+
+		FeatureSource source = dataStore.getFeatureSource(typeName);
+
+		FeatureCollection collection = source.getFeatures();
+		FeatureIterator<SimpleFeature> results = collection.features();
+		try {
+			while (results.hasNext()) {
+				SimpleFeature feature = (SimpleFeature) results.next();
+				MultiLineString mult = (MultiLineString) feature.getAttribute(0);
+				Coordinate[] coordenadas = mult.getCoordinates();
+				for (Coordinate coordinate : coordenadas) {
+					System.out.println(coordinate.y);
+					System.out.println(coordinate.x);
+					System.out.println(coordinate.z);
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			results.close();
+			dataStore.dispose();
+		}
+	}
+	
+	public void uploadTalhao(FileUploadEvent event) {
+		try {
+			FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			InputStream input = event.getFile().getInputstream();
+			
+			Path folder = Paths.get(System.getenv("temp"));
+			String filename = FilenameUtils.getBaseName(event.getFile().getFileName()); 
+			String extension = FilenameUtils.getExtension(event.getFile().getFileName());
+			Path file = Files.createTempFile(folder, filename + "-", "." + extension);
+			Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+			fileTalhao = new File(file.toString());
+			processarArquivo(fileTalhao);
+			talhoesModel = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void processarArquivo(File file) throws IOException {
+		if (file != null) {
+			Map<String, Serializable> map = new HashMap<>();
+			map.put("url", file.toURI().toURL());
+
+			DataStore dataStore = DataStoreFinder.getDataStore(map);
+			String typeName = dataStore.getTypeNames()[0];
+			FeatureSource source = dataStore.getFeatureSource(typeName);
+			org.geotools.feature.FeatureCollection collection = source.getFeatures();
+			FeatureIterator<SimpleFeature> results = collection.features();
+			try {
+				int x = 1;
+				while (results.hasNext()) {
+					String area = "";
+					SimpleFeature feature = (SimpleFeature) results.next();
+					MultiLineString mult = (MultiLineString) feature.getAttribute(0);
+					com.vividsolutions.jts.geom.Coordinate[] coordenadas = mult.getCoordinates();
+					for (com.vividsolutions.jts.geom.Coordinate coordinate : coordenadas) {
+						area = area + coordinate.y + " " + coordinate.x + ";";
+					}
+					if(x==1){
+						talhaoDAO.deletarTalhao(fazenda.getId());
+					}
+					Talhao talhao = new Talhao();
+					talhao.setNome(x <= 9 ? "0" + x : "" + x);
+					talhao.setFazenda(fazenda);
+					talhao.setArea(area);
+					talhaoDAO.salvar(talhao);
+					talhaoFirebase(talhao);
+					x++;
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			} finally {
+				results.close();
+				dataStore.dispose();
+				JsfUtil.addSuccessMessage("Upload dos talhão ok!");
+			}
+		} else {
+			JsfUtil.addSuccessMessage("Erro, arquivo invalido!");
+		}
 	}
 }

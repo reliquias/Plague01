@@ -50,12 +50,21 @@
 						<p:commandButton value="Talhaos" ajax="false" action="#{fazendaMB.talhoesForm}" />
 					</h:panelGrid>
 					<p:growl id="growl" life="3000" />
- 					  <p:gmap id="w_gmap" widgetVar="w_gmap" center="-23.563556, -46.633307" zoom="14" type="ROADMAP" style="width:600px;height:400px" model="#{fazendaMB.polygonModel}">
- 					   	<p:ajax event="overlaySelect" listener="#{fazendaMB.onPolygonSelect}" update="growl" />
- 					  </p:gmap>
 				</p:panel>
+				<p:gmap id="w_gmap" widgetVar="w_gmap" center="#{fazendaMB.centroMapa}" zoom="12" type="ROADMAP" 
+				style="width:1200px;height:400px" model="#{fazendaMB.polygonModel}" onPointClick="handleMapClick(event)" >
+<!-- 					<p:ajax event="overlaySelect" listener="#{fazendaMB.onPolygonSelect}" update="growl" /> -->
+				</p:gmap>
 				<script type="text/javascript">
-					if (navigator.geolocation) {
+				
+				function handleMapClick(event) {
+					alert('1');
+					   var lat = event.latLng.lat();
+					   var lng = event.latLng.lng();
+					   alert(lat);
+					}
+					/* if (navigator.geolocation) {
+						alert('1');
 						checkGeolocationByHTML5();
 					} else {
 						checkGeolocationByLoaderAPI(); // HTML5 not supported! Fall back to Loader API.
@@ -80,13 +89,14 @@
 					}
 					function setMapCenter(latitude, longitude) {
 						var str = document.getElementById("cadastro:areaInicial").value;
+						alert('2');
 						console.log(str);
 						if (str > '') {
 							var la = str.split(" ")[0];
 							var lo = str.split(" ")[1];
 							PF('w_gmap').getMap().setCenter(new google.maps.LatLng(la, lo));
 						}
-					}
+					} */
 				</script>
 			</h:form>
 		</p:layoutUnit>

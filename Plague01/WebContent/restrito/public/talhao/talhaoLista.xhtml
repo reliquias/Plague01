@@ -7,10 +7,11 @@
 
 <ui:define name="centro">
         <p:layoutUnit position="center">
-            <h:form prependId="false" acceptcharset="ISO-8859-1">
+            <h:form prependId="false" acceptcharset="ISO-8859-1" id="formTalhao">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="#{msg.talhao_label}" id="panel">
-                    <p:dataTable id="talhao" lazy="true" sortBy="#{talhoes.nome}" value="#{talhaoMB.talhoesModel}" var="talhoes" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{talhaoMB.talhao}" rowsPerPageTemplate="5,10,15">
+                <p:fileUpload auto="true" widgetVar="uploader" label="Shape..."  fileUploadListener="#{talhaoMB.uploadTalhao}" mode="advanced" multiple="false" customUI="true" id="fileUpload" ajax="true" height="115px" width="150px" update=":formTalhao"/>
+                    <p:dataTable id="talhao" lazy="true" sortBy="#{talhoes.nome}" value="#{talhaoMB.talhoesModel}" var="talhoes" paginator="true" rows="5" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{talhaoMB.talhao}" rowsPerPageTemplate="5,10,15">
                 		<p:column sortBy="#{talhoes.nome}" filterMatchMode="contains" filterBy="#{talhoes.nome}">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.talhao_nome}"/>

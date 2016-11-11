@@ -19,6 +19,9 @@ public class TalhaoDAO {
 	public void salvar(Talhao objeto) {
 		Transaction tx = null;
 		try {
+			if(!session.isOpen()){
+				session = HibernateUtil.getSessionFactory().getCurrentSession();
+			}
 		    tx = session.beginTransaction();
 		    this.session.save(objeto);
 		    tx.commit();
@@ -27,14 +30,17 @@ public class TalhaoDAO {
 		    if (tx != null) tx.rollback();
 		    throw e;
 		}
-		finally {
+/*		finally {
 		    session.close();
-		}		
+		}*/		
 	}
 
 	public void atualizar(Talhao objeto) {
 		Transaction tx = null;
 		try {
+			if(!session.isConnected()){
+				session = HibernateUtil.getSessionFactory().getCurrentSession();
+			}
 		    tx = session.beginTransaction();
 		    this.session.merge(objeto);
 		    tx.commit();
@@ -89,5 +95,13 @@ public class TalhaoDAO {
 		Query consulta = this.session.createQuery(hql);
 //		consulta.setInteger("idFicha", idFicha);
 		return (List<Talhao>) consulta.list();
+	}
+	
+	public void deletarTalhao(Integer idFazenda){
+		if(!session.isConnected()){
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
+		String hql = "delete from Talhao c where c.fazenda.id= " + idFazenda;
+		this.session.createQuery(hql).executeUpdate();
 	}
 }
