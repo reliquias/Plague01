@@ -7,13 +7,21 @@
 	xmlns:sec="http://www.springframework.org/security/facelets/tags">
 
 	<h:form id="vistoriasForm"> 
-		<p:commandButton value="Atualizar" ajax="true" actionListener="#{vistoriasMB.salvar}" update="vistoriasForm"/>
+		<p:commandButton action="#{vistoriaMB.editar}" value="Ver" ajax="false"/>
 		<h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+		<h:inputHidden value="#{vistoriaMB.vistoriaId}" id="vistoriaId"/>
 		<p:spacer/>
 <!-- 		<h:outputLabel value="Vistorias" for="vistorias"/> -->
-			<h:selectOneMenu id="vistorias" value="#{vistoriaMB.vistoria.responsavel}" title="Vistorias" converter="simpleEntityConverter">
+			<h:selectOneMenu id="vistorias" value="#{vistoriaMB.vistoria.responsavel}" title="Vistorias" converter="simpleEntityConverter" onchange="setVistoriaId(this.value)">
             <f:selectItems value="#{vistoriaMB.itemsAvailableSelectOne}"/>
 		</h:selectOneMenu> 
 		</h:panelGrid>
+		<script type="text/javascript">
+			function setVistoriaId(idVistoria) {
+				var str = document.getElementById("vistoriasForm:vistorias").value;
+				document.getElementById("vistoriasForm:vistoriaId").value = str;
+// 				alert(str);
+			}
+		</script>
 	</h:form>
 </ui:fragment>

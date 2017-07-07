@@ -15,6 +15,7 @@ import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.PlantaTalhao;
 import br.com.inicial.modelo.Talhao;
 import br.com.inicial.util.JsfUtil;
+import br.com.inicial.util.Utils;
 import br.com.inicial.util.XLazyModel;
 
 import com.firebase.client.Firebase;
@@ -162,13 +163,13 @@ public class PlantaTalhaoMB {
 			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/plantaTalhao/");
 			Firebase firebaseRef = firebase.push();
 			
-			firebaseRef.child("id").setValue(plantaTalhao.getId());
-			firebaseRef.child("idPlanta").setValue(plantaTalhao.getPlanta().getId());
-			firebaseRef.child("plantaNome").setValue(plantaTalhao.getPlanta().getNome());
-			firebaseRef.child("plantaDescricao").setValue(plantaTalhao.getPlanta().getDescricao());
-			firebaseRef.child("idTalhao").setValue(plantaTalhao.getTalhao().getId());
-			firebaseRef.child("talhaoDescricao").setValue(plantaTalhao.getTalhao().getNome());
-			firebaseRef.child("coordenadas").setValue(plantaTalhao.getCoordenadas());
+			firebaseRef.child("id").setValue(Utils.retornarStringVazioQuanoNulo(plantaTalhao.getId()));
+			firebaseRef.child("idPlanta").setValue(Utils.retornarStringVazioQuanoNulo(plantaTalhao.getPlanta().getId()));
+			firebaseRef.child("plantaNome").setValue(Utils.retornarStringVazioQuanoNulo(plantaTalhao.getPlanta().getNome()));
+			firebaseRef.child("plantaDescricao").setValue(Utils.retornarStringVazioQuanoNulo(plantaTalhao.getPlanta().getDescricao()));
+			firebaseRef.child("idTalhao").setValue(Utils.retornarStringVazioQuanoNulo(plantaTalhao.getTalhao().getId()));
+			firebaseRef.child("talhaoDescricao").setValue(Utils.retornarStringVazioQuanoNulo(plantaTalhao.getTalhao().getNome()));
+			firebaseRef.child("coordenadas").setValue(Utils.retornarStringVazioQuanoNulo(plantaTalhao.getCoordenadas()));
 			
 		}
 	}

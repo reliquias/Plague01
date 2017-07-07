@@ -1,24 +1,26 @@
 package br.com.inicial.modelo;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import br.com.inicial.interfaces.BaseEntity;
+import br.com.inicial.util.Utils;
 
 @Entity
 public class Vistoria implements BaseEntity, Serializable {
 
 	private static final long serialVersionUID = 2471765773806278661L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String armazenamento;
 	private String coordenadas;
@@ -28,11 +30,41 @@ public class Vistoria implements BaseEntity, Serializable {
 	@Lob
     @Column(name = "IMAGEM_1")
     private byte[] imagem1;
+	@Lob
+	@Column(name = "IMAGEM_2")
+	private byte[] imagem2;
+	@Lob
+	@Column(name = "IMAGEM_3")
+	private byte[] imagem3;
+	@Lob
+	@Column(name = "IMAGEM_4")
+	private byte[] imagem4;
+	@Lob
+	@Column(name = "IMAGEM_5")
+	private byte[] imagem5;
+	
+	@Lob
+	private String imagens;
 	
 	@ManyToOne
 	private TipoDoenca praga;
 	@ManyToOne
 	private PlantaTalhao plantaTalhao;
+	
+	@Transient
+	private Integer idFazenda;
+	@Transient
+	private Integer idPlanta;
+	@Transient
+	private Integer idDoenca;
+	@Transient
+	private Integer idTalhao;
+
+	@Transient
+	private List<String> urlImage;
+
+	@Transient
+	private String dataVistoriaFirebase;
 	
     @Override
     public Integer getIdi() {
@@ -153,6 +185,119 @@ public class Vistoria implements BaseEntity, Serializable {
 	public String toString() {
 		return armazenamento + ", "+ status + ", " + responsavel;
 	}
-	
-	
+
+	public Integer getIdFazenda() {
+		return idFazenda;
+	}
+
+	public void setIdFazenda(Integer idFazenda) {
+		this.idFazenda = idFazenda;
+	}
+
+	public Integer getIdPlanta() {
+		return idPlanta;
+	}
+
+	public void setIdPlanta(Integer idPlanta) {
+		this.idPlanta = idPlanta;
+	}
+
+	public Integer getIdDoenca() {
+		return idDoenca;
+	}
+
+	public void setIdDoenca(Integer idDoenca) {
+		this.idDoenca = idDoenca;
+	}
+
+	public Integer getIdTalhao() {
+		return idTalhao;
+	}
+
+	public void setIdTalhao(Integer idTalhao) {
+		this.idTalhao = idTalhao;
+	}
+
+	public String getDataVistoriaFirebase() {
+		return dataVistoriaFirebase;
+	}
+
+	public void setDataVistoriaFirebase(String dataVistoriaFirebase) {
+		this.dataVistoriaFirebase = dataVistoriaFirebase;
+	}
+
+	public byte[] getImagem2() {
+		return imagem2;
+	}
+
+	public void setImagem2(byte[] imagem2) {
+		this.imagem2 = imagem2;
+	}
+
+	public byte[] getImagem3() {
+		return imagem3;
+	}
+
+	public void setImagem3(byte[] imagem3) {
+		this.imagem3 = imagem3;
+	}
+
+	public byte[] getImagem4() {
+		return imagem4;
+	}
+
+	public void setImagem4(byte[] imagem4) {
+		this.imagem4 = imagem4;
+	}
+
+	public byte[] getImagem5() {
+		return imagem5;
+	}
+
+	public void setImagem5(byte[] imagem5) {
+		this.imagem5 = imagem5;
+	}
+
+	public List<String> getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(List<String> urlImage) {
+		int x = 0;
+		String urls = "";
+		try {
+			for (String image : urlImage) {
+				x++;
+				urls = urls+image+";";
+				if(x == 1){
+					setImagem1(Utils.urlToByte(image).toByteArray());
+				}
+				if(x == 2){
+					setImagem2(Utils.urlToByte(image).toByteArray());
+				}
+				if(x == 3){
+					setImagem3(Utils.urlToByte(image).toByteArray());
+				}
+				if(x == 4){
+					setImagem4(Utils.urlToByte(image).toByteArray());
+				}
+				if(x == 5){
+					setImagem5(Utils.urlToByte(image).toByteArray());
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		setImagens(urls);
+		this.urlImage = urlImage;
+	}
+
+	public String getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(String imagens) {
+		this.imagens = imagens;
+	}
 }

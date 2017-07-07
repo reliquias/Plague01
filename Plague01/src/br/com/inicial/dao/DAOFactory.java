@@ -32,6 +32,18 @@ public class DAOFactory {
 		usuarioDAO.setSession(this.session);
 		return usuarioDAO;
 	}
+
+	public PlantaTalhaoDAO getPlantaTalhaoDAO() {
+		PlantaTalhaoDAO plantaTalhaoDAO = new PlantaTalhaoDAO();
+		plantaTalhaoDAO.setSession(this.session);
+		return plantaTalhaoDAO;
+	}
+
+	public VistoriaDAO getVistoriaDAO() {
+		VistoriaDAO vistoriaDAO = new VistoriaDAO();
+		vistoriaDAO.setSession(this.session);
+		return vistoriaDAO;
+	}
 	
 	public static FazendaDAO criarFazendaDAO() {
 		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
@@ -81,6 +93,13 @@ public class DAOFactory {
 		talhaoDAO.setSession(HibernateUtil.getSession(empresa));
 		return talhaoDAO;
 	}
+
+	public static BoletimDiarioDAO criarBoletimDiarioDAO() {
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		BoletimDiarioDAO boletimDiarioDAO = new BoletimDiarioDAO();
+		boletimDiarioDAO.setSession(HibernateUtil.getSession(empresa));
+		return boletimDiarioDAO;
+	}
 	
 	public static TipoDoencaDAO criarTipoDoencaDAO() {
 		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
@@ -101,6 +120,13 @@ public class DAOFactory {
 		PlantaTalhaoDAO plantaTalhaoDAO = new PlantaTalhaoDAO();
 		plantaTalhaoDAO.setSession(HibernateUtil.getSession(empresa));
 		return plantaTalhaoDAO;
+	}
+
+	public static BoletimChecklistDAO criarBoletimChecklistDAO() {
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		BoletimChecklistDAO boletimChecklistDAO = new BoletimChecklistDAO();
+		boletimChecklistDAO.setSession(HibernateUtil.getSession(empresa));
+		return boletimChecklistDAO;
 	}
 
 	public static VistoriaDAO criarVistoriaDAO() {

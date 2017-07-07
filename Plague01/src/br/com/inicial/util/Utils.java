@@ -10,11 +10,14 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Panel;
 import java.awt.Toolkit;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -589,6 +592,27 @@ public class Utils {
 			return null;
 		}
 	}
+
+	public static Calendar stringToCalendar(String formato, String dataString) {
+		try {
+			Calendar calendar = calendarioEmBranco();
+			calendar.setTime(stringToDate(formato, dataString));
+			return calendar;
+		} catch (Exception e){
+			return null;
+		}
+	}
+	
+	public static Calendar firebaseToCalendar(String dataFirebase) {
+		if (dataFirebase != null && dataFirebase.length() > 22) {
+			String data = dataFirebase.substring(5, 15);
+			String hora = dataFirebase.substring(17);
+			String horaC = data + " " + hora;
+			Calendar x = Utils.stringToCalendar("dd/MM/yyyy HH:mm:ss", horaC);
+			return x;
+		}
+		return null;
+	}
 	
 	public static boolean stringToBoolean(String booleanString) {
 		try {
@@ -974,6 +998,14 @@ public class Utils {
     		return obj;
     	}
     }
+
+    public static String retornarStringVazioQuanoNulo(Object obj) {
+    	if (obj == null || (obj instanceof String && obj.toString().equals(""))) {
+    		return "vazio";
+    	} else{
+    		return obj.toString();
+    	}
+    }
     
 	public static double stringToDouble(String arg, String separador) throws ParseException {
 		NumberFormat nf;
@@ -990,4 +1022,36 @@ public class Utils {
 		double number = nf.parse(arg).doubleValue();
 		return number;
 	}
+	
+	@SuppressWarnings("finally")
+	public static ByteArrayOutputStream urlToByte(String url) throws IOException {
+		URL u = new URL(url);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		InputStream is = null;
+		try {
+			is = u.openStream();
+			byte[] byteChunk = new byte[4096]; // Or whatever size you want to read in at a time.
+			int n;
+			while ((n = is.read(byteChunk)) > 0) {
+				baos.write(byteChunk, 0, n);
+			}
+		} catch (Exception e) {
+			// System.err.printf ("Failed while reading bytes from %s: %s",
+			// url.toExternalForm(), e.getMessage());
+			e.printStackTrace();
+		}
+		if (is != null) {
+			is.close();
+		}
+		return baos;
+	}
+	
+	public static boolean stringToBoolean2(String booleano){
+		if(booleano == null || booleano.equalsIgnoreCase("false")){
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

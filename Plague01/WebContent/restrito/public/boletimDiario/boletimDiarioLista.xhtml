@@ -1,0 +1,31 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:define name="centro">
+        <p:layoutUnit position="center">
+            <h:form prependId="false" acceptcharset="ISO-8859-1" id="formBoletimDiario">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="#{msg.boletimDiario_label}" id="panel">
+                    <p:dataTable id="boletimDiario" lazy="true" sortBy="#{boletins.projeto}" value="#{boletimDiarioMB.boletinsModel}" var="boletins" paginator="true" rows="5" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{boletimDiarioMB.boletimDiario}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{boletins.projeto}" filterMatchMode="contains" filterBy="#{boletins.projeto}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.boletimDiario_projeto}"/>
+                            </f:facet>
+                            <h:outputText value="#{boletins.projeto}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{boletimDiarioMB.novo}" value="Novo" update="infoBoletimDiario"  ajax="false"/>
+                        <p:commandButton action="#{boletimDiarioMB.editar}"    value="Alterar" ajax="false"/>
+                        <p:commandButton actionListener="#{boletimDiarioMB.excluirAjax}" value="Excluir" ajax="true" update="panel" />
+                        <p:commandButton action="#{boletimDiarioMB.voltarFazenda}" value="Fazenda" ajax="false"/>
+                    </f:facet>
+                </p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

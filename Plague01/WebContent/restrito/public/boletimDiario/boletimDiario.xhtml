@@ -1,0 +1,92 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="centro">
+		<p:layoutUnit position="center" id="boletimDiarioTodo">
+			<h:form id="cadastro" acceptcharset="ISO-8859-1">
+				<p:growl id="msg" />
+				<p:panel header="#{msg.boletimDiario_labelCad}">
+					<h:panelGrid id="infoTalhao" columns="2" style="margin-bottom: 10px">
+					<p:commandLink action="#{boletimDiarioMB.listar}" value="Voltar" ajax="false" immediate="true"/>
+					<p:spacer/><p:spacer/>
+						<h:inputHidden value="#{boletimDiarioMB.boletimDiario.id}" />
+						<h:outputLabel value="#{msg.boletimDiario_projeto}" for="projeto" />
+						<h:inputText id="projeto" label="Projeto"
+							value="#{boletimDiarioMB.boletimDiario.projeto}" size="50" maxlength="50">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_maquinaBase}" for="maquinaBase" />
+						<h:inputText id="maquinaBase" label="maquinaBase"
+							value="#{boletimDiarioMB.boletimDiario.maquinaBase}" size="50" maxlength="50">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_matriculaResponsavel}" for="matriculaResponsavel" />
+						<h:inputText id="matriculaResponsavel" label="matriculaResponsavel"
+							value="#{boletimDiarioMB.boletimDiario.matriculaResponsavel}" size="50" maxlength="50">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_nomeResponsavel}" for="nomeResponsavel" />
+						<h:inputText id="nomeResponsavel" label="nomeResponsavel"
+							value="#{boletimDiarioMB.boletimDiario.nomeResponsavel}" size="50" maxlength="50">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_odometro}" for="odometro" />
+						<h:inputText id="odometro" label="odometro"
+							value="#{boletimDiarioMB.boletimDiario.odometro}" size="50" maxlength="50">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_turno}" for="turno" />
+						<h:inputText id="turno" label="turno"
+							value="#{boletimDiarioMB.boletimDiario.turno}" size="50" maxlength="50">
+						</h:inputText>
+						<p:commandButton action="#{boletimDiarioMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro, formPlanta"/>
+					</h:panelGrid>
+					<p:messages id="msgs"/>
+				</p:panel>
+			</h:form>
+			
+			<h:form prependId="false" acceptcharset="ISO-8859-1" id="formPlanta" rendered="#{boletimChecklistMB.boletimDiario != null}">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="#{msg.boletimChecklist_label}" id="panelPlanta">
+                    <p:dataTable id="boletimChecklist" lazy="true" sortBy="#{plantas.codigo}" value="#{boletimChecklistMB.boletimChecklistsModel}" var="plantas" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{boletimChecklistMB.boletimChecklist}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{plantas.codigo}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.boletimChecklist_codigo}"/>
+                            </f:facet>
+                            <h:outputText value="#{plantas.codigo}"/>
+                        </p:column>
+                		<p:column >
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.boletimChecklist_planta}"/>
+                            </f:facet>
+                            <h:outputText value="#{plantas.planta}"/>
+                        </p:column>
+<!--                         <p:ajax event="rowSelect" oncomplete="PF('dialogPlanta').show()" update=":dlgPlanta" /> -->
+						</p:dataTable>
+                        <f:facet name="footer">
+                        	<p:commandButton actionListener="#{boletimChecklistMB.novo}"          value="#{msg.btn_Novo}"    update=":boletimChecklist" oncomplete="PF('dialogPlanta').show()"/>
+                        	<p:commandButton actionListener="#{boletimChecklistMB.preparaEditar}" value="#{msg.btn_alterar}" update=":boletimChecklist" oncomplete="PF('dialogPlanta').show()"/>
+                        	<p:commandButton actionListener="#{boletimChecklistMB.excluirAjax}"	  value="#{msg.btn_excluir}" update=":formPlanta" />
+				        </f:facet>
+                </p:panel>
+			</h:form>
+		</p:layoutUnit>
+		
+		<p:dialog id="dlgPlanta" header="#{msg.boletimChecklist_labelCad}" widgetVar="dialogPlanta" resizable="false" modal="true" showEffect="slide" width="500" dynamic="true">
+            <h:form prependId="false" id="infoPlanta">
+                <h:panelGrid columns="2" style="margin-bottom: 10px">
+                <p:spacer/>
+                	<h:inputHidden value="#{boletimChecklistMB.boletimChecklist.id}" />
+                	<h:outputLabel value="#{msg.boletimChecklist_codigo}" for="codigo" />
+						<h:inputText id="codigo" label="Codigo"
+							value="#{boletimChecklistMB.boletimChecklist.codigo}" size="10" maxlength="12">
+						</h:inputText>
+                	<h:outputLabel value="#{msg.boletimChecklist_coordenadas}" for="coordenadas" />
+						<h:inputText id="coordenadas" label="Coordenadas"
+							value="#{boletimChecklistMB.boletimChecklist.coordenadas}" size="50" maxlength="60">
+						</h:inputText>
+                    <p:commandButton update=":boletimChecklist" oncomplete="PF('dialogPlanta').hide()" actionListener="#{boletimChecklistMB.adicionaOuAtualiza}" value="#{msg.btn_salvar}"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+	</ui:define>
+</ui:composition>

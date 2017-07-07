@@ -7,9 +7,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import br.com.inicial.modelo.PlantaTalhao;
+import br.com.inicial.modelo.BoletimChecklist;
 
-public class PlantaTalhaoDAO {
+public class BoletimChecklistDAO {
 
 	private Session	session;
 
@@ -17,7 +17,7 @@ public class PlantaTalhaoDAO {
 		this.session = session;
 	}
 
-	public void salvar(PlantaTalhao objeto) {
+	public void salvar(BoletimChecklist objeto) {
 		Transaction tx = null;
 		try {
 		    tx = session.beginTransaction();
@@ -33,7 +33,7 @@ public class PlantaTalhaoDAO {
 		}		
 	}
 
-	public void atualizar(PlantaTalhao objeto) {
+	public void atualizar(BoletimChecklist objeto) {
 		Transaction tx = null;
 		try {
 		    tx = session.beginTransaction();
@@ -49,7 +49,7 @@ public class PlantaTalhaoDAO {
 		}
 	}
 
-	public void excluir(PlantaTalhao objeto) {
+	public void excluir(BoletimChecklist objeto) {
 		Transaction tx = null;
 		try {
 		    tx = session.beginTransaction();
@@ -62,22 +62,22 @@ public class PlantaTalhaoDAO {
 		}
 	}
 
-	public PlantaTalhao carregar(Integer codigo) {
-		//TODO o hibernate nao conseguira fazer a carga caso seja passado o PlantaTalhao
+	public BoletimChecklist carregar(Integer codigo) {
+		//TODO o hibernate nao conseguira fazer a carga caso seja passado o BoletimChecklist
 		// no parametro, tem que ser diretamente a chave (integer)
-		return (PlantaTalhao) this.session.get(PlantaTalhao.class, codigo);
+		return (BoletimChecklist) this.session.get(BoletimChecklist.class, codigo);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PlantaTalhao> listar() {
-		List<PlantaTalhao> lista = new ArrayList<PlantaTalhao>();
+	public List<BoletimChecklist> listar() {
+		List<BoletimChecklist> lista = new ArrayList<BoletimChecklist>();
 		if(!session.isConnected()){
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 		}
 		Transaction tx = null;
 		try {
 		    tx = session.beginTransaction();
-		    lista = this.session.createCriteria(PlantaTalhao.class).list();
+		    lista = this.session.createCriteria(BoletimChecklist.class).list();
 		    tx.commit();
 		}
 		catch (Exception e) {
@@ -87,12 +87,12 @@ public class PlantaTalhaoDAO {
 		return lista;
 	}
 	
-	public List<PlantaTalhao> buscarListaPorCampo(String campo, Object valor) {
-		List<PlantaTalhao> lista = new ArrayList<PlantaTalhao>();
+	public List<BoletimChecklist> buscarListaPorCampo(String campo, Object valor) {
+		List<BoletimChecklist> lista = new ArrayList<BoletimChecklist>();
 		if(valor instanceof String){
 			valor = "'" + valor + "'";
 		}
-		String hql = "select c from PlantaTalhao c where c." + campo +" = " + valor;
+		String hql = "select c from BoletimChecklist c where c." + campo +" = " + valor;
 		if(!session.isConnected()){
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 		}
@@ -100,7 +100,7 @@ public class PlantaTalhaoDAO {
 		try {
 		    tx = session.beginTransaction();
 		    Query consulta =this.session.createQuery(hql);
-			lista  = (List<PlantaTalhao>) consulta.list();
+			lista  = (List<BoletimChecklist>) consulta.list();
 		    tx.commit();
 		}
 		catch (Exception e) {
@@ -110,22 +110,22 @@ public class PlantaTalhaoDAO {
 		return lista;
 	}
 	
-	public PlantaTalhao buscarPorCampo(String campo, Object valor) {
+	public BoletimChecklist buscarPorCampo(String campo, Object valor) {
 		if(valor instanceof String){
 			valor = "'" + valor + "'";
 		}
-		String hql = "select c from PlantaTalhao c where c." + campo +" = " + valor;
+		String hql = "select c from BoletimChecklist c where c." + campo +" = " + valor;
 		Query consulta = this.session.createQuery(hql);
 //		consulta.setInteger("idFicha", idFicha);
-		return (PlantaTalhao) consulta.uniqueResult();
+		return (BoletimChecklist) consulta.uniqueResult();
 	}
 	
-	public List<PlantaTalhao> buscarListaPorCampos(String[] campo, Object[] valor) {
+	public List<BoletimChecklist> buscarListaPorCampos(String[] campo, Object[] valor) {
 		if(!session.isConnected()){
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 		}
 		
-		String hql = "select c from PlantaTalhao c where ";
+		String hql = "select c from BoletimChecklist c where ";
 				
 		for (int nCampos = 0; nCampos < campo.length; nCampos++) {
 			Object v = valor[nCampos];
@@ -136,15 +136,15 @@ public class PlantaTalhaoDAO {
 		}
 		
 		Query consulta = this.session.createQuery(hql);
-		return (List<PlantaTalhao>) consulta.list();
+		return (List<BoletimChecklist>) consulta.list();
 	}
 
-	public PlantaTalhao buscarPorCampos(String[] campo, Object[] valor) {
+	public BoletimChecklist buscarPorCampos(String[] campo, Object[] valor) {
 		if(!session.isConnected()){
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 		}
 		
-		String hql = "select c from PlantaTalhao c where ";
+		String hql = "select c from BoletimChecklist c where ";
 		
 		for (int nCampos = 0; nCampos < campo.length; nCampos++) {
 			Object v = valor[nCampos];
@@ -155,6 +155,6 @@ public class PlantaTalhaoDAO {
 		}
 		
 		Query consulta = this.session.createQuery(hql.substring(0, hql.length()-5));
-		return (PlantaTalhao) consulta.uniqueResult();
+		return (BoletimChecklist) consulta.uniqueResult();
 	}
 }

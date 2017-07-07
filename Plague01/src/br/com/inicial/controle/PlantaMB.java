@@ -14,6 +14,7 @@ import br.com.inicial.dao.PlantaDAO;
 import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Planta;
 import br.com.inicial.util.JsfUtil;
+import br.com.inicial.util.Utils;
 import br.com.inicial.util.XLazyModel;
 
 import com.firebase.client.Firebase;
@@ -146,9 +147,9 @@ public class PlantaMB {
 			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/planta/");
 			Firebase firebaseRef = firebase.push();
 			
-			firebaseRef.child("id").setValue(planta.getId());
-			firebaseRef.child("nome").setValue(planta.getNome());
-			firebaseRef.child("descricao").setValue(planta.getDescricao());
+			firebaseRef.child("id").setValue(Utils.retornarStringVazioQuanoNulo(planta.getId()));
+			firebaseRef.child("nome").setValue(Utils.retornarStringVazioQuanoNulo(planta.getNome()));
+			firebaseRef.child("descricao").setValue(Utils.retornarStringVazioQuanoNulo(planta.getDescricao()));
 		}
 	}
 }

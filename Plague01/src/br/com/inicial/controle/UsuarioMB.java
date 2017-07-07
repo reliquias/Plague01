@@ -17,6 +17,7 @@ import br.com.inicial.dao.UsuarioDAO;
 import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Usuario;
 import br.com.inicial.util.JsfUtil;
+import br.com.inicial.util.Utils;
 import br.com.inicial.util.XLazyModel;
 
 import com.firebase.client.Firebase;
@@ -195,10 +196,10 @@ public class UsuarioMB {
 			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/usuario/");
 			Firebase firebaseRef = firebase.push();
 			
-			firebaseRef.child("id").setValue(usuario.getId());
-			firebaseRef.child("nome").setValue(usuario.getNome());
-			firebaseRef.child("cpf").setValue(usuario.getCpf());
-			firebaseRef.child("matricula").setValue(usuario.getMatricula());
+			firebaseRef.child("id").setValue(Utils.retornarStringVazioQuanoNulo(usuario.getId()));
+			firebaseRef.child("nome").setValue(Utils.retornarStringVazioQuanoNulo(usuario.getNome()));
+			firebaseRef.child("cpf").setValue(Utils.retornarStringVazioQuanoNulo(usuario.getCpf()));
+			firebaseRef.child("matricula").setValue(Utils.retornarStringVazioQuanoNulo(usuario.getMatricula()));
 		}
 	}
 }

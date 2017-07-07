@@ -1,5 +1,7 @@
 package br.com.inicial.controle;
 
+import java.util.Calendar;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -66,6 +68,11 @@ public class LoginMB{
 			result.close();
 			stm.close();
 			con.close();*/
+    		
+    		if(licencaVencida()){
+    			JsfUtil.addErrorMessage("Licença Vencida, procure o fornecedor do sistema");
+    	    	return null;
+    		}
 			
 	    	EmpresaDAO empresaDao = getEmpresaDaoFachada().getEmpresaDao();
 	    	this.empresa = new Empresa();
@@ -131,5 +138,19 @@ public class LoginMB{
 
 	public void setCnpjEmpresa(String cnpjEmpresa) {
 		this.cnpjEmpresa = cnpjEmpresa;
+	}
+	
+	private Boolean licencaVencida(){
+//		String dataLimite = "28/01/2017";
+		Calendar dataLimite = Calendar.getInstance();
+		dataLimite.set(2017, 12, 28);
+		Calendar dataHoje = Calendar.getInstance();
+		if(dataLimite.compareTo(dataHoje) <=0){
+			System.out.println("Venceu");
+			return true;
+		}else{
+			System.out.println("Pode usar vai");
+			return false;
+		}
 	}
 }

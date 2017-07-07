@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.faces.context.FacesContext;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -27,11 +28,17 @@ public class HibernateUtil {
 	private static final Configuration cfg;*/
 	
 	static {
-        cfg = new AnnotationConfiguration();
-        cfg.configure("hibernate.cfg.EMPRESAS.xml");
-        
-        sessionFactory = cfg.buildSessionFactory();
-        sessionFactoryMap = new HashMap();
+        try {
+        	System.out.println("NAda");
+			cfg = new AnnotationConfiguration();
+			cfg.configure("hibernate.cfg.EMPRESAS.xml");
+			
+			sessionFactory = cfg.buildSessionFactory();
+			sessionFactoryMap = new HashMap();
+		} catch (HibernateException e) {
+			System.out.println("feito");
+			e.printStackTrace();
+		}
     }
 	
 

@@ -48,6 +48,7 @@ import br.com.inicial.modelo.Fazenda;
 import br.com.inicial.modelo.Pais;
 import br.com.inicial.modelo.Talhao;
 import br.com.inicial.util.JsfUtil;
+import br.com.inicial.util.Utils;
 import br.com.inicial.util.XLazyModel;
 
 import com.firebase.client.DataSnapshot;
@@ -212,6 +213,10 @@ public class FazendaMB {
 //		facesContext.getExternalContext().getSessionMap().put("fazenda", fazenda);
 		return "/faces/restrito/public/talhao/talhaoLista";
     }
+
+	public String boletinsForm() {
+		return "/faces/restrito/public/boletimDiario/boletimDiarioLista";
+	}
 	
 	public void handleFileUpload(FileUploadEvent event) {
         try {
@@ -556,16 +561,16 @@ public class FazendaMB {
 			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/fazenda/");
 			Firebase firebaseRef = firebase.push();
 			
-			firebaseRef.child("id").setValue(fazenda.getId());
-			firebaseRef.child("nome").setValue(fazenda.getNome());
-			firebaseRef.child("areaInicial").setValue(fazenda.getAreaInicial());
-			firebaseRef.child("area").setValue(fazenda.getArea());
-			firebaseRef.child("paisId").setValue(fazenda.getPais().getId());
-			firebaseRef.child("paisDescricao").setValue(fazenda.getPais().getDescricao());
-			firebaseRef.child("estadoId").setValue(fazenda.getEstado().getId());
-			firebaseRef.child("estadoNome").setValue(fazenda.getEstado().getSigla());
-			firebaseRef.child("cidadeId").setValue(fazenda.getCidade().getId());
-			firebaseRef.child("cidadeNome").setValue(fazenda.getCidade().getNome());
+			firebaseRef.child("id").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getId()));
+			firebaseRef.child("nome").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getNome()));
+			firebaseRef.child("areaInicial").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getAreaInicial()));
+			firebaseRef.child("area").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getArea()));
+			firebaseRef.child("paisId").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getPais().getId()));
+			firebaseRef.child("paisDescricao").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getPais().getDescricao()));
+			firebaseRef.child("estadoId").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getEstado().getId()));
+			firebaseRef.child("estadoNome").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getEstado().getSigla()));
+			firebaseRef.child("cidadeId").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getCidade().getId()));
+			firebaseRef.child("cidadeNome").setValue(Utils.retornarStringVazioQuanoNulo(fazenda.getCidade().getNome()));
 		}
 	}
 	

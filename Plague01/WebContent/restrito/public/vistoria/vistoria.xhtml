@@ -1,0 +1,51 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="centro">
+		<p:layoutUnit position="center">
+			<h:form id="cadastro" acceptcharset="ISO-8859-1">
+				<p:growl id="msg" />
+				<p:panel header="#{msg.vist_labelCad}">
+					<h:panelGrid id="infoVistoria" columns="2" style="margin-bottom: 10px">
+					<p:spacer/>
+						<h:inputHidden value="#{vistoriaMB.vistoria.id}" />
+						<h:outputLabel value="#{msg.vist_fazenda}" for="nome" />
+						<h:inputText id="nome" label="Nome" readonly="true"
+							value="#{vistoriaMB.vistoria.plantaTalhao.talhao.fazenda.nome}" size="40" maxlength="40">
+						</h:inputText>
+						<h:outputLabel value="#{msg.vist_planta}" for="planta" />
+						<h:inputText id="planta" label="Planta" readonly="true"
+							value="#{vistoriaMB.vistoria.plantaTalhao.planta.nome}" size="40" maxlength="40">
+						</h:inputText>
+						<h:outputLabel value="#{msg.vist_status}" for="status" />
+						<h:inputText id="status" label="status" readonly="true"
+							value="#{vistoriaMB.vistoria.status}" size="40" maxlength="40">
+						</h:inputText>
+						<h:outputLabel value="#{msg.vist_responsavel}" for="status" />
+						<h:inputText id="responsavel" label="responsavel" readonly="true"
+							value="#{vistoriaMB.vistoria.responsavel}" size="40" maxlength="40">
+						</h:inputText>
+						<h:outputLabel value="#{msg.vist_praga}" for="status" />
+						<h:inputText id="praga" label="praga" readonly="true"
+							value="#{vistoriaMB.vistoria.praga.doenca}" size="40" maxlength="40">
+						</h:inputText>
+						<!-- <h:outputLabel value="#{msg.vist_data}" for="dataVistoria" />
+						<p:calendar id="dataVistoria" value="#{vistoriaMB.vistoria.dataVistoria}"
+							effect="fadeIn" pattern="dd/MM/yyyy" locale="ca">
+						</p:calendar> -->
+<!-- 						<p:graphicImage value="file:///C:/Users/WANDER~1/AppData/Local/Temp//cliente02appUvaimage1.jpg" id="imagem" cache="false" /> -->
+						
+						<p:galleria value="#{vistoriaMB.imagesLink}" var="image" panelWidth="500" panelHeight="313" showCaption="false">
+							<p:graphicImage value="#{image}" alt="Image Description for #{image}" title="#{image}" />
+						</p:galleria>
+					</h:panelGrid>
+					<p:messages id="msgs"/>
+				</p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

@@ -10,6 +10,7 @@
 	    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 	    <property name="hibernate.connection.url">jdbc:mysql://localhost/CPRG_EMPRESA</property>
 	    <property name="hibernate.connection.username">root</property>
+<!-- 	    <property name="hibernate.connection.password">audacia@123</property> -->
 	    <property name="hibernate.connection.password">asenna</property>
 	   
 <!-- 	    <property name="connection.datasource">java:/comp/env/jdbc/BgiWebBd</property> -->

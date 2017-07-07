@@ -14,6 +14,7 @@ import br.com.inicial.dao.TipoDoencaDAO;
 import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.TipoDoenca;
 import br.com.inicial.util.JsfUtil;
+import br.com.inicial.util.Utils;
 import br.com.inicial.util.XLazyModel;
 
 import com.firebase.client.Firebase;
@@ -146,9 +147,9 @@ public class TipoDoencaMB {
 			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/tipoDoenca/");
 			Firebase firebaseRef = firebase.push();
 			
-			firebaseRef.child("id").setValue(tipoDoenca.getId());
-			firebaseRef.child("descricao").setValue(tipoDoenca.getDescricao());
-			firebaseRef.child("doenca").setValue(tipoDoenca.getDoenca());
+			firebaseRef.child("id").setValue(Utils.retornarStringVazioQuanoNulo(tipoDoenca.getId()));
+			firebaseRef.child("descricao").setValue(Utils.retornarStringVazioQuanoNulo(tipoDoenca.getDescricao()));
+			firebaseRef.child("doenca").setValue(Utils.retornarStringVazioQuanoNulo(tipoDoenca.getDoenca()));
 		}
 	}
 }
