@@ -61,7 +61,7 @@ public class BoletimChecklistMB {
     }
 	
 	public void adicionaOuAtualiza() {
-		if (boletimChecklist.getId() == 0 || boletimChecklist.getId() == null) {
+		if (boletimChecklist.getId() == "0" || boletimChecklist.getId() == null) {
 			try {
 				boletimChecklist.setBoletimDiario(boletimDiario);
 				boletimChecklistDAO.salvar(boletimChecklist);
@@ -112,9 +112,13 @@ public class BoletimChecklistMB {
 		return this.boletimChecklistDAO.listar();
 	}
 	
-	public List buscarPlantaPorBoletimDiario(Integer idBoletimDiario) {
+	public List buscarChecklistPorBoletimDiario(Integer idBoletimDiario) {
     	return this.boletimChecklistDAO.buscarListaPorCampo("boletimDiario.id", idBoletimDiario);
     }
+
+	public List buscarChecklistPorBoletimDiario(String idBoletimDiario) {
+		return this.boletimChecklistDAO.buscarListaPorCampo("boletimDiario.id", idBoletimDiario);
+	}
 
 	public BoletimChecklist getBoletimChecklist() {
 		return boletimChecklist;
@@ -134,7 +138,7 @@ public class BoletimChecklistMB {
 
 	public XLazyModel getBoletimChecklistsModel() {
 		if (boletimDiario != null) {
-			boletimChecklists = buscarPlantaPorBoletimDiario(boletimDiario.getId());
+			boletimChecklists = buscarChecklistPorBoletimDiario(boletimDiario.getId());
 		}
 		if (boletimChecklistsModel == null) {
 			boletimChecklistsModel = new XLazyModel(boletimChecklists);

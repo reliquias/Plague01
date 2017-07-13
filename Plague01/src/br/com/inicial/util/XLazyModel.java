@@ -37,6 +37,8 @@ public class XLazyModel extends LazyDataModel<Object>{
 					method = c.getMethod("get" + Utils.capitaliza("armazenamento"));
 				}else if(c.getName().equals("br.com.inicial.modelo.BoletimDiario")){
 					method = c.getMethod("get" + Utils.capitaliza("projeto"));
+				}else if(c.getName().equals("br.com.inicial.modelo.BoletimApontamento")){
+					method = c.getMethod("get" + Utils.capitaliza("nomeAtividade"));
 				}else{
 					method = c.getMethod("get" + Utils.capitaliza("nome"));
 				}
@@ -83,6 +85,8 @@ public class XLazyModel extends LazyDataModel<Object>{
 				method = c.getMethod("get" + Utils.capitaliza("armazenamento"));
 		    }else if(c.getName().equals("br.com.inicial.modelo.BoletimDiario")){
 				method = c.getMethod("get" + Utils.capitaliza("projeto"));
+		    }else if(c.getName().equals("br.com.inicial.modelo.BoletimApontamento")){
+				method = c.getMethod("get" + Utils.capitaliza("nomeAtividade"));
 			}else{
 				method = c.getMethod("get" + Utils.capitaliza("nome"));
 			}

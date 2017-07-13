@@ -94,6 +94,13 @@ public class DAOFactory {
 		return talhaoDAO;
 	}
 
+	public static BoletimApontamentoDAO criarBoletimApontamentoDAO() {
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		BoletimApontamentoDAO boletimApontamentoDAO = new BoletimApontamentoDAO();
+		boletimApontamentoDAO.setSession(HibernateUtil.getSession(empresa));
+		return boletimApontamentoDAO;
+	}
+
 	public static BoletimDiarioDAO criarBoletimDiarioDAO() {
 		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
 		BoletimDiarioDAO boletimDiarioDAO = new BoletimDiarioDAO();

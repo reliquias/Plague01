@@ -1,15 +1,16 @@
 package br.com.inicial.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -20,9 +21,9 @@ public class BoletimDiario implements BaseEntity, Serializable {
 
 	private static final long serialVersionUID = 2471765773806278661L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private long idFirebase;
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String id;
+	private String idFirebase;
 	
 	private String horimetro;
 	private String maquinaBase;
@@ -31,6 +32,7 @@ public class BoletimDiario implements BaseEntity, Serializable {
 	private String odometro;
 	private String projeto;
 	private String turno;
+	private String dataHoraInicio;
 	
 	@ManyToOne
 	private Fazenda fazenda;
@@ -39,23 +41,18 @@ public class BoletimDiario implements BaseEntity, Serializable {
 	@JoinColumn(name = "CHECK_LIST_ID")
 	private BoletimChecklist boletimCheckList;
 	
-/*	@OneToMany(cascade=CascadeType.REMOVE, mappedBy="talhao", fetch=FetchType.LAZY)
-	private List<PlantaTalhao> plantas = new ArrayList<PlantaTalhao>();
-*/
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="boletimDiario", fetch=FetchType.LAZY)
+	private List<BoletimApontamento> apontamentoList = new ArrayList<BoletimApontamento>();
+
 	
 	@Transient
 	private Integer idFazenda;
 	
-	@Override
-    public Integer getIdi() {
-        return new Integer(id);
-    }
-
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -131,14 +128,6 @@ public class BoletimDiario implements BaseEntity, Serializable {
 		this.boletimCheckList = boletimCheckList;
 	}
 
-	public long getIdFirebase() {
-		return idFirebase;
-	}
-
-	public void setIdFirebase(long idFirebase) {
-		this.idFirebase = idFirebase;
-	}
-
 	public Integer getIdFazenda() {
 		return idFazenda;
 	}
@@ -171,4 +160,36 @@ public class BoletimDiario implements BaseEntity, Serializable {
 			return false;
 		return true;
 	}
+
+	public List<BoletimApontamento> getApontamentoList() {
+		return apontamentoList;
+	}
+
+	public void setApontamentoList(List<BoletimApontamento> apontamentoList) {
+		this.apontamentoList = apontamentoList;
+	}
+
+	public String getDataHoraInicio() {
+		return dataHoraInicio;
+	}
+
+	public void setDataHoraInicio(String dataHoraInicio) {
+		this.dataHoraInicio = dataHoraInicio;
+	}
+
+	public String getIdFirebase() {
+		return idFirebase;
+	}
+
+	public void setIdFirebase(String idFirebase) {
+		this.idFirebase = idFirebase;
+	}
+
+	@Override
+    public Integer getIdi() {
+        return new Integer(id);
+    }
+	
+	
+	
 }

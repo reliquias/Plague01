@@ -47,6 +47,7 @@
 	    <mapping class="br.com.inicial.modelo.Vistoria"/>
 	    <mapping class="br.com.inicial.modelo.BoletimDiario"/>
 	    <mapping class="br.com.inicial.modelo.BoletimChecklist"/>
+	    <mapping class="br.com.inicial.modelo.BoletimApontamento"/>
 				                                                                                                                  
     </session-factory>
     

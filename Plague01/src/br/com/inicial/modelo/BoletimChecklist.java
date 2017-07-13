@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
@@ -16,8 +14,8 @@ public class BoletimChecklist implements BaseEntity, Serializable {
 
 	private static final long serialVersionUID = 2471765773806278661L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String id;
 	
 	private long idFirebase;
 	
@@ -43,7 +41,7 @@ public class BoletimChecklist implements BaseEntity, Serializable {
     private boolean condicoesPneus;
 
     private boolean conjuntoCorteHARVESTER;
-    private boolean PinosBielasFacasRolosECilindros;
+    private boolean pinosBielasFacasRolosECilindros;
     private boolean presencaGeralTrincasAcessorio;
     private boolean lubrificacaoGeral;
     private boolean rotator;
@@ -66,19 +64,6 @@ public class BoletimChecklist implements BaseEntity, Serializable {
 	@OneToOne(mappedBy = "boletimCheckList", fetch=FetchType.LAZY)
 	private BoletimDiario boletimDiario;
 	
-	@Override
-    public Integer getIdi() {
-        return new Integer(id);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public long getIdFirebase() {
 		return idFirebase;
 	}
@@ -257,15 +242,6 @@ public class BoletimChecklist implements BaseEntity, Serializable {
 		this.conjuntoCorteHARVESTER = conjuntoCorteHARVESTER;
 	}
 
-	public boolean isPinosBielasFacasRolosECilindros() {
-		return PinosBielasFacasRolosECilindros;
-	}
-
-	public void setPinosBielasFacasRolosECilindros(
-			boolean pinosBielasFacasRolosECilindros) {
-		PinosBielasFacasRolosECilindros = pinosBielasFacasRolosECilindros;
-	}
-
 	public boolean isPresencaGeralTrincasAcessorio() {
 		return presencaGeralTrincasAcessorio;
 	}
@@ -402,4 +378,28 @@ public class BoletimChecklist implements BaseEntity, Serializable {
 	public void setBoletimDiario(BoletimDiario boletimDiario) {
 		this.boletimDiario = boletimDiario;
 	}
+
+	public boolean isPinosBielasFacasRolosECilindros() {
+		return pinosBielasFacasRolosECilindros;
+	}
+
+	public void setPinosBielasFacasRolosECilindros(
+			boolean pinosBielasFacasRolosECilindros) {
+		this.pinosBielasFacasRolosECilindros = pinosBielasFacasRolosECilindros;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+
+	@Override
+    public Integer getIdi() {
+        return new Integer(id);
+    }
+	
 }

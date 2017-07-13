@@ -2,6 +2,7 @@ package br.com.inicial.controle;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -11,13 +12,11 @@ import javax.faces.event.ActionEvent;
 
 import br.com.inicial.dao.BoletimDiarioDAO;
 import br.com.inicial.dao.DAOFactory;
+import br.com.inicial.modelo.BoletimApontamento;
 import br.com.inicial.modelo.BoletimChecklist;
 import br.com.inicial.modelo.BoletimDiario;
 import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Fazenda;
-import br.com.inicial.modelo.PlantaTalhao;
-import br.com.inicial.modelo.TipoDoenca;
-import br.com.inicial.modelo.Vistoria;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.Utils;
 import br.com.inicial.util.XLazyModel;
@@ -78,7 +77,7 @@ public class BoletimDiarioMB {
 	public void adicionaOuAtualiza() {
 		try {
 			boletimDiario.setFazenda(fazenda);
-			if (boletimDiario.getId() == 0 || boletimDiario.getId() == null) {
+			if (boletimDiario.getId() == "0" || boletimDiario.getId() == null) {
 				boletimDiarioDAO.salvar(boletimDiario);
 				JsfUtil.addSuccessMessage("BoletimDiario salvo com Sucesso");
 			} else {
@@ -195,7 +194,7 @@ public class BoletimDiarioMB {
 	private void ouvinteFirebase(){
 		final List<BoletimDiario> listBoletins = new ArrayList<BoletimDiario>();
 		final String[] executou = {null};
-		final int id;
+		int id = 0;
 		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
 		final Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/bdos/");
 		firebase.addValueEventListener(new ValueEventListener() {
@@ -204,66 +203,103 @@ public class BoletimDiarioMB {
 		            public void onDataChange(DataSnapshot ds) {
 		            	
 		            	for (DataSnapshot boletimSnapshot: ds.getChildren()) {
-		                	BoletimDiario boletim = new BoletimDiario();
-		                    	boletim.setHorimetro(boletimSnapshot.child("horimetro").getValue().toString());
-//		                    	boletim.setId(Integer.parseInt(boletimSnapshot.child("horimetro").getValue().toString()));
-		                    	//Ver com Rogerio
-		                    	//boletim.setIdFirebase(boletimSnapshot.child("id").getValue().toString());
-		                    	boletim.setMaquinaBase(boletimSnapshot.child("maquinaBaseHV_FB_FW").getValue().toString());
-		                    	boletim.setMatriculaResponsavel(boletimSnapshot.child("matriculaResponsavel").getValue().toString());
-		                    	boletim.setNomeResponsavel(boletimSnapshot.child("nomeResponsavel").getValue().toString());
-		                    	boletim.setOdometro(boletimSnapshot.child("odometro").getValue().toString());
-		                    	boletim.setProjeto(boletimSnapshot.child("projeto").getValue().toString());
-		                    	boletim.setTurno(boletimSnapshot.child("turno").getValue().toString());
-		                    	boletim.setIdFazenda(Integer.parseInt(boletimSnapshot.child("fazendaId").getValue().toString()));
-		                    	/*for (DataSnapshot boletimSnapshot2 : boletimSnapshot.child("boletins").getChildren()) {
-									System.out.println(boletimSnapshot2.child("nomeAtividade").getValue().toString());
-								}*/
-								for (DataSnapshot boletimSnapshot2 : boletimSnapshot.child("checklist").getChildren()) {
-									BoletimChecklist checkList = new BoletimChecklist();
-//									checkList.setBoletimDiario(boletim);
-									checkList.setAdesivosSeguranca((boolean) boletimSnapshot2.child("adesivosSeguranca").getValue());
-									checkList.setAlarmesPainelInstrumentos((boolean)boletimSnapshot2.child("alarmesPainelInstrumentos").getValue());
-									checkList.setAssentoOperacao((boolean)boletimSnapshot2.child("assentoOperacao").getValue());
-									checkList.setChaveGeral((boolean)boletimSnapshot2.child("chaveGeral").getValue());
-									checkList.setCondicoesPneus((boolean)boletimSnapshot2.child("condicoesPneus").getValue());
-									checkList.setConjuntoCorteHARVESTER((boolean)boletimSnapshot2.child("conjuntoCorteHARVESTER").getValue());
-									checkList.setDiscoEDentesCorteFELLER((boolean)boletimSnapshot2.child("discoEDentesCorteFELLER").getValue());
-									checkList.setEscadasOuEstribosAcesso((boolean)boletimSnapshot2.child("escadasOuEstribosAcesso").getValue());
-									checkList.setFaroisTrabalho((boolean)boletimSnapshot2.child("faroisTrabalho").getValue());
-									checkList.setFreioEmergencia((boolean)boletimSnapshot2.child("freioEmergencia").getValue());
-									checkList.setFreioServicos((boolean)boletimSnapshot2.child("freioServicos").getValue());
-									checkList.setInspecaoExtintores((boolean)boletimSnapshot2.child("inspecaoExtintores").getValue());
-									checkList.setJanelasLaterais((boolean)boletimSnapshot2.child("janelasLaterais").getValue());
-									checkList.setKitContencaoVazamentos((boolean)boletimSnapshot2.child("kitContencaoVazamentos").getValue());
-									checkList.setLimpezaEsteiras((boolean)boletimSnapshot2.child("limpezaEsteiras").getValue());
-									checkList.setLimpezaInternaCabine((boolean)boletimSnapshot2.child("limpezaInternaCabine").getValue());
-									checkList.setLimpezaRadiador((boolean)boletimSnapshot2.child("limpezaRadiador").getValue());
-									checkList.setLubrificacaoGeral((boolean)boletimSnapshot2.child("lubrificacaoGeral").getValue());
-									checkList.setNivelLiquidoRefrigerante((boolean)boletimSnapshot2.child("nivelLiquidoRefrigerante").getValue());
-									checkList.setNivelOleoHidraulico((boolean)boletimSnapshot2.child("nivelOleoHidraulico").getValue());
-									checkList.setNivelOleoMotor((boolean)boletimSnapshot2.child("nivelOleoMotor").getValue());
-									checkList.setParabrisaFrontal((boolean)boletimSnapshot2.child("parabrisaFrontal").getValue());
-									checkList.setParadaCombinada((boolean)boletimSnapshot2.child("paradaCombinada").getValue());
-									checkList.setParadaImediata((boolean)boletimSnapshot2.child("paradaImediata").getValue());
-									checkList.setPinosBielasFacasRolosECilindros((boolean)boletimSnapshot2.child("pinosBielasFacasRolosECilindros").getValue());
-									checkList.setPresencaGeralTrincasAcessorio((boolean)boletimSnapshot2.child("presencaGeralTrincasAcessorio").getValue());
-									checkList.setPresencaGeralTrincasMaquinaBase((boolean)boletimSnapshot2.child("presencaGeralTrincasMaquinaBase").getValue());
-									checkList.setProtecaoFrontalRadiador((boolean)boletimSnapshot2.child("protecaoFrontalRadiador").getValue());
-									checkList.setRadioComunicacao((boolean)boletimSnapshot2.child("radioComunicacao").getValue());
-									checkList.setRoletesInferiores((boolean)boletimSnapshot2.child("roletesInferiores").getValue());
-									checkList.setRoletesSuperiores((boolean)boletimSnapshot2.child("roletesSuperiores").getValue());
-									checkList.setRotator((boolean)boletimSnapshot2.child("rotator").getValue());
-									checkList.setSapatasEsteira((boolean)boletimSnapshot2.child("sapatasEsteira").getValue());
-									checkList.setSinalizacaoReEMovimento((boolean)boletimSnapshot2.child("sinalizacaoReEMovimento").getValue());
-									checkList.setTampasProtecao((boolean)boletimSnapshot2.child("tampasProtecao").getValue());
-									checkList.setTensaoEsteiras((boolean)boletimSnapshot2.child("tensaoEsteiras").getValue());
-									checkList.setTravaCabineFORWARDER((boolean)boletimSnapshot2.child("travaCabineFORWARDER").getValue());
-									checkList.setVazamentoMangueirasECilindros((boolean)boletimSnapshot2.child("vazamentoMangueirasECilindros").getValue());
-									boletim.setBoletimCheckList(checkList);
+		            		try {
+								if(boletimSnapshot.getKey()!=null){
+								String dataHora = boletimSnapshot.child("dataHoraInicio").getValue().toString();
+								String nomeResponsavel = boletimSnapshot.child("nomeResponsavel").getValue().toString();
+								BoletimDiario boletim = new BoletimDiario();
+									boletim.setHorimetro(boletimSnapshot.child("horimetro").getValue().toString());
+									boletim.setId(boletimSnapshot.getKey());
+									System.out.println(boletimSnapshot.getKey());
+									//Ver com Rogerio
+									boletim.setIdFirebase(boletimSnapshot.getKey());
+									boletim.setMaquinaBase(boletimSnapshot.child("maquinaBaseHV_FB_FW").getValue().toString());
+									boletim.setMatriculaResponsavel(boletimSnapshot.child("matriculaResponsavel").getValue().toString());
+									boletim.setNomeResponsavel(nomeResponsavel);
+									boletim.setOdometro(boletimSnapshot.child("odometro").getValue().toString());
+									boletim.setProjeto(boletimSnapshot.child("projeto").getValue().toString());
+									boletim.setTurno(boletimSnapshot.child("turno").getValue().toString());
+									boletim.setDataHoraInicio(dataHora);
+									boletim.setIdFazenda(Integer.parseInt(boletimSnapshot.child("fazendaId").getValue().toString()));
+									
+									List<BoletimApontamento> apontamentoList = new ArrayList<BoletimApontamento>();
+									for (DataSnapshot apontamentoSnapshot : boletimSnapshot.child("boletins").getChildren()) {
+										//if(apontamentoSnapshot.child("dataProcessamento").getValue() == null){
+										long IdFirebase = (long)apontamentoSnapshot.child("id").getValue();
+										BoletimApontamento apontamento = new BoletimApontamento();
+										apontamento.setId(apontamentoSnapshot.getKey());
+										apontamento.setBoletimDiario(boletim);
+										apontamento.setCheckListId((long) apontamentoSnapshot.child("checkListId").getValue());
+										apontamento.setCodigoAtividade((long)apontamentoSnapshot.child("codigoAtividade").getValue());
+										apontamento.setIdFirebase(IdFirebase);
+										apontamento.setMecanicoId((long)apontamentoSnapshot.child("mecanicoId").getValue());
+										apontamento.setCto(apontamentoSnapshot.child("cto").getValue().toString());
+										apontamento.setDataHoraCadastro(apontamentoSnapshot.child("dataHoraCadastro").getValue().toString());
+										apontamento.setHorimetro(apontamentoSnapshot.child("horimetro").getValue().toString());
+										apontamento.setNomeAtividade(apontamentoSnapshot.child("nomeAtividade").getValue().toString());
+										apontamento.setNumeroLaudo((long)apontamentoSnapshot.child("numeroLaudo").getValue());
+										apontamento.setOdometro(apontamentoSnapshot.child("odometro").getValue().toString());
+										apontamento.setProducao(apontamentoSnapshot.child("producao").getValue().toString());
+										apontamento.setResponsavel(apontamentoSnapshot.child("responsavel").getValue().toString());
+										apontamento.setTalhao((long)apontamentoSnapshot.child("talhao").getValue());
+										apontamentoList.add(apontamento);
+										//}
+									}
+									if(apontamentoList.size()>0){
+										boletim.setApontamentoList(apontamentoList);
+									}
+									for (DataSnapshot chaeckListSnapshot : boletimSnapshot.child("checklist").getChildren()) {
+										long IdFirebase = (long)chaeckListSnapshot.child("id").getValue();
+										BoletimChecklist checkList = new BoletimChecklist();
+										
+										checkList.setId(chaeckListSnapshot.getKey());
+										checkList.setAdesivosSeguranca((boolean) chaeckListSnapshot.child("adesivosSeguranca").getValue());
+										checkList.setAlarmesPainelInstrumentos((boolean)chaeckListSnapshot.child("alarmesPainelInstrumentos").getValue());
+										checkList.setAssentoOperacao((boolean)chaeckListSnapshot.child("assentoOperacao").getValue());
+										checkList.setChaveGeral((boolean)chaeckListSnapshot.child("chaveGeral").getValue());
+										checkList.setCondicoesPneus((boolean)chaeckListSnapshot.child("condicoesPneus").getValue());
+										checkList.setConjuntoCorteHARVESTER((boolean)chaeckListSnapshot.child("conjuntoCorteHARVESTER").getValue());
+										checkList.setDiscoEDentesCorteFELLER((boolean)chaeckListSnapshot.child("discoEDentesCorteFELLER").getValue());
+										checkList.setEscadasOuEstribosAcesso((boolean)chaeckListSnapshot.child("escadasOuEstribosAcesso").getValue());
+										checkList.setFaroisTrabalho((boolean)chaeckListSnapshot.child("faroisTrabalho").getValue());
+										checkList.setFreioEmergencia((boolean)chaeckListSnapshot.child("freioEmergencia").getValue());
+										checkList.setFreioServicos((boolean)chaeckListSnapshot.child("freioServicos").getValue());
+										checkList.setInspecaoExtintores((boolean)chaeckListSnapshot.child("inspecaoExtintores").getValue());
+										checkList.setJanelasLaterais((boolean)chaeckListSnapshot.child("janelasLaterais").getValue());
+										checkList.setKitContencaoVazamentos((boolean)chaeckListSnapshot.child("kitContencaoVazamentos").getValue());
+										checkList.setLimpezaEsteiras((boolean)chaeckListSnapshot.child("limpezaEsteiras").getValue());
+										checkList.setLimpezaInternaCabine((boolean)chaeckListSnapshot.child("limpezaInternaCabine").getValue());
+										checkList.setLimpezaRadiador((boolean)chaeckListSnapshot.child("limpezaRadiador").getValue());
+										checkList.setLubrificacaoGeral((boolean)chaeckListSnapshot.child("lubrificacaoGeral").getValue());
+										checkList.setNivelLiquidoRefrigerante((boolean)chaeckListSnapshot.child("nivelLiquidoRefrigerante").getValue());
+										checkList.setNivelOleoHidraulico((boolean)chaeckListSnapshot.child("nivelOleoHidraulico").getValue());
+										checkList.setNivelOleoMotor((boolean)chaeckListSnapshot.child("nivelOleoMotor").getValue());
+										checkList.setParabrisaFrontal((boolean)chaeckListSnapshot.child("parabrisaFrontal").getValue());
+										checkList.setParadaCombinada((boolean)chaeckListSnapshot.child("paradaCombinada").getValue());
+										checkList.setParadaImediata((boolean)chaeckListSnapshot.child("paradaImediata").getValue());
+										checkList.setPinosBielasFacasRolosECilindros((boolean)chaeckListSnapshot.child("pinosBielasFacasRolosECilindros").getValue());
+										checkList.setPresencaGeralTrincasAcessorio((boolean)chaeckListSnapshot.child("presencaGeralTrincasAcessorio").getValue());
+										checkList.setPresencaGeralTrincasMaquinaBase((boolean)chaeckListSnapshot.child("presencaGeralTrincasMaquinaBase").getValue());
+										checkList.setProtecaoFrontalRadiador((boolean)chaeckListSnapshot.child("protecaoFrontalRadiador").getValue());
+										checkList.setRadioComunicacao((boolean)chaeckListSnapshot.child("radioComunicacao").getValue());
+										checkList.setRoletesInferiores((boolean)chaeckListSnapshot.child("roletesInferiores").getValue());
+										checkList.setRoletesSuperiores((boolean)chaeckListSnapshot.child("roletesSuperiores").getValue());
+										checkList.setRotator((boolean)chaeckListSnapshot.child("rotator").getValue());
+										checkList.setSapatasEsteira((boolean)chaeckListSnapshot.child("sapatasEsteira").getValue());
+										checkList.setSinalizacaoReEMovimento((boolean)chaeckListSnapshot.child("sinalizacaoReEMovimento").getValue());
+										checkList.setTampasProtecao((boolean)chaeckListSnapshot.child("tampasProtecao").getValue());
+										checkList.setTensaoEsteiras((boolean)chaeckListSnapshot.child("tensaoEsteiras").getValue());
+										checkList.setTravaCabineFORWARDER((boolean)chaeckListSnapshot.child("travaCabineFORWARDER").getValue());
+										checkList.setVazamentoMangueirasECilindros((boolean)chaeckListSnapshot.child("vazamentoMangueirasECilindros").getValue());
+										boletim.setBoletimCheckList(checkList);
+									}
+									listBoletins.add(boletim);
+									System.out.println("Entrou");
 								}
-		                    	listBoletins.add(boletim);
-		                    	System.out.println("Entrou");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 		                }
 		            	executou[0] = "true";
 		            }
@@ -274,10 +310,12 @@ public class BoletimDiarioMB {
 		            }
 		        });
 		
+		System.out.println("Entrou do while");
 		while(executou[0] == null){
-			System.out.println("Dentro do while");
+//			System.out.println("Dentro do while");
+			id++;
 		}
-		
+		System.out.println("Saiu do while");
 		for (BoletimDiario boletimDiario : listBoletins) {
 			Fazenda fazendaBoletim = DAOFactory.criarFazendaDAO().carregar(boletimDiario.getIdFazenda());
 			boletimDiario.setFazenda(fazendaBoletim);
@@ -285,6 +323,13 @@ public class BoletimDiarioMB {
 		}
 		if(fazenda!=null){
 			this.boletins = buscarBoletinsPorFazenda(fazenda.getId());
+			for (Object bolet : this.boletins) {
+				BoletimDiario boletim = (BoletimDiario) bolet;
+				for (BoletimApontamento apontamento : boletim.getApontamentoList()) {
+					/*Firebase firebase2 = new Firebase("https://baseagro-f1859.firebaseio.com/"+ empresa.getCnpj() + "/bdos/"+ boletimDiario.getIdFirebase()+"/boletins/"+apontamento.getIdFirebase());
+					firebase2.child("dataProcessamento").setValue(Utils.toString(Calendar.getInstance(), "dd/MM/yyyy HH:mm:ss"));*/	
+				}
+			}
 		}
 		System.out.println("Eai");
 	}

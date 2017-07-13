@@ -35,6 +35,20 @@ public class BoletimDiarioDAO {
 		}*/		
 	}
 	
+	public void flush(){
+		if(!session.isOpen()){
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
+		session.flush();
+	}
+	
+	public void evict(BoletimDiario objeto){
+		if(!session.isOpen()){
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
+		session.evict(objeto);
+	}
+	
 	public void saveOrUpdate(BoletimDiario objeto) {
 		Transaction tx = null;
 		try {
@@ -112,6 +126,32 @@ public class BoletimDiarioDAO {
 //		consulta.setInteger("idFicha", idFicha);
 		return (List<BoletimDiario>) consulta.list();
 	}
+
+	public BoletimDiario buscarPorCampo(String campo, Object valor) {
+		if(!session.isConnected()){
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
+		if(valor instanceof String){
+			valor = "'" + valor + "'";
+		}
+		String hql = "select c from BoletimDiario c where c." + campo +" = " + valor;
+		Query consulta = this.session.createQuery(hql);
+//		consulta.setInteger("idFicha", idFicha);
+		return (BoletimDiario) consulta.uniqueResult();
+	}
+	
+	public BoletimDiario buscarBoletimDoisCampo(String campo, Object valor, String campo2, Object valor2) {
+		if(!session.isConnected()){
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
+		if(valor instanceof String){
+			valor = "'" + valor + "'";
+		}
+		String hql = "select c from BoletimDiario c where c." + campo +" = " + valor + " and " + "c."+campo2+" = "+valor2;
+		Query consulta = this.session.createQuery(hql);
+//		consulta.setInteger("idFicha", idFicha);
+		return (BoletimDiario) consulta.uniqueResult();
+	}
 	
 	public void deletarBoletimDiario(Integer idFazenda){
 		if(!session.isConnected()){
@@ -120,4 +160,6 @@ public class BoletimDiarioDAO {
 		String hql = "delete from BoletimDiario c where c.fazenda.id= " + idFazenda;
 		this.session.createQuery(hql).executeUpdate();
 	}
+	
+	
 }

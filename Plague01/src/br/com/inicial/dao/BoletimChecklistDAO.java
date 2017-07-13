@@ -7,6 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import br.com.inicial.modelo.BoletimApontamento;
 import br.com.inicial.modelo.BoletimChecklist;
 
 public class BoletimChecklistDAO {
@@ -155,6 +156,19 @@ public class BoletimChecklistDAO {
 		}
 		
 		Query consulta = this.session.createQuery(hql.substring(0, hql.length()-5));
+		return (BoletimChecklist) consulta.uniqueResult();
+	}
+	
+	public BoletimChecklist buscarPorPorCampo(String campo, Object valor) {
+		if(!session.isConnected()){
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
+		if(valor instanceof String){
+			valor = "'" + valor + "'";
+		}
+		String hql = "select c from BoletimChecklist c where c." + campo +" = " + valor;
+		Query consulta = this.session.createQuery(hql);
+//		consulta.setInteger("idFicha", idFicha);
 		return (BoletimChecklist) consulta.uniqueResult();
 	}
 }

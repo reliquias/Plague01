@@ -10,83 +10,154 @@
 			<h:form id="cadastro" acceptcharset="ISO-8859-1">
 				<p:growl id="msg" />
 				<p:panel header="#{msg.boletimDiario_labelCad}">
-					<h:panelGrid id="infoTalhao" columns="2" style="margin-bottom: 10px">
+					<h:panelGrid id="infoTalhao" columns="6" style="margin-bottom: 10px">
 					<p:commandLink action="#{boletimDiarioMB.listar}" value="Voltar" ajax="false" immediate="true"/>
-					<p:spacer/><p:spacer/>
+					<p:spacer/><p:spacer/><p:spacer/><p:spacer/>
 						<h:inputHidden value="#{boletimDiarioMB.boletimDiario.id}" />
-						<h:outputLabel value="#{msg.boletimDiario_projeto}" for="projeto" />
-						<h:inputText id="projeto" label="Projeto"
-							value="#{boletimDiarioMB.boletimDiario.projeto}" size="50" maxlength="50">
-						</h:inputText>
 						<h:outputLabel value="#{msg.boletimDiario_maquinaBase}" for="maquinaBase" />
 						<h:inputText id="maquinaBase" label="maquinaBase"
-							value="#{boletimDiarioMB.boletimDiario.maquinaBase}" size="50" maxlength="50">
+							value="#{boletimDiarioMB.boletimDiario.maquinaBase}" size="15" maxlength="15">
 						</h:inputText>
-						<h:outputLabel value="#{msg.boletimDiario_matriculaResponsavel}" for="matriculaResponsavel" />
-						<h:inputText id="matriculaResponsavel" label="matriculaResponsavel"
-							value="#{boletimDiarioMB.boletimDiario.matriculaResponsavel}" size="50" maxlength="50">
-						</h:inputText>
-						<h:outputLabel value="#{msg.boletimDiario_nomeResponsavel}" for="nomeResponsavel" />
-						<h:inputText id="nomeResponsavel" label="nomeResponsavel"
-							value="#{boletimDiarioMB.boletimDiario.nomeResponsavel}" size="50" maxlength="50">
-						</h:inputText>
-						<h:outputLabel value="#{msg.boletimDiario_odometro}" for="odometro" />
-						<h:inputText id="odometro" label="odometro"
-							value="#{boletimDiarioMB.boletimDiario.odometro}" size="50" maxlength="50">
+						<h:outputLabel value="#{msg.boletimDiario_dataHoraInicio}" for="dataHoraInicio" />
+						<h:inputText id="dataHoraInicio" label="dataHoraInicio" readonly="true"
+							value="#{boletimDiarioMB.boletimDiario.dataHoraInicio}" size="15" maxlength="15">
 						</h:inputText>
 						<h:outputLabel value="#{msg.boletimDiario_turno}" for="turno" />
 						<h:inputText id="turno" label="turno"
-							value="#{boletimDiarioMB.boletimDiario.turno}" size="50" maxlength="50">
+							value="#{boletimDiarioMB.boletimDiario.turno}" size="15" maxlength="15">
 						</h:inputText>
-						<p:commandButton action="#{boletimDiarioMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro, formPlanta"/>
+						<h:outputLabel value="#{msg.boletimDiario_matriculaResponsavel}" for="matriculaResponsavel" />
+						<h:inputText id="matriculaResponsavel" label="matriculaResponsavel"
+							value="#{boletimDiarioMB.boletimDiario.matriculaResponsavel}" size="15" maxlength="15">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_nomeResponsavel}" for="nomeResponsavel" />
+						<h:inputText id="nomeResponsavel" label="nomeResponsavel"
+							value="#{boletimDiarioMB.boletimDiario.nomeResponsavel}" size="15" maxlength="15">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_horimetro}" for="horimetro" />
+						<h:inputText id="horimetro" label="horimetro"
+							value="#{boletimDiarioMB.boletimDiario.horimetro}" size="15" maxlength="15">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_odometro}" for="odometro" />
+						<h:inputText id="odometro" label="odometro"
+							value="#{boletimDiarioMB.boletimDiario.odometro}" size="15" maxlength="15">
+						</h:inputText>
+						<h:outputLabel value="#{msg.boletimDiario_projeto}" for="projeto" />
+						<h:inputText id="projeto" label="Projeto"
+							value="#{boletimDiarioMB.boletimDiario.projeto}" size="15" maxlength="15">
+						</h:inputText>
+						<p:spacer/><p:spacer/>
+						<p:commandButton action="#{boletimDiarioMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
 					</h:panelGrid>
 					<p:messages id="msgs"/>
 				</p:panel>
 			</h:form>
 			
-			<h:form prependId="false" acceptcharset="ISO-8859-1" id="formPlanta" rendered="#{boletimChecklistMB.boletimDiario != null}">
+			<h:form prependId="false" acceptcharset="ISO-8859-1" id="formApontamento" rendered="#{boletimDiarioMB.boletimDiario.maquinaBase != null}">
                 <p:growl id="msg" showDetail="true"/>
-                <p:panel header="#{msg.boletimChecklist_label}" id="panelPlanta">
-                    <p:dataTable id="boletimChecklist" lazy="true" sortBy="#{plantas.codigo}" value="#{boletimChecklistMB.boletimChecklistsModel}" var="plantas" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{boletimChecklistMB.boletimChecklist}" rowsPerPageTemplate="5,10,15">
-                		<p:column sortBy="#{plantas.codigo}">
+                <p:tabView>
+                <p:tab title="Apontamentos">
+                    <p:dataTable id="boletimApontamento" lazy="true" sortBy="#{apontamentos.talhao}" value="#{boletimApontamentoMB.apontamentosModel}" var="apontamentos" paginator="true" rows="10" selectionMode="single" dynamic="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" selection="#{boletimApontamentoMB.boletimApontamento}" rowsPerPageTemplate="5,10,15">
+                		<p:column sortBy="#{apontamentos.talhao}">
                             <f:facet name="header">
-                                <h:outputText value="#{msg.boletimChecklist_codigo}"/>
+                                <h:outputText value="#{msg.boletimApontamento_talhao}"/>
                             </f:facet>
-                            <h:outputText value="#{plantas.codigo}"/>
+                            <h:outputText value="#{apontamentos.talhao}"/>
                         </p:column>
                 		<p:column >
                             <f:facet name="header">
-                                <h:outputText value="#{msg.boletimChecklist_planta}"/>
+                                <h:outputText value="#{msg.boletimApontamento_codigoAtividade}"/>
                             </f:facet>
-                            <h:outputText value="#{plantas.planta}"/>
+                            <h:outputText value="#{apontamentos.codigoAtividade}"/>
                         </p:column>
-<!--                         <p:ajax event="rowSelect" oncomplete="PF('dialogPlanta').show()" update=":dlgPlanta" /> -->
-						</p:dataTable>
-                        <f:facet name="footer">
-                        	<p:commandButton actionListener="#{boletimChecklistMB.novo}"          value="#{msg.btn_Novo}"    update=":boletimChecklist" oncomplete="PF('dialogPlanta').show()"/>
-                        	<p:commandButton actionListener="#{boletimChecklistMB.preparaEditar}" value="#{msg.btn_alterar}" update=":boletimChecklist" oncomplete="PF('dialogPlanta').show()"/>
-                        	<p:commandButton actionListener="#{boletimChecklistMB.excluirAjax}"	  value="#{msg.btn_excluir}" update=":formPlanta" />
-				        </f:facet>
-                </p:panel>
+					</p:dataTable>
+                </p:tab>
+                <p:tab title="CheckList">
+                <h:panelGrid id="infoCheckList" columns="6" style="margin-bottom: 10px">
+                <h:inputHidden value="#{BoletimChecklistMB.boletimChecklist.id}" />
+                <p:spacer/>
+                <h:outputText value="#{msg.BoletimChecklist_nivelOleoMotor}"/>
+                <p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.nivelOleoMotor}"/>
+				<h:outputText value="#{msg.BoletimChecklist_nivelLiquidoRefrigerante}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.nivelLiquidoRefrigerante}"/>
+				<h:outputText value="#{msg.BoletimChecklist_nivelOleoHidraulico}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.nivelOleoHidraulico}"/>
+				<h:outputText value="#{msg.BoletimChecklist_protecaoFrontalRadiador}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.protecaoFrontalRadiador}"/>
+				<h:outputText value="#{msg.BoletimChecklist_limpezaRadiador}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.limpezaRadiador}"/>
+				<h:outputText value="#{msg.BoletimChecklist_vazamentoMangueirasECilindros}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.vazamentoMangueirasECilindros}"/>
+				<h:outputText value="#{msg.BoletimChecklist_faroisTrabalho}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.faroisTrabalho}"/>
+				<h:outputText value="#{msg.BoletimChecklist_sinalizacaoReEMovimento}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.sinalizacaoReEMovimento}"/>
+				<h:outputText value="#{msg.BoletimChecklist_presencaGeralTrincasMaquinaBase}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.presencaGeralTrincasMaquinaBase}"/>
+				<h:outputText value="#{msg.BoletimChecklist_alarmesPainelInstrumentos}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.alarmesPainelInstrumentos}"/>
+				<h:outputText value="#{msg.BoletimChecklist_limpezaInternaCabine}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.limpezaInternaCabine}"/>
+				<h:outputText value="#{msg.BoletimChecklist_janelasLaterais}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.janelasLaterais}"/>
+				<h:outputText value="#{msg.BoletimChecklist_parabrisaFrontal}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.parabrisaFrontal}"/>
+				<h:outputText value="#{msg.BoletimChecklist_tensaoEsteiras}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.tensaoEsteiras}"/>
+				<h:outputText value="#{msg.BoletimChecklist_roletesSuperiores}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.roletesSuperiores}"/>
+				<h:outputText value="#{msg.BoletimChecklist_roletesInferiores}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.roletesInferiores}"/>
+				<h:outputText value="#{msg.BoletimChecklist_limpezaEsteiras}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.limpezaEsteiras}"/>
+				<h:outputText value="#{msg.BoletimChecklist_sapatasEsteira}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.sapatasEsteira}"/>
+				<h:outputText value="#{msg.BoletimChecklist_freioServicos}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.freioServicos}"/>
+				<h:outputText value="#{msg.BoletimChecklist_condicoesPneus}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.condicoesPneus}"/>
+				<h:outputText value="#{msg.BoletimChecklist_conjuntoCorteHARVESTER}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.conjuntoCorteHARVESTER}"/>
+				<h:outputText value="#{msg.BoletimChecklist_PinosBielasFacasRolosECilindros}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.pinosBielasFacasRolosECilindros}"/>
+				<h:outputText value="#{msg.BoletimChecklist_presencaGeralTrincasAcessorio}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.presencaGeralTrincasAcessorio}"/>
+				<h:outputText value="#{msg.BoletimChecklist_lubrificacaoGeral}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.lubrificacaoGeral}"/>
+				<h:outputText value="#{msg.BoletimChecklist_rotator}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.rotator}"/>
+				<h:outputText value="#{msg.BoletimChecklist_discoEDentesCorteFELLER}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.discoEDentesCorteFELLER}"/>
+				<h:outputText value="#{msg.BoletimChecklist_tampasProtecao}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.tampasProtecao}"/>
+				<h:outputText value="#{msg.BoletimChecklist_freioEmergencia}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.freioEmergencia}"/>
+				<h:outputText value="#{msg.BoletimChecklist_chaveGeral}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.chaveGeral}"/>
+				<h:outputText value="#{msg.BoletimChecklist_kitContencaoVazamentos}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.kitContencaoVazamentos}"/>
+				<h:outputText value="#{msg.BoletimChecklist_inspecaoExtintores}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.inspecaoExtintores}"/>
+				<h:outputText value="#{msg.BoletimChecklist_adesivosSeguranca}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.adesivosSeguranca}"/>
+				<h:outputText value="#{msg.BoletimChecklist_travaCabineFORWARDER}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.travaCabineFORWARDER}"/>
+				<h:outputText value="#{msg.BoletimChecklist_assentoOperacao}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.assentoOperacao}"/>
+				<h:outputText value="#{msg.BoletimChecklist_radioComunicacao}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.radioComunicacao}"/>
+				<h:outputText value="#{msg.BoletimChecklist_escadasOuEstribosAcesso}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.escadasOuEstribosAcesso}"/>
+				<h:outputText value="#{msg.BoletimChecklist_paradaImediata}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.paradaImediata}"/>
+				<h:outputText value="#{msg.BoletimChecklist_paradaCombinada}"/>
+				<p:selectBooleanCheckbox value="#{boletimDiarioMB.boletimDiario.boletimCheckList.paradaCombinada}"/>
+				</h:panelGrid>
+				</p:tab>
+                </p:tabView>
 			</h:form>
 		</p:layoutUnit>
 		
-		<p:dialog id="dlgPlanta" header="#{msg.boletimChecklist_labelCad}" widgetVar="dialogPlanta" resizable="false" modal="true" showEffect="slide" width="500" dynamic="true">
-            <h:form prependId="false" id="infoPlanta">
-                <h:panelGrid columns="2" style="margin-bottom: 10px">
-                <p:spacer/>
-                	<h:inputHidden value="#{boletimChecklistMB.boletimChecklist.id}" />
-                	<h:outputLabel value="#{msg.boletimChecklist_codigo}" for="codigo" />
-						<h:inputText id="codigo" label="Codigo"
-							value="#{boletimChecklistMB.boletimChecklist.codigo}" size="10" maxlength="12">
-						</h:inputText>
-                	<h:outputLabel value="#{msg.boletimChecklist_coordenadas}" for="coordenadas" />
-						<h:inputText id="coordenadas" label="Coordenadas"
-							value="#{boletimChecklistMB.boletimChecklist.coordenadas}" size="50" maxlength="60">
-						</h:inputText>
-                    <p:commandButton update=":boletimChecklist" oncomplete="PF('dialogPlanta').hide()" actionListener="#{boletimChecklistMB.adicionaOuAtualiza}" value="#{msg.btn_salvar}"/>
-                </h:panelGrid>
-            </h:form>
-        </p:dialog>
+		
 	</ui:define>
 </ui:composition>
