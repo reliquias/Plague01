@@ -1,4 +1,4 @@
-﻿use cprg_empresa;
+use cprg_empresa;
 
 /*
 CREATE TABLE PRG_EMPRESA
@@ -29,7 +29,7 @@ from prg_empresa
 
 /*
 insert into prg_empresa (id,CNPJ      ,CONFIG_FILE_NAME         ,SQL_DIALECT                         ,URL_CONEXAO                             ,DRIVER_CLASS           ,USER_NAME,PASSWORD)
-                   VALUES (1,'server01','hibernate.cfg.Default.xml','org.hibernate.dialect.MySQLDialect','jdbc:mysql://localhost/BD_PLG_SERVER01','com.mysql.jdbc.Driver','root'   ,'appbd')                                   
+                   VALUES (1,'server01','hibernate.cfg.Default.xml','org.hibernate.dialect.MySQLDialect','jdbc:mysql://localhost/BD_PLG_SERVER01','com.mysql.jdbc.Driver','root'   ,'asenna')                                   
 */
 
 

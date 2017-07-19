@@ -7,7 +7,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import br.com.inicial.modelo.BoletimApontamento;
 import br.com.inicial.modelo.BoletimChecklist;
 
 public class BoletimChecklistDAO {

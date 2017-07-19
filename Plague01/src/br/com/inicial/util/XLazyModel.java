@@ -36,9 +36,9 @@ public class XLazyModel extends LazyDataModel<Object>{
 				}else if(c.getName().equals("br.com.inicial.modelo.Vistoria")){
 					method = c.getMethod("get" + Utils.capitaliza("armazenamento"));
 				}else if(c.getName().equals("br.com.inicial.modelo.BoletimDiario")){
-					method = c.getMethod("get" + Utils.capitaliza("projeto"));
+					method = c.getMethod("get" + Utils.capitaliza("id"));
 				}else if(c.getName().equals("br.com.inicial.modelo.BoletimApontamento")){
-					method = c.getMethod("get" + Utils.capitaliza("nomeAtividade"));
+					method = c.getMethod("get" + Utils.capitaliza("id"));
 				}else{
 					method = c.getMethod("get" + Utils.capitaliza("nome"));
 				}
@@ -84,9 +84,9 @@ public class XLazyModel extends LazyDataModel<Object>{
 		    }else if(c.getName().equals("br.com.inicial.modelo.Vistoria")){
 				method = c.getMethod("get" + Utils.capitaliza("armazenamento"));
 		    }else if(c.getName().equals("br.com.inicial.modelo.BoletimDiario")){
-				method = c.getMethod("get" + Utils.capitaliza("projeto"));
+				method = c.getMethod("get" + Utils.capitaliza("id"));
 		    }else if(c.getName().equals("br.com.inicial.modelo.BoletimApontamento")){
-				method = c.getMethod("get" + Utils.capitaliza("nomeAtividade"));
+				method = c.getMethod("get" + Utils.capitaliza("id"));
 			}else{
 				method = c.getMethod("get" + Utils.capitaliza("nome"));
 			}

@@ -17,6 +17,12 @@
                             </f:facet>
                             <h:outputText value="#{boletins.projeto}"/>
                         </p:column>
+                		<p:column sortBy="#{boletins.dataHoraInicio}" filterMatchMode="contains" filterBy="#{boletins.dataHoraInicio}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.boletimDiario_dataHoraInicio}"/>
+                            </f:facet>
+                            <h:outputText value="#{boletins.dataHoraInicio}"/>
+                        </p:column>
                     </p:dataTable>
                     <f:facet name="footer">
                         <p:commandButton action="#{boletimDiarioMB.novo}" value="Novo" update="infoBoletimDiario"  ajax="false"/>

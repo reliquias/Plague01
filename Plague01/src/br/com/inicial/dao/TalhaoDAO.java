@@ -30,9 +30,9 @@ public class TalhaoDAO {
 		    if (tx != null) tx.rollback();
 		    throw e;
 		}
-/*		finally {
+		finally {
 		    session.close();
-		}*/		
+		}		
 	}
 
 	public void atualizar(Talhao objeto) {

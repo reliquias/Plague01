@@ -28,7 +28,7 @@ public class PaisDAO {
 		    throw e;
 		}
 		finally {
-//		    session.close();
+		    session.close();
 		}
 //		this.session.merge(pais);		
 	}

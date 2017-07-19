@@ -38,6 +38,8 @@ public class BoletimDiarioMB {
 	private String	       destinoSalvar;
 	private FazendaMB fazendaMB;
 	private Fazenda fazenda;
+	private BoletimChecklist boletimCheckList = new BoletimChecklist();
+	private String checklistId;
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	File fileBoletimDiario;
 	int xCont;
@@ -47,7 +49,10 @@ public class BoletimDiarioMB {
 		facesContext = FacesContext.getCurrentInstance();
 		fazendaMB =  (FazendaMB) facesContext.getExternalContext().getSessionMap().get("fazendaMB");
 		fazenda = fazendaMB.getFazenda();
-		ouvinteFirebase();
+		if( facesContext.getExternalContext().getSessionMap().get("ouvinteFirebase") == null || facesContext.getExternalContext().getSessionMap().get("ouvinteFirebase").equals("")){
+			ouvinteFirebase();	
+		}
+		facesContext.getExternalContext().getSessionMap().put("ouvinteFirebase", "true");
 		boletins = buscarBoletinsPorFazenda(fazenda.getId());
 		boletinsModel = new XLazyModel(boletins);
 		if(boletinsModel.getPageSize() == 0){
@@ -62,6 +67,7 @@ public class BoletimDiarioMB {
 
 	public String editar() {
 		facesContext.getExternalContext().getSessionMap().put("boletimDiario", boletimDiario);
+		facesContext.getExternalContext().getSessionMap().put("boletimCheckList", boletimDiario.getBoletimCheckList());
 		return "boletimDiario";
 	}
 
@@ -76,6 +82,8 @@ public class BoletimDiarioMB {
 	
 	public void adicionaOuAtualiza() {
 		try {
+			boletimCheckList =  (BoletimChecklist) facesContext.getExternalContext().getSessionMap().get("boletimCheckList");
+			boletimDiario.setBoletimCheckList(boletimCheckList);
 			boletimDiario.setFazenda(fazenda);
 			if (boletimDiario.getId() == "0" || boletimDiario.getId() == null) {
 				boletimDiarioDAO.salvar(boletimDiario);
@@ -83,12 +91,31 @@ public class BoletimDiarioMB {
 			} else {
 				boletimDiarioDAO.atualizar(boletimDiario);
 				JsfUtil.addSuccessMessage("BoletimDiario salvo com Sucesso");
+				boletimDiarioFirebase(boletimDiario);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		facesContext.getExternalContext().getSessionMap().put("boletimDiario", boletimDiario);
 		// return "boletimDiarioLista";
+	}
+	
+	private void boletimDiarioFirebase(BoletimDiario boletimDiario){
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		if(empresa!=null){
+			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/bdos/");
+			Firebase firebaseRef = firebase.child(boletimDiario.getId());
+			
+			firebaseRef.child("horimetro").setValue(boletimDiario.getHorimetro());
+			firebaseRef.child("horimetro").setValue(boletimDiario.getHorimetro());
+			firebaseRef.child("maquinaBaseHV_FB_FW").setValue(boletimDiario.getMaquinaBase());
+			firebaseRef.child("matriculaResponsavel").setValue(boletimDiario.getMatriculaResponsavel());
+			firebaseRef.child("dataHoraInicio").setValue(boletimDiario.getDataHoraInicio());
+			firebaseRef.child("nomeResponsavel").setValue(boletimDiario.getNomeResponsavel());
+			firebaseRef.child("odometro").setValue(boletimDiario.getOdometro());
+			firebaseRef.child("projeto").setValue(boletimDiario.getProjeto());
+			firebaseRef.child("turno").setValue(boletimDiario.getTurno());
+		}
 	}
 	
 	public String salvar() {
@@ -333,4 +360,34 @@ public class BoletimDiarioMB {
 		}
 		System.out.println("Eai");
 	}
+	
+	public String voltarBoletimDiario() {
+		this.boletimDiario = (BoletimDiario) facesContext.getExternalContext().getSessionMap().get("boletimDiario"); 
+		return "/faces/restrito/public/boletimDiario/boletimDiario";
+	}
+
+	public BoletimChecklist getBoletimCheckList() {
+		if(boletimDiario!=null && boletimDiario.getId()!=null && boletimDiario.getBoletimCheckList()!=null){
+			boletimCheckList = boletimDiario.getBoletimCheckList();
+			checklistId = boletimDiario.getBoletimCheckList().getId();
+		}
+		return boletimCheckList;
+	}
+
+	public void setBoletimCheckList(BoletimChecklist boletimCheckList) {
+		this.boletimCheckList = boletimCheckList;
+	}
+
+	public String getChecklistId() {
+		return checklistId;
+	}
+
+	public void setChecklistId(String checklistId) {
+		this.checklistId = checklistId;
+	}
+
+
+	
+	
+	
 }

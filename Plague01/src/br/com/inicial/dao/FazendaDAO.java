@@ -12,9 +12,9 @@ public class FazendaDAO {
 	private Session	session;
 
 	public void setSession(Session session) {
-		/*if(!session.isConnected()){
+		if(!session.isConnected()){
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
-		}*/
+		}
 		this.session = session;
 	}
 

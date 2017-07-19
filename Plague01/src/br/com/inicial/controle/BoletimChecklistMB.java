@@ -36,6 +36,7 @@ public class BoletimChecklistMB {
 	public BoletimChecklistMB() {
 		this.boletimChecklistDAO = DAOFactory.criarBoletimChecklistDAO();
 		boletimDiario = (BoletimDiario) facesContext.getExternalContext().getSessionMap().get("boletimDiario");
+		boletimChecklist = buscarPorCampo("boletimDiario.id", boletimDiario.getId()); 
 	}
 	
 	/*public String novo() {
@@ -95,6 +96,10 @@ public class BoletimChecklistMB {
 
 	public BoletimChecklist carregar(Integer codigo) {
 		return this.boletimChecklistDAO.carregar(codigo);
+	}
+
+	public BoletimChecklist buscarPorCampo(String campo, Object valor) {
+		return this.boletimChecklistDAO.buscarPorCampo(campo, valor);
 	}
 
 	public String excluir() {

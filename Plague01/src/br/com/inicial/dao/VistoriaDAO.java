@@ -30,9 +30,9 @@ public class VistoriaDAO {
 		    if (tx != null) tx.rollback();
 		    throw e;
 		}
-		/*finally {
+		finally {
 		    session.close();
-		}*/		
+		}		
 	}
 
 	public void atualizar(Vistoria objeto) {
@@ -49,9 +49,9 @@ public class VistoriaDAO {
 		    if (tx != null) tx.rollback();
 		    throw e;
 		}
-		/*finally {
+		finally {
 		    session.close();
-		}*/
+		}
 	}
 
 	public void saveOrUpdate(Vistoria objeto) {
@@ -68,9 +68,9 @@ public class VistoriaDAO {
 			if (tx != null) tx.rollback();
 			throw e;
 		}
-		/*finally {
+		finally {
 		    session.close();
-		}*/
+		}
 	}
 
 	public void excluir(Vistoria objeto) {

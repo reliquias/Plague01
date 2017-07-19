@@ -1,0 +1,63 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="centro">
+		<p:layoutUnit position="center" id="boletimApontamento">
+			<h:form prependId="false" id="infoBoletimApontamento">
+			<p:panel header="#{msg.boletimApontamento_labelCad}">
+			<p:commandLink action="#{boletimDiarioMB.voltarBoletimDiario}" value="Voltar" ajax="false" immediate="true"/>
+                <h:panelGrid columns="6" style="margin-bottom: 10px">
+                <p:spacer/><p:spacer/><p:spacer/><p:spacer/><p:spacer/>
+                	<h:inputHidden value="#{boletimApontamentoMB.boletimApontamento.id}" />
+                	<h:outputLabel value="#{msg.boletimApontamento_codigoAtividade}" for="codigoAtividade" />
+                	<h:inputText id="codigoAtividade" label="codigoAtividade"
+							value="#{boletimApontamentoMB.boletimApontamento.codigoAtividade}" size="10" maxlength="12">
+					</h:inputText>
+					<p:spacer/><p:spacer/><p:spacer/><p:spacer/>
+                	<h:outputLabel value="#{msg.boletimApontamento_numeroLaudo}" for="numeroLaudo" />
+					<h:inputText id="numeroLaudo" label="numeroLaudo"
+						value="#{boletimApontamentoMB.boletimApontamento.numeroLaudo}" size="25" maxlength="25">
+					</h:inputText>
+                	<h:outputLabel value="#{msg.boletimApontamento_nomeAtividade}" for="nomeAtividade" />
+					<h:inputText id="nomeAtividade" label="nomeAtividade"
+						value="#{boletimApontamentoMB.boletimApontamento.nomeAtividade}" size="25" maxlength="25">
+					</h:inputText>
+                	<h:outputLabel value="#{msg.boletimApontamento_mecanicoId}" for="mecanicoId" />
+					<h:inputText id="mecanicoId" label="mecanicoId"
+						value="#{boletimApontamentoMB.boletimApontamento.mecanicoId}" size="25" maxlength="25">
+					</h:inputText>
+                	<h:outputLabel value="#{msg.boletimApontamento_dataHoraCadastro}" for="dataHoraCadastro" />
+					<h:inputText id="dataHoraCadastro" label="dataHoraCadastro" readonly="true"
+						value="#{boletimApontamentoMB.boletimApontamento.dataHoraCadastro}" size="25" maxlength="25">
+					</h:inputText>
+                	<h:outputLabel value="#{msg.boletimApontamento_horimetro}" for="horimetro" />
+					<h:inputText id="horimetro" label="horimetro"
+						value="#{boletimApontamentoMB.boletimApontamento.horimetro}" size="25" maxlength="25">
+					</h:inputText>
+                	<h:outputLabel value="#{msg.boletimApontamento_odometro}" for="odometro" />
+					<h:inputText id="odometro" label="odometro"
+						value="#{boletimApontamentoMB.boletimApontamento.odometro}" size="25" maxlength="25">
+					</h:inputText>
+                	<h:outputLabel value="#{msg.boletimApontamento_producao}" for="producao" />
+					<h:inputText id="producao" label="producao"
+						value="#{boletimApontamentoMB.boletimApontamento.producao}" size="25" maxlength="25">
+					</h:inputText>
+                	<h:outputLabel value="#{msg.boletimApontamento_cto}" for="cto" />
+					<h:inputText id="cto" label="cto"
+						value="#{boletimApontamentoMB.boletimApontamento.cto}" size="25" maxlength="25">
+					</h:inputText>
+                	<h:outputLabel value="#{msg.boletimApontamento_responsavel}" for="responsavel" />
+					<h:inputText id="responsavel" label="responsavel"
+						value="#{boletimApontamentoMB.boletimApontamento.responsavel}" size="25" maxlength="25">
+					</h:inputText>
+					<p:commandButton action="#{boletimApontamentoMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update=":infoBoletimApontamento"/>
+                </h:panelGrid>
+                </p:panel>
+            </h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

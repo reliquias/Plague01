@@ -9,10 +9,15 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.event.SelectEvent;
+
+import com.firebase.client.Firebase;
+
 import br.com.inicial.dao.BoletimApontamentoDAO;
 import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.modelo.BoletimApontamento;
 import br.com.inicial.modelo.BoletimDiario;
+import br.com.inicial.modelo.Empresa;
 import br.com.inicial.util.JsfUtil;
 import br.com.inicial.util.XLazyModel;
 
@@ -53,6 +58,7 @@ public class BoletimApontamentoMB {
 	}
 
 	public void preparaEditar(ActionEvent actionEvent) {
+		System.out.println("Tarde da noite");
 	}
 	
 	public String listar() {
@@ -70,6 +76,7 @@ public class BoletimApontamentoMB {
 			} else {
 				boletimApontamentoDAO.atualizar(boletimApontamento);
 				JsfUtil.addSuccessMessage("BoletimApontamento salvo com Sucesso");
+				boletimApontamentoFirebase(boletimApontamento);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -164,4 +171,32 @@ public class BoletimApontamentoMB {
 	public void setBoletimDiario(BoletimDiario boletimDiario) {
 		this.boletimDiario = boletimDiario;
 	}
+	
+	public void onRowSelect(SelectEvent event) {
+		System.out.println("Meda licença pq agora eu vou passar");
+        this.boletimApontamento = (BoletimApontamento) event.getObject();
+        
+    }
+	
+	private void boletimApontamentoFirebase(BoletimApontamento boletimApontamento){
+		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+		if(empresa!=null){
+			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/bdos/"+boletimDiario.getId()+"/boletins/");
+			Firebase apontamento = firebase.child(boletimApontamento.getId());
+			
+			apontamento.child("mecanicoId").setValue(boletimApontamento.getMecanicoId());
+			apontamento.child("checkListId").setValue(boletimApontamento.getCheckListId());
+			apontamento.child("codigoAtividade").setValue(boletimApontamento.getCodigoAtividade());
+			apontamento.child("cto").setValue(boletimApontamento.getCto());
+			apontamento.child("dataHoraCadastro").setValue(boletimApontamento.getDataHoraCadastro());
+			apontamento.child("odometro").setValue(boletimApontamento.getOdometro());
+			apontamento.child("horimetro").setValue(boletimApontamento.getHorimetro());
+			apontamento.child("nomeAtividade").setValue(boletimApontamento.getNomeAtividade());
+			apontamento.child("numeroLaudo").setValue(boletimApontamento.getNumeroLaudo());
+			apontamento.child("producao").setValue(boletimApontamento.getProducao());
+			apontamento.child("responsavel").setValue(boletimApontamento.getResponsavel());
+			apontamento.child("talhao").setValue(boletimApontamento.getTalhao());
+		}
+	}
 }
+

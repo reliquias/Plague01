@@ -37,7 +37,7 @@ public class BoletimDiario implements BaseEntity, Serializable {
 	@ManyToOne
 	private Fazenda fazenda;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "CHECK_LIST_ID")
 	private BoletimChecklist boletimCheckList;
 	
