@@ -66,7 +66,6 @@ public class BoletimChecklistMB {
 			try {
 				boletimChecklist.setBoletimDiario(boletimDiario);
 				boletimChecklistDAO.salvar(boletimChecklist);
-				boletimChecklistFirebase(boletimChecklist);
 				JsfUtil.addSuccessMessage("BoletimChecklist salvo com Sucesso");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -76,6 +75,7 @@ public class BoletimChecklistMB {
 			try {
 				boletimChecklistDAO.atualizar(boletimChecklist);
 				JsfUtil.addSuccessMessage("BoletimChecklist salvo com Sucesso");
+				boletimChecklistFirebase(boletimChecklist);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -164,10 +164,46 @@ public class BoletimChecklistMB {
 	private void boletimChecklistFirebase(BoletimChecklist boletimChecklist){
 		Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
 		if(empresa!=null){
-			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/boletimChecklist/");
-			Firebase firebaseRef = firebase.push();
+			Firebase firebase = new Firebase("https://baseagro-f1859.firebaseio.com/"+empresa.getCnpj()+"/bdos/"+boletimDiario.getId()+"/checklist/");
+			Firebase chaeckListSnapshot = firebase.child(boletimChecklist.getId());
 			
-			firebaseRef.child("id").setValue(Utils.retornarStringVazioQuanoNulo(boletimChecklist.getId()));
+			chaeckListSnapshot.child("adesivosSeguranca").setValue(boletimChecklist.isAdesivosSeguranca());
+			chaeckListSnapshot.child("alarmesPainelInstrumentos").setValue(boletimChecklist.isAlarmesPainelInstrumentos());
+			chaeckListSnapshot.child("assentoOperacao").setValue(boletimChecklist.isAssentoOperacao());
+			chaeckListSnapshot.child("chaveGeral").setValue(boletimChecklist.isChaveGeral());
+			chaeckListSnapshot.child("condicoesPneus").setValue(boletimChecklist.isCondicoesPneus());
+			chaeckListSnapshot.child("conjuntoCorteHARVESTER").setValue(boletimChecklist.isConjuntoCorteHARVESTER());
+			chaeckListSnapshot.child("discoEDentesCorteFELLER").setValue(boletimChecklist.isDiscoEDentesCorteFELLER());
+			chaeckListSnapshot.child("escadasOuEstribosAcesso").setValue(boletimChecklist.isEscadasOuEstribosAcesso());
+			chaeckListSnapshot.child("faroisTrabalho").setValue(boletimChecklist.isFaroisTrabalho());
+			chaeckListSnapshot.child("freioEmergencia").setValue(boletimChecklist.isFreioEmergencia());
+			chaeckListSnapshot.child("freioServicos").setValue(boletimChecklist.isFreioServicos());
+			chaeckListSnapshot.child("inspecaoExtintores").setValue(boletimChecklist.isInspecaoExtintores());
+			chaeckListSnapshot.child("janelasLaterais").setValue(boletimChecklist.isJanelasLaterais());
+			chaeckListSnapshot.child("kitContencaoVazamentos").setValue(boletimChecklist.isKitContencaoVazamentos());
+			chaeckListSnapshot.child("limpezaInternaCabine").setValue(boletimChecklist.isLimpezaInternaCabine());
+			chaeckListSnapshot.child("limpezaRadiador").setValue(boletimChecklist.isLimpezaRadiador());
+			chaeckListSnapshot.child("lubrificacaoGeral").setValue(boletimChecklist.isLubrificacaoGeral());
+			chaeckListSnapshot.child("nivelLiquidoRefrigerante").setValue(boletimChecklist.isNivelLiquidoRefrigerante());
+			chaeckListSnapshot.child("nivelOleoHidraulico").setValue(boletimChecklist.isNivelOleoHidraulico());
+			chaeckListSnapshot.child("nivelOleoMotor").setValue(boletimChecklist.isNivelOleoMotor());
+			chaeckListSnapshot.child("parabrisaFrontal").setValue(boletimChecklist.isParabrisaFrontal());
+			chaeckListSnapshot.child("paradaCombinada").setValue(boletimChecklist.isParadaCombinada());
+			chaeckListSnapshot.child("paradaImediata").setValue(boletimChecklist.isParadaImediata());
+			chaeckListSnapshot.child("pinosBielasFacasRolosECilindros").setValue(boletimChecklist.isPinosBielasFacasRolosECilindros());
+			chaeckListSnapshot.child("presencaGeralTrincasAcessorio").setValue(boletimChecklist.isPresencaGeralTrincasAcessorio());
+			chaeckListSnapshot.child("presencaGeralTrincasMaquinaBase").setValue(boletimChecklist.isPresencaGeralTrincasMaquinaBase());
+			chaeckListSnapshot.child("protecaoFrontalRadiador").setValue(boletimChecklist.isProtecaoFrontalRadiador());
+			chaeckListSnapshot.child("radioComunicacao").setValue(boletimChecklist.isRadioComunicacao());
+			chaeckListSnapshot.child("roletesInferiores").setValue(boletimChecklist.isRoletesInferiores());
+			chaeckListSnapshot.child("roletesSuperiores").setValue(boletimChecklist.isRoletesSuperiores());
+			chaeckListSnapshot.child("rotator").setValue(boletimChecklist.isRotator());
+			chaeckListSnapshot.child("sapatasEsteira").setValue(boletimChecklist.isSapatasEsteira());
+			chaeckListSnapshot.child("sinalizacaoReEMovimento").setValue(boletimChecklist.isSinalizacaoReEMovimento());
+			chaeckListSnapshot.child("tampasProtecao").setValue(boletimChecklist.isTampasProtecao());
+			chaeckListSnapshot.child("tensaoEsteiras").setValue(boletimChecklist.isTensaoEsteiras());
+			chaeckListSnapshot.child("travaCabineFORWARDER").setValue(boletimChecklist.isTravaCabineFORWARDER());
+			chaeckListSnapshot.child("vazamentoMangueirasECilindros").setValue(boletimChecklist.isVazamentoMangueirasECilindros());
 		}
 	}
 

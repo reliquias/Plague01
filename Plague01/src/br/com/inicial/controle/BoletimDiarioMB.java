@@ -58,6 +58,10 @@ public class BoletimDiarioMB {
 		if(boletinsModel.getPageSize() == 0){
 			boletinsModel.setPageSize(1);
 		}
+		this.boletimDiario = (BoletimDiario) facesContext.getExternalContext().getSessionMap().get("boletimDiario");
+		if(this.boletimDiario == null){
+			this.boletimDiario = new BoletimDiario();
+		}
 	}
 	
 	public String novo() {

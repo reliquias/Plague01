@@ -11,7 +11,7 @@
 			<h:form id="cadastro" acceptcharset="ISO-8859-1">
 				<p:growl id="msg" />
 				<p:panel header="#{msg.fazenda_labelCad}" id="panel">
-					<h:panelGrid id="infoFazenda" columns="2" style="margin-bottom: 10px">
+					<h:panelGrid id="infoFazenda" columns="4" style="margin-bottom: 10px">
 					<p:commandLink action="#{fazendaMB.listar}" value="Voltar" ajax="false" immediate="true"/>
 					<p:spacer/><p:spacer/>
 						<h:inputHidden value="#{fazendaMB.fazenda.id}" />
@@ -30,7 +30,7 @@
 						description="Images" multiple="false" customUI="true" id="fileUpload" ajax="true" height="115px" width="150px"/>
 						</h:panelGrid>
 						
-						<h:panelGrid id="infoFazenda2" columns="6" style="margin-bottom: 10px">					
+						<h:panelGrid id="infoFazenda2" columns="6">					
 						<h:outputLabel value="#{msg.fazenda_pais}" for="pais"/>
 						<p:selectOneMenu id="pais" value="#{fazendaMB.fazenda.pais}" title="Paises" converter="simpleEntityConverter">
                             <f:selectItems value="#{paisMB.itemsAvailableSelectOne}"/>
@@ -46,14 +46,14 @@
 						<p:selectOneMenu id="cidade" value="#{fazendaMB.fazenda.cidade}" title="Cidades" converter="simpleEntityConverter">
                             <f:selectItems value="#{fazendaMB.itemsAvailableSelectOneCidade}"/>
                         </p:selectOneMenu>
-                        <p:commandButton action="#{fazendaMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro"/>
-						<p:commandButton value="Talhaos" ajax="false" action="#{fazendaMB.talhoesForm}" />
-						<p:commandButton value="Boletins Diarios" ajax="false" action="#{fazendaMB.boletinsForm}" />
+                        <p:commandButton action="#{fazendaMB.adicionaOuAtualiza}" ajax="false" value="Salvar" update="cadastro" />
+						<p:commandButton value="Talhaos" ajax="false" action="#{fazendaMB.talhoesForm}" rendered="#{fazendaMB.fazenda.areaInicial != null}"/>
+						<p:commandButton value="Boletins" ajax="false" action="#{fazendaMB.boletinsForm}" rendered="#{fazendaMB.fazenda.areaInicial != null}"/>
 					</h:panelGrid>
 					<p:growl id="growl" life="3000" />
 				</p:panel>
-				<p:gmap id="w_gmap" widgetVar="w_gmap" center="#{fazendaMB.centroMapa}" zoom="16" type="ROADMAP" 
-				style="width:1200px;height:400px" model="#{fazendaMB.polygonModel}" onPointClick="handleMapClick(event)" >
+				<p:gmap id="w_gmap" widgetVar="w_gmap" center="#{fazendaMB.centroMapa}" zoom="11" type="ROADMAP" rendered="#{fazendaMB.fazenda.areaInicial != null}" 
+				style="width:1600px;height:400px" model="#{fazendaMB.polygonModel}" onPointClick="handleMapClick(event)" >
 <!-- 					<p:ajax event="overlaySelect" listener="#{fazendaMB.onPolygonSelect}" update="growl" /> -->
 				</p:gmap>
 				<script type="text/javascript">
