@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BoletimDiario" language="groovy" pageWidth="595" pageHeight="700" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="idBoletimdiario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     boletimdiario.`dataHoraInicio` AS boletimdiario_dataHoraInicio,
+     boletimdiario.`horimetro` AS boletimdiario_horimetro,
+     boletimdiario.`idFirebase` AS boletimdiario_idFirebase,
+     boletimdiario.`maquinaBase` AS boletimdiario_maquinaBase,
+     boletimdiario.`matriculaResponsavel` AS boletimdiario_matriculaResponsavel,
+     boletimdiario.`nomeResponsavel` AS boletimdiario_nomeResponsavel,
+     boletimdiario.`odometro` AS boletimdiario_odometro,
+     boletimdiario.`projeto` AS boletimdiario_projeto,
+     boletimdiario.`turno` AS boletimdiario_turno,
+     boletimdiario.`fazenda_id` AS boletimdiario_fazenda_id,
+     boletimdiario.`CHECK_LIST_ID` AS boletimdiario_CHECK_LIST_ID,
+     boletimdiario.`id` AS boletimdiario_id,
+     boletimchecklist.`id` AS boletimchecklist_id,
+     boletimchecklist.`adesivosSeguranca` AS boletimchecklist_adesivosSeguranca,
+     boletimchecklist.`alarmesPainelInstrumentos` AS boletimchecklist_alarmesPainelInstrumentos,
+     boletimchecklist.`assentoOperacao` AS boletimchecklist_assentoOperacao,
+     boletimchecklist.`chaveGeral` AS boletimchecklist_chaveGeral,
+     boletimchecklist.`condicoesPneus` AS boletimchecklist_condicoesPneus,
+     boletimchecklist.`conjuntoCorteHARVESTER` AS boletimchecklist_conjuntoCorteHARVESTER,
+     boletimchecklist.`discoEDentesCorteFELLER` AS boletimchecklist_discoEDentesCorteFELLER,
+     boletimchecklist.`escadasOuEstribosAcesso` AS boletimchecklist_escadasOuEstribosAcesso,
+     boletimchecklist.`faroisTrabalho` AS boletimchecklist_faroisTrabalho,
+     boletimchecklist.`freioEmergencia` AS boletimchecklist_freioEmergencia,
+     boletimchecklist.`freioServicos` AS boletimchecklist_freioServicos,
+     boletimchecklist.`idFirebase` AS boletimchecklist_idFirebase,
+     boletimchecklist.`inspecaoExtintores` AS boletimchecklist_inspecaoExtintores,
+     boletimchecklist.`janelasLaterais` AS boletimchecklist_janelasLaterais,
+     boletimchecklist.`kitContencaoVazamentos` AS boletimchecklist_kitContencaoVazamentos,
+     boletimchecklist.`limpezaEsteiras` AS boletimchecklist_limpezaEsteiras,
+     boletimchecklist.`limpezaInternaCabine` AS boletimchecklist_limpezaInternaCabine,
+     boletimchecklist.`limpezaRadiador` AS boletimchecklist_limpezaRadiador,
+     boletimchecklist.`lubrificacaoGeral` AS boletimchecklist_lubrificacaoGeral,
+     boletimchecklist.`nivelLiquidoRefrigerante` AS boletimchecklist_nivelLiquidoRefrigerante,
+     boletimchecklist.`nivelOleoHidraulico` AS boletimchecklist_nivelOleoHidraulico,
+     boletimchecklist.`nivelOleoMotor` AS boletimchecklist_nivelOleoMotor,
+     boletimchecklist.`vazamentoMangueirasECilindros` AS boletimchecklist_vazamentoMangueirasECilindros,
+     boletimchecklist.`travaCabineFORWARDER` AS boletimchecklist_travaCabineFORWARDER,
+     boletimchecklist.`tampasProtecao` AS boletimchecklist_tampasProtecao,
+     boletimchecklist.`tensaoEsteiras` AS boletimchecklist_tensaoEsteiras,
+     boletimchecklist.`sinalizacaoReEMovimento` AS boletimchecklist_sinalizacaoReEMovimento,
+     boletimchecklist.`sapatasEsteira` AS boletimchecklist_sapatasEsteira,
+     boletimchecklist.`rotator` AS boletimchecklist_rotator,
+     boletimchecklist.`roletesInferiores` AS boletimchecklist_roletesInferiores,
+     boletimchecklist.`roletesSuperiores` AS boletimchecklist_roletesSuperiores,
+     boletimchecklist.`radioComunicacao` AS boletimchecklist_radioComunicacao,
+     boletimchecklist.`protecaoFrontalRadiador` AS boletimchecklist_protecaoFrontalRadiador,
+     boletimchecklist.`presencaGeralTrincasMaquinaBase` AS boletimchecklist_presencaGeralTrincasMaquinaBase,
+     boletimchecklist.`pinosBielasFacasRolosECilindros` AS boletimchecklist_pinosBielasFacasRolosECilindros,
+     boletimchecklist.`presencaGeralTrincasAcessorio` AS boletimchecklist_presencaGeralTrincasAcessorio,
+     boletimchecklist.`paradaImediata` AS boletimchecklist_paradaImediata,
+     boletimchecklist.`paradaCombinada` AS boletimchecklist_paradaCombinada,
+     boletimchecklist.`parabrisaFrontal` AS boletimchecklist_parabrisaFrontal,
+     boletimapontamento.`id` AS boletimapontamento_id,
+     boletimapontamento.`checkListId` AS boletimapontamento_checkListId,
+     boletimapontamento.`codigoAtividade` AS boletimapontamento_codigoAtividade,
+     boletimapontamento.`cto` AS boletimapontamento_cto,
+     boletimapontamento.`dataHoraCadastro` AS boletimapontamento_dataHoraCadastro,
+     boletimapontamento.`dataHoraUpload` AS boletimapontamento_dataHoraUpload,
+     boletimapontamento.`horimetro` AS boletimapontamento_horimetro,
+     boletimapontamento.`idFirebase` AS boletimapontamento_idFirebase,
+     boletimapontamento.`mecanicoId` AS boletimapontamento_mecanicoId,
+     boletimapontamento.`nomeAtividade` AS boletimapontamento_nomeAtividade,
+     boletimapontamento.`numeroLaudo` AS boletimapontamento_numeroLaudo,
+     boletimapontamento.`odometro` AS boletimapontamento_odometro,
+     boletimapontamento.`producao` AS boletimapontamento_producao,
+     boletimapontamento.`responsavel` AS boletimapontamento_responsavel,
+     boletimapontamento.`talhao` AS boletimapontamento_talhao,
+     boletimapontamento.`boletimDiario_id` AS boletimapontamento_boletimDiario_id
+FROM
+    `boletimdiario` boletimdiario
+     left JOIN `boletimchecklist` boletimchecklist  ON boletimchecklist.`id` = boletimdiario.`CHECK_LIST_ID`
+     left JOIN `boletimapontamento` boletimapontamento ON boletimdiario.`id` = boletimapontamento.`boletimDiario_id`
+where boletimdiario.id =$P{idBoletimdiario}]]>
+	</queryString>
+	<field name="boletimdiario_dataHoraInicio" class="java.lang.String"/>
+	<field name="boletimdiario_horimetro" class="java.lang.String"/>
+	<field name="boletimdiario_idFirebase" class="java.lang.String"/>
+	<field name="boletimdiario_maquinaBase" class="java.lang.String"/>
+	<field name="boletimdiario_matriculaResponsavel" class="java.lang.String"/>
+	<field name="boletimdiario_nomeResponsavel" class="java.lang.String"/>
+	<field name="boletimdiario_odometro" class="java.lang.String"/>
+	<field name="boletimdiario_projeto" class="java.lang.String"/>
+	<field name="boletimdiario_turno" class="java.lang.String"/>
+	<field name="boletimdiario_fazenda_id" class="java.lang.Integer"/>
+	<field name="boletimdiario_CHECK_LIST_ID" class="java.lang.String"/>
+	<field name="boletimdiario_id" class="java.lang.String"/>
+	<field name="boletimchecklist_id" class="java.lang.String"/>
+	<field name="boletimchecklist_adesivosSeguranca" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_alarmesPainelInstrumentos" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_assentoOperacao" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_chaveGeral" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_condicoesPneus" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_conjuntoCorteHARVESTER" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_discoEDentesCorteFELLER" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_escadasOuEstribosAcesso" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_faroisTrabalho" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_freioEmergencia" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_freioServicos" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_idFirebase" class="java.lang.Long"/>
+	<field name="boletimchecklist_inspecaoExtintores" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_janelasLaterais" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_kitContencaoVazamentos" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_limpezaEsteiras" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_limpezaInternaCabine" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_limpezaRadiador" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_lubrificacaoGeral" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_nivelLiquidoRefrigerante" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_nivelOleoHidraulico" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_nivelOleoMotor" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_vazamentoMangueirasECilindros" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_travaCabineFORWARDER" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_tampasProtecao" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_tensaoEsteiras" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_sinalizacaoReEMovimento" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_sapatasEsteira" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_rotator" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_roletesInferiores" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_roletesSuperiores" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_radioComunicacao" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_protecaoFrontalRadiador" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_presencaGeralTrincasMaquinaBase" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_pinosBielasFacasRolosECilindros" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_presencaGeralTrincasAcessorio" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_paradaImediata" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_paradaCombinada" class="java.lang.Boolean"/>
+	<field name="boletimchecklist_parabrisaFrontal" class="java.lang.Boolean"/>
+	<field name="boletimapontamento_id" class="java.lang.String"/>
+	<field name="boletimapontamento_checkListId" class="java.lang.Long"/>
+	<field name="boletimapontamento_codigoAtividade" class="java.lang.Long"/>
+	<field name="boletimapontamento_cto" class="java.lang.String"/>
+	<field name="boletimapontamento_dataHoraCadastro" class="java.lang.String"/>
+	<field name="boletimapontamento_dataHoraUpload" class="java.lang.String"/>
+	<field name="boletimapontamento_horimetro" class="java.lang.String"/>
+	<field name="boletimapontamento_idFirebase" class="java.lang.Long"/>
+	<field name="boletimapontamento_mecanicoId" class="java.lang.Long"/>
+	<field name="boletimapontamento_nomeAtividade" class="java.lang.String"/>
+	<field name="boletimapontamento_numeroLaudo" class="java.lang.Long"/>
+	<field name="boletimapontamento_odometro" class="java.lang.String"/>
+	<field name="boletimapontamento_producao" class="java.lang.String"/>
+	<field name="boletimapontamento_responsavel" class="java.lang.String"/>
+	<field name="boletimapontamento_talhao" class="java.lang.Long"/>
+	<field name="boletimapontamento_boletimDiario_id" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="109" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" x="160" y="-72" width="158" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_maquinaBase}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="158" y="64" width="133" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_horimetro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="291" y="64" width="125" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_odometro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="416" y="64" width="138" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_projeto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Title" x="0" y="2" width="554" height="17"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Boletim Diario de Produçao]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="158" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Máquina Base]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="158" y="19" width="258" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="416" y="19" width="138" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Turno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="0" y="49" width="158" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Matricula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="159" y="49" width="131" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Horitmetro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="291" y="49" width="125" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Odometro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="416" y="49" width="138" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Projeto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="0" y="79" width="373" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Operador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="373" y="79" width="181" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Assinatura]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="Detail" x="0" y="34" width="158" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_maquinaBase}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="159" y="34" width="257" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_dataHoraInicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="416" y="34" width="138" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_turno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="0" y="64" width="158" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_matriculaResponsavel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="0" y="94" width="373" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimdiario_nomeResponsavel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" x="373" y="94" width="181" height="15"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="1" width="63" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Talhão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="63" y="1" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cod. Atividae]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="187" y="1" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Mecânico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="125" y="1" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[N. Laudo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="311" y="1" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Horimetro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="373" y="1" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Odômetro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="249" y="1" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="435" y="1" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Produção]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="497" y="1" width="58" height="13"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[CTO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="0" y="0" width="63" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_talhao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="63" y="0" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_codigoAtividade}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="125" y="0" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_numeroLaudo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="187" y="0" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_numeroLaudo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="249" y="0" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_dataHoraCadastro}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="311" y="0" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_dataHoraCadastro}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="373" y="0" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_odometro}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="435" y="0" width="62" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_producao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" x="497" y="0" width="58" height="13"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_cto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

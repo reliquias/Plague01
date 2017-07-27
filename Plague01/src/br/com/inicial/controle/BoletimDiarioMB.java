@@ -2,13 +2,16 @@ package br.com.inicial.controle;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
+import org.primefaces.model.StreamedContent;
 
 import br.com.inicial.dao.BoletimDiarioDAO;
 import br.com.inicial.dao.DAOFactory;
@@ -18,7 +21,8 @@ import br.com.inicial.modelo.BoletimDiario;
 import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Fazenda;
 import br.com.inicial.util.JsfUtil;
-import br.com.inicial.util.Utils;
+import br.com.inicial.util.RelatorioUtil;
+import br.com.inicial.util.UtilException;
 import br.com.inicial.util.XLazyModel;
 
 import com.firebase.client.DataSnapshot;
@@ -40,6 +44,8 @@ public class BoletimDiarioMB {
 	private Fazenda fazenda;
 	private BoletimChecklist boletimCheckList = new BoletimChecklist();
 	private String checklistId;
+	private StreamedContent arquivoRetorno;
+	private int tipoRelatorio;
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	File fileBoletimDiario;
 	int xCont;
@@ -391,7 +397,38 @@ public class BoletimDiarioMB {
 	}
 
 
+	public StreamedContent getArquivoRetorno() throws Exception {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        String nomeRelatorioJasper = "BoletimDiario";
+        String nomeRelatorioSaida = nomeRelatorioJasper;
+        RelatorioUtil relatorioUtil = new RelatorioUtil();
+		HashMap paramentrosRelatorio = new HashMap();
+		paramentrosRelatorio.put("idBoletimdiario", this.boletimDiario.getId());
+
+        try {
+            this.arquivoRetorno = relatorioUtil.geraRelatorio(paramentrosRelatorio, nomeRelatorioJasper, nomeRelatorioSaida, this.tipoRelatorio);
+        } catch (UtilException e) {
+            context.addMessage(null, new FacesMessage(e.getMessage()));
+            return null;
+        }catch (Exception e) {
+            context.addMessage(null, new FacesMessage(e.getMessage()));
+            return null;
+        }
+        return this.arquivoRetorno;
+    }
 	
+	public void setArquivoRetorno(StreamedContent arquivoRetorno) {
+        this.arquivoRetorno = arquivoRetorno;
+    }
+
 	
+	public int getTipoRelatorio() {
+        return tipoRelatorio;
+    }
+
+    public void setTipoRelatorio(int tipoRelatorio) {
+        this.tipoRelatorio = tipoRelatorio;
+    }
 	
 }

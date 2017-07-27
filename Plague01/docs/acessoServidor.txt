@@ -1,8 +1,6 @@
-IP : 177.154.34.32
-user: app
-Passa: app@adm
-administrador
-adm@2016
+IP : 54.233.224.168
+user: Wanderson
+Passa: ADM@aud.Wan
 
 
 https://firebasestorage.googleapis.com/v0/b/baseagro-f1859.appspot.com/o/cliente02%2Fvistorias%2F-K_ucIWW7LZLhXKmxX8H%2FimagesAddress%2Ffoto1.jpg?alt=media&token=59930814-f458-4fc6-97d8-a69a2e1f060a

@@ -161,6 +161,40 @@
 				</f:facet>
 				</h:panelGrid>
 				</p:tab>
+				<p:tab title="Documentos">
+					<h:panelGrid columns="2">
+						<h:commandLink id="boletim">
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.tipoRelatorio}" value="1" />
+							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
+							<h:graphicImage library="img" name="pdf.png" title="Imprimir Boletim PDF" />
+						</h:commandLink>
+						<p:outputLabel value="#{msg.rel_boletimPdf}" for="boletim"></p:outputLabel>
+						<h:commandLink>
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.tipoRelatorio}" value="2" />
+							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
+							<h:graphicImage library="img" name="excel.png"
+								title="Imprimir Boletim Excel" />
+						</h:commandLink>
+						<p:outputLabel value="#{msg.rel_boletimExcel}" ></p:outputLabel>
+						<h:commandLink>
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.tipoRelatorio}" value="3" />
+							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
+							<h:graphicImage library="img" name="html.png"
+								title="Imprimir HTML" />
+						</h:commandLink>
+						<p:outputLabel value="#{msg.rel_boletimHtml}" ></p:outputLabel>
+						<!-- <h:commandLink>
+							<f:setPropertyActionListener
+								target="#{relatorioMB.tipoRelatorio}" value="4" />
+							<p:fileDownload value="#{relatorioMB.arquivoRetorno}" />
+							<h:graphicImage library="img" name="ods.png"
+								title="Imprimir Planilha Open Office" />
+						</h:commandLink> -->
+					</h:panelGrid>
+					</p:tab>
                 </p:tabView>
 			</h:form>
 			

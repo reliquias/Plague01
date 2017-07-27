@@ -7,10 +7,46 @@
 
 	<ui:define name="centro">
 		<p:layoutUnit position="center" id="boletimApontamento">
+		<h:form id="cadastro" acceptcharset="ISO-8859-1">
+				<p:growl id="msg" />
+				<p:panel header="#{msg.boletimDiario_labelCad}">
+				<p:commandLink action="#{boletimDiarioMB.voltarBoletimDiario}" value="Voltar" ajax="false" immediate="true"/>
+					<h:panelGrid id="infoTalhao" columns="6" style="margin-bottom: 10px">
+					<p:spacer/><p:spacer/><p:spacer/><p:spacer/><p:spacer/>
+						<h:inputHidden value="#{boletimApontamentoMB.boletimDiario.id}" />
+						<h:outputLabel value="#{msg.boletimDiario_maquinaBase}" for="maquinaBase" style="font-weight:bold"/>
+						<h:outputLabel id="maquinaBase" label="maquinaBase"
+							value="#{boletimApontamentoMB.boletimDiario.maquinaBase}" size="15" maxlength="15">
+						</h:outputLabel>
+						<h:outputLabel value="#{msg.boletimDiario_dataHoraInicio}" for="dataHoraInicio" style="font-weight:bold"/>
+						<h:outputLabel id="dataHoraInicio" label="dataHoraInicio" 
+							value="#{boletimApontamentoMB.boletimDiario.dataHoraInicio}" size="15" maxlength="15"/>
+						<h:outputLabel value="#{msg.boletimDiario_turno}" for="turno" style="font-weight:bold"/>
+						<h:outputLabel id="turno" label="turno"
+							value="#{boletimApontamentoMB.boletimDiario.turno}" size="15" maxlength="15"/>
+						<h:outputLabel value="#{msg.boletimDiario_matriculaResponsavel}" for="matriculaResponsavel" style="font-weight:bold"/>
+						<h:outputLabel id="matriculaResponsavel" label="matriculaResponsavel"
+							value="#{boletimApontamentoMB.boletimDiario.matriculaResponsavel}" size="15" maxlength="15"/>
+						<h:outputLabel value="#{msg.boletimDiario_nomeResponsavel}" for="nomeResponsavel" style="font-weight:bold"/>
+						<h:outputLabel id="nomeResponsavel" label="nomeResponsavel"
+							value="#{boletimApontamentoMB.boletimDiario.nomeResponsavel}" size="15" maxlength="15"/>
+						<h:outputLabel value="#{msg.boletimDiario_horimetro}" for="horimetro" style="font-weight:bold"/>
+						<h:outputLabel id="horimetro" label="horimetro"
+							value="#{boletimApontamentoMB.boletimDiario.horimetro}" size="15" maxlength="15"/>
+						<h:outputLabel value="#{msg.boletimDiario_odometro}" for="odometro" style="font-weight:bold"/>
+						<h:outputLabel id="odometro" label="odometro"
+							value="#{boletimApontamentoMB.boletimDiario.odometro}" size="15" maxlength="15"/>
+						<h:outputLabel value="#{msg.boletimDiario_projeto}" for="projeto" style="font-weight:bold"/>
+						<h:outputLabel id="projeto" label="Projeto"
+							value="#{boletimApontamentoMB.boletimDiario.projeto}" size="15" maxlength="15"/>
+					</h:panelGrid>
+					<p:messages id="msgs"/>
+				</p:panel>
+			</h:form>
+			
 			<h:form prependId="false" id="infoBoletimApontamento">
 			<p:panel header="#{msg.boletimApontamento_labelCad}">
-			<p:commandLink action="#{boletimDiarioMB.voltarBoletimDiario}" value="Voltar" ajax="false" immediate="true"/>
-                <h:panelGrid columns="6" style="margin-bottom: 10px">
+			    <h:panelGrid columns="6" style="margin-bottom: 10px">
                 <p:spacer/><p:spacer/><p:spacer/><p:spacer/><p:spacer/>
                 	<h:inputHidden value="#{boletimApontamentoMB.boletimApontamento.id}" />
                 	<h:outputLabel value="#{msg.boletimApontamento_codigoAtividade}" for="codigoAtividade" />
