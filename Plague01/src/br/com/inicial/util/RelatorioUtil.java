@@ -29,6 +29,8 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
+import br.com.inicial.modelo.Empresa;
+
 
 public class RelatorioUtil {
 
@@ -38,12 +40,12 @@ public class RelatorioUtil {
 	public static final int	RELATORIO_PLANILHA_OPEN_OFFICE	= 4;
         private static Connection con;
 
-	public StreamedContent geraRelatorio(HashMap parametrosRelatorio, String nomeRelatorioJasper, String nomeRelatorioSaida, int tipoRelatorio) throws UtilException {
+	public StreamedContent geraRelatorio(HashMap parametrosRelatorio, String nomeRelatorioJasper, String nomeRelatorioSaida, int tipoRelatorio, Empresa empresa) throws UtilException {
 		StreamedContent arquivoRetorno = null;
 //http://davidbuzatto.com.br/tag/subrelatorio/
 		try {
 			FacesContext context = FacesContext.getCurrentInstance();
-			Connection conexao = this.getConexao2();
+			Connection conexao = this.getConexao2(empresa);
 			String caminhoRelatorio = context.getExternalContext().getRealPath("relatorios");
 			String caminhoArquivoJasper = caminhoRelatorio + File.separator + nomeRelatorioJasper + ".jasper";
 			String caminhoArquivoRelatorio = null;
@@ -111,11 +113,11 @@ public class RelatorioUtil {
 	}
 
 
-	private  Connection getConexao2() throws UtilException {
-		String driver = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/myplague02";
-		String login = "root";
-		String senha = "asenna";
+	private  Connection getConexao2(Empresa empresa) throws UtilException {
+		String driver = empresa.getDriverClass();//"com.mysql.jdbc.Driver";
+		String url = empresa.getURLConexao();//"jdbc:mysql://localhost:3306/myplague02";
+		String login = empresa.getUsername();//"root";
+		String senha = empresa.getPassword();//"asenna";
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, login, senha);
@@ -128,12 +130,12 @@ public class RelatorioUtil {
 	}
 
         //Eu coloquei esse codigo que encontrei no javafree
-    public StreamedContent gerarRelatoriosClientes(HashMap parametrosRelatorio, String nomeRelatorioJasper, String nomeRelatorioSaida, int tipoRelatorio) throws Exception {
+    public StreamedContent gerarRelatoriosClientes(HashMap parametrosRelatorio, String nomeRelatorioJasper, String nomeRelatorioSaida, int tipoRelatorio, Empresa empresa) throws Exception {
         StreamedContent rel = null;
 //rel e um nome para demostra o relatorio.
 //relatorio que traz todas informaÃ§Ãµes.
         try {
-            Connection con = getConexao2();//e para conexaÃ§Ã£o di banco estatico tem que ser criado pra chama o //dados do banco
+            Connection con = getConexao2(empresa);//e para conexaÃ§Ã£o di banco estatico tem que ser criado pra chama o //dados do banco
 //            HashMap map = new HashMap();
 //            String arquivoJasper = "relatorioclientes2.jasper";//nome do arquivo de relatorio que devera esta na pasta //principal do projeto api de java...
             rel = (StreamedContent) JasperFillManager.fillReport(nomeRelatorioJasper, parametrosRelatorio, con);//coloque os nomes que voce demonina emcima

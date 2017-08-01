@@ -407,7 +407,8 @@ public class BoletimDiarioMB {
 		paramentrosRelatorio.put("idBoletimdiario", this.boletimDiario.getId());
 
         try {
-            this.arquivoRetorno = relatorioUtil.geraRelatorio(paramentrosRelatorio, nomeRelatorioJasper, nomeRelatorioSaida, this.tipoRelatorio);
+        	Empresa empresa = (Empresa) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("empresa");
+            this.arquivoRetorno = relatorioUtil.geraRelatorio(paramentrosRelatorio, nomeRelatorioJasper, nomeRelatorioSaida, this.tipoRelatorio, empresa);
         } catch (UtilException e) {
             context.addMessage(null, new FacesMessage(e.getMessage()));
             return null;
