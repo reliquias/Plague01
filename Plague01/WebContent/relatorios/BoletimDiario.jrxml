@@ -537,9 +537,9 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="14" splitType="Stretch">
+		<band height="12" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="0" y="0" width="63" height="13"/>
+				<reportElement style="Detail" x="0" y="-1" width="63" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -553,7 +553,7 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_talhao}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="63" y="0" width="62" height="13"/>
+				<reportElement style="Detail" x="63" y="-1" width="62" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -567,7 +567,7 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_codigoAtividade}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="125" y="0" width="62" height="13"/>
+				<reportElement style="Detail" x="125" y="-1" width="62" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -581,7 +581,7 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_numeroLaudo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="187" y="0" width="62" height="13"/>
+				<reportElement style="Detail" x="187" y="-1" width="62" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -595,7 +595,7 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_numeroLaudo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="249" y="0" width="62" height="13"/>
+				<reportElement style="Detail" x="249" y="-1" width="62" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -609,7 +609,7 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_dataHoraCadastro}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="311" y="0" width="62" height="13"/>
+				<reportElement style="Detail" x="311" y="-1" width="62" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -623,7 +623,7 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_dataHoraCadastro}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="373" y="0" width="62" height="13"/>
+				<reportElement style="Detail" x="373" y="-1" width="62" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -637,7 +637,7 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_odometro}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="435" y="0" width="62" height="13"/>
+				<reportElement style="Detail" x="435" y="-1" width="62" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -651,7 +651,7 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{boletimapontamento_producao}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" x="497" y="0" width="58" height="13"/>
+				<reportElement style="Detail" x="497" y="-1" width="58" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -666,9 +666,6 @@ where boletimdiario.id =$P{idBoletimdiario}]]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="20" splitType="Stretch">
 			<textField>

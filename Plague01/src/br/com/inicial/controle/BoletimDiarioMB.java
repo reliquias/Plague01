@@ -46,6 +46,7 @@ public class BoletimDiarioMB {
 	private String checklistId;
 	private StreamedContent arquivoRetorno;
 	private int tipoRelatorio;
+	private String nomeRelatorio;
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	File fileBoletimDiario;
 	int xCont;
@@ -400,7 +401,8 @@ public class BoletimDiarioMB {
 	public StreamedContent getArquivoRetorno() throws Exception {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        String nomeRelatorioJasper = "BoletimDiario";
+//        String nomeRelatorioJasper = "BoletimDiario";
+        String nomeRelatorioJasper = this.nomeRelatorio;
         String nomeRelatorioSaida = nomeRelatorioJasper;
         RelatorioUtil relatorioUtil = new RelatorioUtil();
 		HashMap paramentrosRelatorio = new HashMap();
@@ -431,5 +433,12 @@ public class BoletimDiarioMB {
     public void setTipoRelatorio(int tipoRelatorio) {
         this.tipoRelatorio = tipoRelatorio;
     }
-	
+
+	public String getNomeRelatorio() {
+		return nomeRelatorio;
+	}
+
+	public void setNomeRelatorio(String nomeRelatorio) {
+		this.nomeRelatorio = nomeRelatorio;
+	}
 }

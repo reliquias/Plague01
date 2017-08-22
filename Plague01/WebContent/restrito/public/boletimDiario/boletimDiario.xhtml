@@ -162,63 +162,68 @@
 				</h:panelGrid>
 				</p:tab>
 				<p:tab title="Documentos">
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="4">
+						<p:outputLabel value="#{msg.rel_boletim}" for="boletim"></p:outputLabel>
 						<h:commandLink id="boletim">
 							<f:setPropertyActionListener
 								target="#{boletimDiarioMB.tipoRelatorio}" value="1" />
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.nomeRelatorio}" value="BoletimDiario" />
 							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
 							<h:graphicImage library="img" name="pdf.png" title="Imprimir Boletim PDF" />
 						</h:commandLink>
-						<p:outputLabel value="#{msg.rel_boletimPdf}" for="boletim"></p:outputLabel>
 						<h:commandLink>
 							<f:setPropertyActionListener
 								target="#{boletimDiarioMB.tipoRelatorio}" value="2" />
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.nomeRelatorio}" value="BoletimDiario" />
 							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
 							<h:graphicImage library="img" name="excel.png"
 								title="Imprimir Boletim Excel" />
 						</h:commandLink>
-						<p:outputLabel value="#{msg.rel_boletimExcel}" ></p:outputLabel>
 						<h:commandLink>
 							<f:setPropertyActionListener
 								target="#{boletimDiarioMB.tipoRelatorio}" value="3" />
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.nomeRelatorio}" value="BoletimDiario" />
 							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
 							<h:graphicImage library="img" name="html.png"
 								title="Imprimir HTML" />
 						</h:commandLink>
-						<p:outputLabel value="#{msg.rel_boletimHtml}" ></p:outputLabel>
-						<!-- <h:commandLink>
+						
+						<p:outputLabel value="#{msg.rel_checklist}" for="boletim"></p:outputLabel>
+						<h:commandLink>
 							<f:setPropertyActionListener
-								target="#{relatorioMB.tipoRelatorio}" value="4" />
-							<p:fileDownload value="#{relatorioMB.arquivoRetorno}" />
-							<h:graphicImage library="img" name="ods.png"
-								title="Imprimir Planilha Open Office" />
-						</h:commandLink> -->
+								target="#{boletimDiarioMB.tipoRelatorio}" value="1" />
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.nomeRelatorio}" value="BoletimChecklist" />
+							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
+							<h:graphicImage library="img" name="pdf.png" title="Imprimir CheckList PDF" />
+						</h:commandLink>
+						<h:commandLink>
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.tipoRelatorio}" value="2" />
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.nomeRelatorio}" value="BoletimChecklist" />
+							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
+							<h:graphicImage library="img" name="excel.png" 
+								title="Imprimir XLS" />
+						</h:commandLink>
+						<h:commandLink>
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.tipoRelatorio}" value="3" />
+							<f:setPropertyActionListener
+								target="#{boletimDiarioMB.nomeRelatorio}" value="BoletimChecklist" />
+							<p:fileDownload value="#{boletimDiarioMB.arquivoRetorno}" />
+							<h:graphicImage library="img" name="html.png" 
+								title="Imprimir HTML" />
+						</h:commandLink>
 					</h:panelGrid>
 					</p:tab>
                 </p:tabView>
 			</h:form>
-			
-<!-- 			<ui:include src="/restrito/public/boletimDiario/boletimApontamento.xhtml"/> -->
-			
 		</p:layoutUnit>
 
-		<p:dialog id="dlgBoletimApontamento" header="#{msg.boletimApontamento_labelCad}" widgetVar="dialogBoletimApontamento" resizable="false" modal="true" showEffect="slide" width="500" dynamic="true">
-            <h:form prependId="false" id="infoBoletimApontamento">
-                <h:panelGrid columns="2" style="margin-bottom: 10px">
-                <p:spacer/>
-                	<h:inputHidden value="#{boletimApontamentoMB.boletimApontamento.id}" />
-                	<h:outputLabel value="#{msg.boletimApontamento_codigoAtividade}" for="codigoAtividade" />
-						<h:inputText id="codigoAtividade" label="codigoAtividade"
-							value="#{boletimApontamentoMB.boletimApontamento.codigoAtividade}" size="10" maxlength="12">
-						</h:inputText>
-                	<h:outputLabel value="#{msg.boletimApontamento_numeroLaudo}" for="numeroLaudo" />
-						<h:inputText id="numeroLaudo" label="numeroLaudo"
-							value="#{boletimApontamentoMB.boletimApontamento.numeroLaudo}" size="50" maxlength="60">
-						</h:inputText>
-                	<p:commandButton update=":boletimDiarioTodo" oncomplete="PF('dialogBoletimApontamento').hide()" actionListener="#{boletimApontamentoMB.adicionaOuAtualiza}" value="#{msg.btn_salvar}"/>
-                </h:panelGrid>
-            </h:form>
-        </p:dialog>		
 		
 	</ui:define>
 </ui:composition>

@@ -18,7 +18,8 @@
    		<var>msg</var>
    	</resource-bundle>
    	
-   	<message-bundle>br.com.inicial.idioma.CustomMessages</message-bundle>
+<!--    	<message-bundle>br.com.inicial.idioma.CustomMessages</message-bundle> -->
+   	<message-bundle>mensagens</message-bundle>
    </application>
 
 </faces-config>

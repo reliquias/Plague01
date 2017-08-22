@@ -12,6 +12,7 @@ import br.com.inicial.dao.DAOFactory;
 import br.com.inicial.dao.EmpresaDAO;
 import br.com.inicial.dao.HibernateUtil;
 import br.com.inicial.dao.UsuarioDAO;
+import br.com.inicial.modelo.BoletimDiario;
 import br.com.inicial.modelo.Empresa;
 import br.com.inicial.modelo.Usuario;
 import br.com.inicial.util.JsfUtil;
@@ -30,6 +31,7 @@ public class LoginMB{
 	private String login;
 	private String senha;
     private Usuario usuario = new Usuario();
+    private Usuario usuarioLogado = new Usuario();
     
     public LoginMB() {
     }
@@ -88,7 +90,7 @@ public class LoginMB{
 //	    	Usuario usuario = DAOFactory.criarUsuarioDAO().buscarPorLogin(login);
 	    	if(usuario!=null && usuario.getId()!=null){
 				if(usuario.getSenha().equalsIgnoreCase(senha)){
-					
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuario);
 					return "/restrito/principal";
 				}
 			}
@@ -152,5 +154,25 @@ public class LoginMB{
 			System.out.println("Pode usar vai");
 			return false;
 		}
+	}
+	
+	
+	
+	public Usuario getUsuarioLogado() {
+		Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+		if (usuario == null){
+			usuario = new Usuario();
+		}
+		usuarioLogado = usuario;
+		return usuarioLogado;
+	}
+	
+	public String logOut(){
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("loginMB");
+		return "/faces/login/Login.xhtml"; 
+	}
+	
+	public String listar() {
+		return null;
 	}
 }

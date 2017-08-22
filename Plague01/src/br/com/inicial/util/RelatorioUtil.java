@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
@@ -49,7 +51,9 @@ public class RelatorioUtil {
 			String caminhoRelatorio = context.getExternalContext().getRealPath("relatorios");
 			String caminhoArquivoJasper = caminhoRelatorio + File.separator + nomeRelatorioJasper + ".jasper";
 			String caminhoArquivoRelatorio = null;
+			ResourceBundle messages = ResourceBundle.getBundle("br.com.inicial.idioma.mensagens", Locale.getDefault());
 			parametrosRelatorio.put("SUBREPORT_DIR", caminhoRelatorio);
+			parametrosRelatorio.put("REPORT_RESOURCE_BUNDLE",messages);
 //			paramentrosRelatorio.put("SUBREPORT_DIR", "C:\\Fontes Java\\BgiWeb\\WebContent\\relatorios\\");
 
 			JasperReport relatorioJasper = (JasperReport) JRLoader.loadObject(caminhoArquivoJasper);

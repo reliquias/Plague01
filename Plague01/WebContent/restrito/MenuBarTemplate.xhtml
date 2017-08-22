@@ -9,11 +9,11 @@
 	
     <h:form acceptcharset="ISO-8859-1">
     <p:growl id="msg" />
-	<!-- <h:outputLink onclick="document.location='#{request.contextPath}/j_spring_security_logout'" title="Sair" > 
-		<h:graphicImage library="img" name="logout16.png"/>
-	 </h:outputLink>
-	 Usuario Logado: #{request.remoteUser}
-	 <p:separator></p:separator> -->
+    <p:commandLink action="#{loginMB.logOut}" ajax="false" title="Sair" >
+	<h:graphicImage library="img" name="logout16.png"/>
+    </p:commandLink>
+	 Usuario Logado: #{loginMB.usuarioLogado.nome}
+	 <p:separator></p:separator>
 	    <sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
 			<p:menuButton value="Sistema">
 				<p:menuitem value="Usuário" url="/faces/restrito/admin/usuario/usuarioLista.xhtml" />
