@@ -46,15 +46,15 @@
 						</p:dataTable>
                         <f:facet name="footer">
                         	<p:commandButton actionListener="#{plantaTalhaoMB.novo}"          value="#{msg.btn_Novo}"    update=":plantaTalhao" oncomplete="PF('dialogPlanta').show()"/>
-                        	<p:commandButton actionListener="#{plantaTalhaoMB.preparaEditar}" value="#{msg.btn_alterar}" update=":plantaTalhao" oncomplete="PF('dialogPlanta').show()"/>
+                        	<p:commandButton action="#{plantaTalhaoMB.editar}" value="#{msg.btn_alterar}" update=":plantaTalhao" ajax="false"/>
                         	<p:commandButton actionListener="#{plantaTalhaoMB.excluirAjax}"	  value="#{msg.btn_excluir}" update=":formPlanta" />
 				        </f:facet>
                 </p:panel>
 			</h:form>
 		</p:layoutUnit>
 		
-		<p:dialog id="dlgPlanta" header="#{msg.plantaTalhao_labelCad}" widgetVar="dialogPlanta" resizable="false" modal="true" showEffect="slide" width="500" dynamic="true">
-            <h:form prependId="false" id="infoPlanta">
+		<p:dialog id="dlgPlanta" header="#{msg.plantaTalhao_labelCad}" widgetVar="dialogPlanta" resizable="false" modal="true" showEffect="slide" width="500">
+		    <h:form prependId="false" id="infoPlanta">
                 <h:panelGrid columns="2" style="margin-bottom: 10px">
                 <p:spacer/>
                 	<h:inputHidden value="#{plantaTalhaoMB.plantaTalhao.id}" />

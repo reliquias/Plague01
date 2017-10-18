@@ -17,9 +17,18 @@
 	    <sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
 			<p:menuButton value="Sistema">
 				<p:menuitem value="Usuário" url="/faces/restrito/admin/usuario/usuarioLista.xhtml" />
+				<p:menuitem value="Tabelas" url="/faces/restrito/admin/tabelaUsuario/tabelaUsuarioLista.xhtml" />
+				<p:menuitem value="Abas" url="/faces/restrito/admin/abasUsuario/abasUsuarioLista.xhtml" />
+				<p:menuitem value="Campos" url="/faces/restrito/admin/camposUsuario/camposUsuarioLista.xhtml" />
+				<p:menuitem value="Checklist" url="/faces/restrito/admin/cadastroChecklist/cadastroChecklistLista.xhtml" />
 			</p:menuButton>
 			<p:menuButton value="Cadastro">
+				<p:menuitem value="Pais" url="/faces/restrito/public/pais/paisLista.xhtml" />
+				<p:menuitem value="Estado" url="/faces/restrito/public/estado/estadoLista.xhtml" />
+				<p:menuitem value="Cidade" url="/faces/restrito/public/cidade/cidadeLista.xhtml" />
 				<p:menuitem value="Fazendas" url="/faces/restrito/public/fazenda/fazendaLista.xhtml" />
+				<p:menuitem value="Doencas" url="/faces/restrito/public/tipoDoenca/tipoDoencaLista.xhtml" />
+				<p:menuitem value="Planta" url="/faces/restrito/public/planta/plantaLista.xhtml" />
 			</p:menuButton>
 			</sec:ifAnyGranted>
     </h:form>

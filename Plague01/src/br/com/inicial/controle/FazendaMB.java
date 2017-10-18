@@ -123,7 +123,7 @@ public class FazendaMB {
     }
 	
 	public void adicionaOuAtualiza() {
-		if (fazenda.getId() == 0 || fazenda.getId() == null) {
+		if (fazenda.getId() == null || fazenda.getId() == 0 ) {
 			try {
 				fazendaDAO.salvar(fazenda);
 				JsfUtil.addSuccessMessage("Fazenda salvo com Sucesso");

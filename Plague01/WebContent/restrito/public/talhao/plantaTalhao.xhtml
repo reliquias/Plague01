@@ -1,0 +1,31 @@
+<ui:composition template="/restrito/MenuPrincipalTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="centro">
+		<p:layoutUnit position="center">
+			<h:form prependId="false" id="infoPlanta">
+                <h:panelGrid columns="2" style="margin-bottom: 10px">
+                <p:commandLink action="#{talhaoMB.voltarTalhao}" value="Voltar" ajax="false" immediate="true"/>
+                	<h:inputHidden value="#{plantaTalhaoMB.plantaTalhao.id}" />
+                	<h:outputLabel value="#{msg.plantaTalhao_codigo}" for="codigo" />
+						<h:inputText id="codigo" label="Codigo"
+							value="#{plantaTalhaoMB.plantaTalhao.codigo}" size="10" maxlength="12">
+						</h:inputText>
+                	<h:outputLabel value="#{msg.plantaTalhao_coordenadas}" for="coordenadas" />
+						<h:inputText id="coordenadas" label="Coordenadas"
+							value="#{plantaTalhaoMB.plantaTalhao.coordenadas}" size="50" maxlength="60">
+						</h:inputText>
+                	<h:outputLabel value="#{msg.plantaTalhao_planta}" for="planta"/>
+					<h:selectOneMenu id="planta" value="#{plantaTalhaoMB.plantaTalhao.planta}" title="Plantas" converter="simpleEntityConverter">
+                    	<f:selectItems value="#{plantaMB.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <p:commandButton update=":infoPlanta" action="#{plantaTalhaoMB.adicionaOuAtualiza}" value="#{msg.btn_salvar}" ajax="false"/>
+                </h:panelGrid>
+            </h:form>
+		</p:layoutUnit>
+	</ui:define>
+</ui:composition>

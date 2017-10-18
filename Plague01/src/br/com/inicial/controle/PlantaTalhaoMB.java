@@ -62,7 +62,8 @@ public class PlantaTalhaoMB {
 	
 	public String listar() {
 		plantaTalhaosModel = null;
-    	return "plantaTalhaoLista";
+		facesContext.getExternalContext().getSessionMap().put("talhao", talhao);
+    	return "talhao";
     }
 	
 	public void adicionaOuAtualiza() {

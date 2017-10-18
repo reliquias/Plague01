@@ -83,6 +83,11 @@ public class TalhaoMB {
 		return "talhao";
 	}
 
+	public String voltarTalhao() {
+		talhao = (Talhao) facesContext.getExternalContext().getSessionMap().get("talhao");
+		return "talhao";
+	}
+
 	public void preparaEditar(ActionEvent actionEvent) {
 	}
 	
